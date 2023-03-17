@@ -1,0 +1,27 @@
+{
+  "editor.cursorSmart": true,
+  "editor.cursorStylePerMode": {
+    "insert": "line",
+    "overwrite": "line"
+  },
+  "editor.cursorWidthPerMode": {
+    "insert": 3,
+    "overwrite": 3
+  },
+  "editor.cursorBlinkingPerMode": {
+    "insert": "solid",
+    "overwrite": "solid"
+  },
+  "editor.cursorSmoothCaretAnimationPerMode": {
+    "insert": "explicit",
+    "overwrite": "explicit"
+  },
+  "editor.cursorSurroundingLinesStylePerMode": {
+    "insert": "default",
+    "overwrite": "default"
+  },
+  "editor.cursorSurroundingLinesPerMode": {
+    "insert": 0,
+    "overwrite": 0
+  }
+}
