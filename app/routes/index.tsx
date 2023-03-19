@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Form } from 'remix-run/react'
 
 export default function Index() {
   const [font, setFont] = useState('sans-serif')
@@ -44,10 +43,7 @@ export default function Index() {
   )
 
   const themeButton = (
-    <button
-      className='border border-gray-300 rounded-md px-2 py-1 ml-2'
-      onClick={toggleDarkMode}
-    >
+    <button className='rounded-md px-2 py-1 ml-2' onClick={toggleDarkMode}>
       {isDarkMode ? 'Light Mode' : 'Dark Mode'}
     </button>
   )
@@ -55,27 +51,32 @@ export default function Index() {
   return (
     <>
       <nav
-        className={`flex flex-row justify-between items-center font-${font} text-xs p-2 m-2`}
+        className={`flex flex-row justify-between items-center font-${font} text-xs p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <img src='images/logo.svg' alt='logo' className='h-8 w-8' />
+        <img src='images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
 
         <div className='flex items-center'>
           {/* put this in a Form component */}
-          <select
-            className='bg-primary.black border border-gray-300 rounded-md p-2'
-            aria-label='font selector'
-            onChange={updateFont}
-          >
-            <option value='sans-serif'>Sans Serif</option>
-            <option value='serif'>Serif</option>
-            <option value='mono'>Mono</option>
-          </select>
+          <div className=' border-r-2'>
+            <select
+              className='p-0.5 mr-3 pr-2 border-none select'
+              aria-label='font selector'
+              onChange={updateFont}
+            >
+              <option value='sans-serif'>Sans Serif</option>
+              <option value='serif'>Serif</option>
+              <option value='mono'>Mono</option>
+            </select>
+          </div>
           {themeButton}
           {userButton}
         </div>
       </nav>
-      <form onSubmit={handleSearchSubmit}>
-        <div className='flex justify-center rounded-lg bg-tertiary.gray mx-2'>
+      <form
+        onSubmit={handleSearchSubmit}
+        className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'
+      >
+        <div className='flex justify-center rounded-lg bg-tertiary.gray mx-4'>
           <input
             className='flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray'
             placeholder='Search Dictionary'
