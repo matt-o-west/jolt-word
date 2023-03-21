@@ -6,8 +6,9 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url('/public/images/icon-moon.svg');
+  background-image: url('/images/icon-arrow-down.svg');
   background-repeat: no-repeat;
   background-position: right 8px center;
-  padding-right: 10px; /* adjust the padding to make room for the SVG */
+  padding-right: 2rem; /* adjust the padding to make room for the SVG */
+  z-index: 1;
 }

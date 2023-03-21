@@ -1,10 +1,23 @@
 import { useState } from 'react'
+import { useLoaderData } from '@remix-run/react'
+import { json } from '@remix-run/node'
+import type { LoaderFunction } from '@remix-run/node'
+import { getRandomWord } from '~/models/dictionary.server'
+
+export const loader: LoaderFunction = async () => {
+  const randomWord = await getRandomWord()
+
+  return json({ randomWord })
+}
 
 export default function Index() {
   const [font, setFont] = useState('sans-serif')
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+
+  const data = useLoaderData<typeof loader>()
+  console.log(data)
 
   const updateFont = ({ target }) => {
     setFont(target.value)
@@ -57,9 +70,9 @@ export default function Index() {
 
         <div className='flex items-center'>
           {/* put this in a Form component */}
-          <div className=' border-r-2'>
+          <div className='flex flex-row border-r-2'>
             <select
-              className='p-0.5 mr-3 pr-2 border-none select'
+              className='p-0.5 mr-2 pr-2 border-none outline-none select'
               aria-label='font selector'
               onChange={updateFont}
             >
@@ -92,9 +105,7 @@ export default function Index() {
           </div>
         </div>
       </form>
-      <main
-        className={`phone:flex-col phone:max-w-315px p-2 m-2 font-${font}`}
-      />
+      <div>Hey wordsmith, here's your word for today 🫴 {data.word}</div>
     </>
   )
 }
