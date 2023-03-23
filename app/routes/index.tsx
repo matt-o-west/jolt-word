@@ -1,13 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { LoaderFunction } from '@remix-run/node'
 import { getRandomWord } from '~/models/dictionary.server'
+import { Link } from '@remix-run/react'
+import generateRandomWord from '~/utils/generateRandomWord'
+
+type LoaderData = {
+  data: Awaited<ReturnType<typeof getRandomWord>>
+}
+interface Word {
+  word: string
+  shortdef: string[]
+}
 
 export const loader: LoaderFunction = async () => {
-  const randomWord = await getRandomWord()
-
-  return json({ randomWord })
+  const data = await getRandomWord()
+  return json<LoaderData>({ data })
 }
 
 export default function Index() {
@@ -15,9 +24,16 @@ export default function Index() {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [matchingWords, setMatchingWords] = useState([])
+  const [randomWord, setRandomWord] = useState('')
 
-  const data = useLoaderData<typeof loader>()
-  console.log(data)
+  useEffect(() => {
+    const fetchRandomWord = async () => {
+      const word = await generateRandomWord()
+      setRandomWord(word)
+    }
+    fetchRandomWord()
+  }, [])
 
   const updateFont = ({ target }) => {
     setFont(target.value)
@@ -31,15 +47,30 @@ export default function Index() {
     setIsLoggedIn(!isLoggedIn)
   }
 
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log(searchTerm)
+    console.log(searchTerm) // here's the form submit function, can you add code needed to make it work in the context of this route file?
   }
 
-  const fontVariants = {
-    'sans-serif': 'sans-serif',
-    serif: 'serif',
-    mono: 'mono',
+  const handleInputChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const searchTerm = event.target.value
+    setSearchTerm(searchTerm)
+
+    if (searchTerm.length > 2) {
+      const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${api_key}`
+      const response = await fetch(url)
+      const data = await response.json()
+
+      const matchingWords = data.filter((word) =>
+        word.meta.id.startsWith(searchTerm)
+      )
+
+      setMatchingWords(matchingWords)
+    } else {
+      setMatchingWords([])
+    }
   }
 
   const userButton = isLoggedIn ? (
@@ -91,8 +122,10 @@ export default function Index() {
       >
         <div className='flex justify-center rounded-lg bg-tertiary.gray mx-4'>
           <input
-            className='flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray'
+            className='flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple'
             placeholder='Search Dictionary'
+            value={searchTerm}
+            onChange={handleInputChange}
           />
           <div className='relative inset-y-0 right-0 flex items-center pl-2 mr-4'>
             <button type='submit'>
@@ -105,7 +138,20 @@ export default function Index() {
           </div>
         </div>
       </form>
-      <div>Hey wordsmith, here's your word for today 🫴 {data.word}</div>
+      <div
+        className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+      >
+        Hey wordsmith, here's your word for today{' '}
+        <span className='text-4xl'>🫴</span>{' '}
+        {(
+          <Link
+            to='/words/$word'
+            className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
+          >
+            {randomWord}
+          </Link>
+        ) || 'sorry, we ran out of words'}
+      </div>
     </>
   )
 }

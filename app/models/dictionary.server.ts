@@ -2,10 +2,13 @@
 
 export async function getWord(searchTerm: string) {
   const word = await fetch(
-    `https://api.dictionaryapi.dev/api/v2/entries/en/${searchTerm}`
+    `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${process.env.DICTIONARY_API_KEY}`
   )
     .then((response) => response.json())
-    .then((response) => console.log(response))
+    .then((response) => {
+      console.log(response)
+      return response
+    })
     .catch((err) => console.error(err))
   return word
 }
@@ -24,7 +27,7 @@ export async function getRandomWord() {
     options
   )
     .then((response) => response.json())
-    .then((response) => console.log(response))
+    .then((response) => response.word)
     .catch((err) => console.error(err))
 
   return word
