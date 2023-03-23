@@ -23,7 +23,9 @@ export async function getRandomWord() {
     'https://wordsapiv1.p.rapidapi.com/words/?random=true',
     options
   )
-  const response = await word.json()
-  console.log(response)
-  return response
+    .then((response) => response.json())
+    .then((response) => console.log(response))
+    .catch((err) => console.error(err))
+
+  return word
 }
