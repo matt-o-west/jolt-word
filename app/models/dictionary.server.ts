@@ -2,7 +2,7 @@
 
 export async function getWord(searchTerm: string) {
   const word = await fetch(
-    `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${process.env.DICTIONARY_API_KEY}`
+    `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=42bce219-5d4d-4186-8ab7-f8389ef2e3d0`
   )
     .then((response) => response.json())
     .then((response) => {

@@ -24,7 +24,7 @@ export default function Index() {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [matchingWords, setMatchingWords] = useState([])
+  const [matchingWords, setMatchingWords] = useState<string[]>([])
   const [randomWord, setRandomWord] = useState('')
 
   useEffect(() => {
@@ -59,17 +59,19 @@ export default function Index() {
     setSearchTerm(searchTerm)
 
     if (searchTerm.length > 2) {
-      const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${api_key}`
+      // not sure why, but getWord from dictionary.server.ts doesn't work here, says it is not a function even though the import looks correct
+      const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=42bce219-5d4d-4186-8ab7-f8389ef2e3d0`
       const response = await fetch(url)
       const data = await response.json()
+      console.log(data)
 
-      const matchingWords = data.filter((word) =>
-        word.meta.id.startsWith(searchTerm)
-      )
-
-      setMatchingWords(matchingWords)
-    } else {
-      setMatchingWords([])
+      if (Array.isArray(data) && typeof data[0] === 'string') {
+        setMatchingWords(data)
+        return data
+      } else if (Array.isArray(data) && typeof data[0] !== 'string') {
+        setMatchingWords(data[0].hwi?.hw)
+        return data[0].hwi?.hw
+      }
     }
   }
 
@@ -138,6 +140,22 @@ export default function Index() {
           </div>
         </div>
       </form>
+      {Array.isArray(matchingWords) && matchingWords.length > 2 && (
+        <div className='flex flex-col justify-center items-center text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
+          {matchingWords.map((word, i) => {
+            return (
+              <Link
+                key={word[i]}
+                to={`/words/${word}`}
+                className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
+              >
+                {word}
+              </Link>
+            )
+          })}
+        </div>
+      )}
+
       <div
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
