@@ -1,16 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from '@remix-run/react'
 import generateRandomWord from '~/utils/generateRandomWord'
-
-type Result =
-  | string
-  | string[]
-  | undefined
-  | {
-      hwi?: {
-        hw?: string
-      }
-    }
+import Autocomplete from '~/components/Autocomplete'
 
 export default function Index() {
   const [font, setFont] = useState('sans-serif')
@@ -19,7 +10,6 @@ export default function Index() {
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
   const [randomWord, setRandomWord] = useState('')
-  const [resultPrevWord, setResultPrevWord] = useState(null)
 
   useEffect(() => {
     const fetchRandomWord = async () => {
@@ -137,49 +127,7 @@ export default function Index() {
           </div>
         </div>
       </form>
-      {Array.isArray(matchingWords) && matchingWords.length > 1 ? (
-        <div className='flex flex-col justify-center items-center text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
-          {matchingWords
-            .map((word: Result, i) => {
-              return (
-                <>
-                  {typeof word === 'string' && (
-                    <Link
-                      key={word[i]}
-                      to={`/words/${word}`}
-                      className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
-                    >
-                      {word}
-                    </Link>
-                  )}
-                  {typeof word === 'object' && (
-                    <Link
-                      key={word.hwi?.hw}
-                      to={`/words/${word.hwi?.hw}`}
-                      className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
-                    >
-                      {word.hwi?.hw}
-                    </Link>
-                  )}
-                </>
-              )
-            })
-            .slice(0, 5)}
-          {typeof matchingWords === 'string' && (
-            <Link
-              to={`/words/${matchingWords}`}
-              className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
-            >
-              {matchingWords}
-            </Link>
-          )}
-          {matchingWords.length > 5 && (
-            <div className='text-sm text-gray'>
-              {matchingWords.length - 5} more results
-            </div>
-          )}
-        </div>
-      ) : null}
+      <Autocomplete matchingWords={matchingWords} />
 
       <div
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
