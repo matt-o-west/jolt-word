@@ -140,21 +140,23 @@ export default function Index() {
           </div>
         </div>
       </form>
-      {Array.isArray(matchingWords) && matchingWords.length > 2 && (
+      {Array.isArray(matchingWords) && matchingWords.length > 2 ? (
         <div className='flex flex-col justify-center items-center text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
-          {matchingWords.map((word, i) => {
-            return (
-              <Link
-                key={word[i]}
-                to={`/words/${word}`}
-                className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
-              >
-                {word}
-              </Link>
-            )
-          })}
+          {matchingWords
+            .map((word, i) => {
+              return (
+                <Link
+                  key={word[i]}
+                  to={`/words/${word}`}
+                  className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
+                >
+                  {word}
+                </Link>
+              )
+            })
+            .slice(0, 5)}
         </div>
-      )}
+      ) : null}
 
       <div
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
