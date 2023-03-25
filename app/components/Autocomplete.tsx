@@ -28,10 +28,16 @@ const Autocomplete = ({ matchingWords }) => {
         {matchingWords
           .map((word, i) => {
             // Check if current word is different from previous word
-            const prevWord = i > 0 ? matchingWords[i - 1] : null
-            const prevWordText =
+            const prevWords = matchingWords.slice(0, i)
+            const prevWordTexts = prevWords.map((prevWord) =>
               typeof prevWord === 'string' ? prevWord : prevWord?.hwi?.hw
-            if (typeof word === 'string' && word !== prevWordText) {
+            )
+            const isDuplicate =
+              typeof word === 'string'
+                ? prevWordTexts.includes(word)
+                : prevWordTexts.includes(word?.hwi?.hw)
+
+            if (typeof word === 'string' && !isDuplicate) {
               return (
                 <Link
                   key={word}
@@ -43,15 +49,16 @@ const Autocomplete = ({ matchingWords }) => {
               )
             } else if (
               typeof word === 'object' &&
-              word.hwi?.hw !== prevWordText
+              word.hwi?.hw &&
+              !isDuplicate
             ) {
               return (
                 <Link
                   key={word.meta?.uuid}
-                  to={`/words/${word.meta?.id}`}
+                  to={`/words/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
                   className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
                 >
-                  {word.meta?.id}
+                  {word.meta?.id?.replace(/:[^:]*$/, '')}
                 </Link>
               )
             } else {
