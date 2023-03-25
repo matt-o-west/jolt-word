@@ -41,7 +41,7 @@ const Autocomplete = ({ matchingWords }) => {
               return (
                 <Link
                   key={word}
-                  to={`/words/${word}`}
+                  to={`/${word}`}
                   className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
                 >
                   {word}
@@ -55,7 +55,7 @@ const Autocomplete = ({ matchingWords }) => {
               return (
                 <Link
                   key={word.meta?.uuid}
-                  to={`/words/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
+                  to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
                   className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}

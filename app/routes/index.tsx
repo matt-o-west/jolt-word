@@ -19,20 +19,20 @@ export default function Index() {
   return (
     <>
       <Nav />
-      <div
+      <main
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         Hey wordsmith, here's your word for today{' '}
         <span className='text-4xl'>🫴</span>{' '}
         {(
           <Link
-            to='/words/$word'
+            to={`/${randomWord}`}
             className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
           >
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-      </div>
+      </main>
     </>
   )
 }
