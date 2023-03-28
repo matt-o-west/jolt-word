@@ -13,6 +13,7 @@ module.exports = {
         'tertiary.gray': '#F4F4F4',
         red: '#FF5252',
         purple: '#A445ED',
+        'light.purple': '#E8D0FB',
         background: '#F2F2F2',
       },
       fontFamily: {

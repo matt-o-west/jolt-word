@@ -8,11 +8,6 @@ const Nav = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
 
-  const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(searchTerm) // here's the form submit function, can you add code needed to make it work in the context of this route file?
-  }
-
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -24,13 +19,13 @@ const Nav = () => {
       const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=42bce219-5d4d-4186-8ab7-f8389ef2e3d0`
       const response = await fetch(url)
       const data = await response.json()
-      console.log(data)
+      //console.log(data)
 
       if (Array.isArray(data) && typeof data[0] === 'string') {
         setMatchingWords(data)
         return data
       } else if (Array.isArray(data) && typeof data[0] !== 'string') {
-        console.log(data[0].hwi?.hw)
+        //console.log(data[0].hwi?.hw)
         setMatchingWords(data)
         return [data[0].hwi?.hw]
       }
@@ -81,10 +76,7 @@ const Nav = () => {
           {userButton}
         </div>
       </nav>
-      <form
-        onSubmit={handleSearchSubmit}
-        className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'
-      >
+      <form className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
         <div className='flex justify-center rounded-lg bg-tertiary.gray mx-4'>
           <input
             className='flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple'
