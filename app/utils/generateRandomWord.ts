@@ -1,3 +1,5 @@
+// remove below client-side code, replace with loaders to server-side code
+
 const options = {
   method: 'GET',
   headers: {

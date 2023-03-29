@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ol {
+    list-style: none;
+    list-style-type: disc;
+  }
+  li::marker {
+    color: #a445ed;
+  }
+  p {
+    font-size: 1.2rem;
+  }
+}
+
 .select {
   -webkit-appearance: none;
   -moz-appearance: none;

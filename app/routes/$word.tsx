@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom'
 import { useContext } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
+import Meaning from '~/components/Meaning'
 import { useLoaderData } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 
-interface Definition {
+export interface Definition {
   date: string
   fl: string
   meta: {
@@ -33,7 +34,7 @@ interface Definition {
   }[]
 }
 
-type DefinitionType = Definition[] | [Definition] | undefined
+export type DefinitionType = Definition[] | [Definition] | undefined
 
 export const loader = async ({ params }) => {
   const word = await getWord(params.word)
@@ -44,8 +45,10 @@ const Word = () => {
   const { font, theme } = useContext(Context)
   const { word } = useParams()
   const data = useLoaderData<DefinitionType>()
+  const meaningOne = data[0]
+  const meaningTwo = data[1]
 
-  console.log(data)
+  console.log(data[0])
 
   if (!data) {
     return <div>Sorry, could not find data for {word}</div>
@@ -55,25 +58,14 @@ const Word = () => {
     <>
       <Nav />
       <main
-        className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='text-4xl font-bold'>{word}</h1>
         <p className='text-2xl'>{data[0]?.hwi?.prs?.[0]?.mw ?? ''}</p>
         <button className='text-2xl' aria-label='play button'>
           <img src='./images/icon-play.svg' alt='play icon' />
         </button>
-        <p className='text-2xl'>{data[0]?.fl}</p>
-        <ol>
-          <li>
-            <p className='text-2xl'>{data[0]?.shortdef?.[0]}</p>
-          </li>
-          <li>
-            <p className='text-2xl'>{data[0]?.shortdef?.[1]}</p>
-          </li>
-          <li>
-            <p className='text-2xl'>{data[0]?.shortdef?.[2]}</p>
-          </li>
-        </ol>
+        <Meaning meaning={meaningOne} />
         {data[1] && (
           <>
             <p className='text-2xl'>{data[1]?.fl}</p>
@@ -83,9 +75,6 @@ const Word = () => {
               </li>
               <li>
                 <p className='text-2xl'>{data[1]?.shortdef?.[1]}</p>
-              </li>
-              <li>
-                <p className='text-2xl'>{data[1]?.shortdef?.[2]}</p>
               </li>
             </ol>
           </>
