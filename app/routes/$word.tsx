@@ -32,6 +32,10 @@ export interface Definition {
   def: {
     sseq: string[]
   }[]
+  syns?: {
+    pl: string
+    pt: string[][]
+  }
 }
 
 export type DefinitionType = Definition[] | [Definition] | undefined
@@ -43,12 +47,13 @@ export const loader = async ({ params }) => {
 
 const Word = () => {
   const { font, theme } = useContext(Context)
+
   const { word } = useParams()
   const data = useLoaderData<DefinitionType>()
-  const meaningOne = data[0]
-  const meaningTwo = data[1]
+  const meaningOne: Definition = data[0]
+  const meaningTwo: Definition = data[1]
 
-  console.log(data[0])
+  console.log(data)
 
   if (!data) {
     return <div>Sorry, could not find data for {word}</div>
