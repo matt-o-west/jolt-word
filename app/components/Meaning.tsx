@@ -1,7 +1,7 @@
 import React from 'react'
 import type { DefinitionType } from '~/routes/$word'
 import type { Definition } from '~/routes/$word'
-import formatText from '~/utils/formatText'
+import replaceTokens from '~/utils/replaceTokens'
 import { Link } from '@remix-run/react'
 interface Props {
   meaning: Definition
@@ -13,26 +13,44 @@ type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning }: Props) => {
   const checkSynonyms = (meaning: Definition) => {
-    const synonyms: SynonymType = meaning?.syns[0]?.pt
+    const synonyms: SynonymType = meaning?.syns?.[0]?.pt
+
+    if (!synonyms) {
+      return null
+    }
     console.log(synonyms)
     if (synonyms) {
       console.log(synonyms)
-      return synonyms
+      const formattedText = synonyms
         .slice(0, 4)
         .filter((arr) => arr[0] === 'text')
         .map((synonym, i) => {
-          console.log(formatText(synonym[1]))
-          return (
-            <div key={i} className='text-lowercase'>
-              {formatText(synonym[1])}
-            </div>
-          )
+          return replaceTokens(synonym[1]).map((word, i) => {
+            if (typeof word === 'string') {
+              return (
+                <span className='text-lowercase' key={i}>
+                  {word}
+                </span>
+              )
+            }
+
+            return (
+              <Link
+                to={`/${word.props.children}`}
+                className='text-lowercase link'
+                key={i}
+              >
+                {word.props.children}
+              </Link>
+            )
+          })
         })
+      // join the strings with a space
+
+      return <span>{formattedText}</span>
     }
     return null
   }
-
-  console.log(meaning)
 
   return (
     <div>
