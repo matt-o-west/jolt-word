@@ -58,16 +58,45 @@ const Meaning = ({ meaning }: Props) => {
     if (!words) return null // handle empty words array
 
     const lastWord = words[words.length - 1]
-    const colon = words[words.length - 2] === ':'
+    const colonOneWord = words[words.length - 2] === ':'
+
+    const secondLastWord = words[words.length - 2]
+    const colonTwoWords = words[words.length - 3] === ':'
+
+    const removeCommaFromLink = (word: string) => {
+      if (word[word.length - 1] === ',') {
+        return word.slice(0, word.length - 1)
+      }
+      return word
+    }
 
     const parsedWords = words.map((word, i) => {
-      if (colon && i === words.length - 1) {
+      if (colonOneWord && i === words.length - 1) {
         return (
           <Link to={`/${lastWord}`} className='link' key={i}>
-            {word}
+            {lastWord}
           </Link>
         )
+      } else if (colonTwoWords && i === words.length - 2) {
+        return (
+          <>
+            <Link
+              to={`/${removeCommaFromLink(secondLastWord)}`}
+              className='link'
+              key={i}
+            >
+              {removeCommaFromLink(secondLastWord)}
+            </Link>
+            <span>, </span>
+            <Link to={`/${lastWord}`} className='link' key={i}>
+              {lastWord}
+            </Link>
+          </>
+        )
       } else {
+        if (colonTwoWords && i === words.length - 1) {
+          return null
+        }
         return <span key={i}>{word} </span>
       }
     })
