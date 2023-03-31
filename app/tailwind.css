@@ -38,3 +38,10 @@
   padding-right: 2rem; /* adjust the padding to make room for the SVG */
   z-index: 1;
 }
+
+.synonyms {
+  background: #f7f7f7;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+}

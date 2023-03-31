@@ -52,6 +52,7 @@ const Word = () => {
   const data = useLoaderData<DefinitionType>()
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
+  const meaningThree: Definition = data[2]
 
   console.log(data)
 
@@ -70,20 +71,11 @@ const Word = () => {
         <button className='text-2xl' aria-label='play button'>
           <img src='./images/icon-play.svg' alt='play icon' />
         </button>
-        <Meaning meaning={meaningOne} />
-        {data[1] && (
-          <>
-            <p className='text-2xl'>{data[1]?.fl}</p>
-            <ol>
-              <li>
-                <p className='text-2xl'>{data[1]?.shortdef?.[0]}</p>
-              </li>
-              <li>
-                <p className='text-2xl'>{data[1]?.shortdef?.[1]}</p>
-              </li>
-            </ol>
-          </>
-        )}
+        <div className='justify-start'>
+          <Meaning meaning={meaningOne} />
+          <Meaning meaning={meaningTwo} />
+          {meaningThree && <Meaning meaning={meaningThree} />}
+        </div>
       </main>
     </>
   )

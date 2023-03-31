@@ -12,13 +12,14 @@ type Synonym = string[][] | undefined
 type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning }: Props) => {
-  const checkSynonyms = (meaning: Definition) => {
-    const synonyms: SynonymType = meaning?.syns?.[0]?.pt
+  const synonyms: SynonymType = meaning?.syns?.[0]?.pt
 
+  // check if there are synonyms and format their tokens if so
+  const checkSynonyms = (meaning: Definition) => {
     if (!synonyms) {
       return null
     }
-    console.log(synonyms)
+
     if (synonyms) {
       console.log(synonyms)
       const formattedText = synonyms
@@ -52,18 +53,60 @@ const Meaning = ({ meaning }: Props) => {
     return null
   }
 
+  const checkLinks = (def: string) => {
+    const words = def.split(' ')
+    const lastWord = words[words.length - 1]
+    const colon = words[words.length - 2] === ':'
+    console.log(lastWord)
+    const parsedWords = words.map((word, i) => {
+      if (colon && i === words.length - 1) {
+        return (
+          <Link to={`/${lastWord}`} className='link' key={i}>
+            {word}
+          </Link>
+        )
+      } else {
+        return word
+      }
+    })
+
+    const returnedString = parsedWords
+      .map((word, i) => {
+        if (typeof word === 'string') {
+          return word
+        }
+        console.log(word)
+        return word
+      })
+      .join(' ')
+
+    return <>{returnedString}</>
+  }
+
+  // check if shortdef arrays and format their children if they exist
+  const checkShortdef = (meaning: Definition) => {
+    const def = meaning?.shortdef?.[0]
+    if (Array.isArray(meaning?.shortdef)) {
+      return def
+    }
+    return null
+  }
+
   return (
-    <div>
-      <p>{meaning?.fl}</p>
-      <ol>
+    <div className='mt-6'>
+      <span className='italic font-sans-serif text-xl'>{meaning?.fl}</span>
+      <div className='border border-b-2' />
+      <ol className='mt-2'>
         <li>
-          <p>{meaning?.shortdef?.[0]}</p>
+          <p>{checkLinks(meaning?.shortdef?.[0])}</p>
         </li>
-        <li>
-          <p>{meaning?.shortdef?.[1]}</p>
-        </li>
+        {meaning?.shortdef?.[1] && (
+          <li>
+            <p>{checkLinks(meaning?.shortdef?.[1])}</p>
+          </li>
+        )}
       </ol>
-      {checkSynonyms(meaning)}
+      {synonyms && <div className='synonyms'>{checkSynonyms(meaning)}</div>}
     </div>
   )
 }
