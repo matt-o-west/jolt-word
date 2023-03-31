@@ -53,10 +53,25 @@ const Word = () => {
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
   const meaningThree: Definition = data[2]
-  const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.ref?.split('/')[2]
-  const baseFilename = data[0]?.hwi?.prs?.[0]?.sound?.ref?.split('/')[3]
+  const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.audio
 
-  const audioReference = `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subDirectory}/${baseFilename}.mp3`
+  const checkSubdirectory = (subDirectory: string) => {
+    if (subDirectory === 'bix') {
+      return 'bix'
+    }
+    if (subDirectory === 'gg') {
+      return 'gg'
+    }
+    if (subDirectory[0].match(/^[^\w\s]+/)) {
+      return 'number'
+    }
+
+    return subDirectory?.slice(0, 1)
+  }
+
+  const audioReference = `https://media.merriam-webster.com/audio/prons/en/us/mp3/${checkSubdirectory(
+    subDirectory
+  )}/${subDirectory}.mp3`
 
   const handleClick = () => {
     try {

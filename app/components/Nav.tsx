@@ -51,7 +51,6 @@ const Nav = () => {
     </button>
   )
 
-  console.log('matchingWords:', matchingWords)
   return (
     <>
       <nav

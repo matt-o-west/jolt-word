@@ -13,6 +13,7 @@ type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning }: Props) => {
   const synonyms: SynonymType = meaning?.syns?.[0]?.pt
+  console.log(meaning)
 
   // check if there are synonyms and format their tokens if so
   const checkSynonyms = (meaning: Definition) => {
