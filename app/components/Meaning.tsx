@@ -54,10 +54,12 @@ const Meaning = ({ meaning }: Props) => {
   }
 
   const checkLinks = (def: string) => {
-    const words = def.split(' ')
+    const words = def?.split(' ')
+    if (!words) return null // handle empty words array
+
     const lastWord = words[words.length - 1]
     const colon = words[words.length - 2] === ':'
-    console.log(lastWord)
+
     const parsedWords = words.map((word, i) => {
       if (colon && i === words.length - 1) {
         return (
@@ -66,21 +68,11 @@ const Meaning = ({ meaning }: Props) => {
           </Link>
         )
       } else {
-        return word
+        return <span key={i}>{word} </span>
       }
     })
 
-    const returnedString = parsedWords
-      .map((word, i) => {
-        if (typeof word === 'string') {
-          return word
-        }
-        console.log(word)
-        return word
-      })
-      .join(' ')
-
-    return <>{returnedString}</>
+    return <>{parsedWords}</>
   }
 
   // check if shortdef arrays and format their children if they exist

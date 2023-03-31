@@ -73,7 +73,7 @@ const Word = () => {
         </button>
         <div className='justify-start'>
           <Meaning meaning={meaningOne} />
-          <Meaning meaning={meaningTwo} />
+          {meaningTwo && <Meaning meaning={meaningTwo} />}
           {meaningThree && <Meaning meaning={meaningThree} />}
         </div>
       </main>
