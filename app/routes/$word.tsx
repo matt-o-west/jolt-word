@@ -53,8 +53,19 @@ const Word = () => {
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
   const meaningThree: Definition = data[2]
+  const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.ref?.split('/')[2]
+  const baseFilename = data[0]?.hwi?.prs?.[0]?.sound?.ref?.split('/')[3]
 
-  console.log(data)
+  const audioReference = `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subDirectory}/${baseFilename}.mp3`
+
+  const handleClick = () => {
+    try {
+      const audio = new Audio(audioReference)
+      audio.play()
+    } catch (error) {
+      console.log('Error playing audio:', error)
+    }
+  }
 
   if (!data) {
     return <div>Sorry, could not find data for {word}</div>
@@ -66,12 +77,27 @@ const Word = () => {
       <main
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <h1 className='text-4xl font-bold'>{word}</h1>
-        <p className='text-2xl'>{data[0]?.hwi?.prs?.[0]?.mw ?? ''}</p>
-        <button className='text-2xl' aria-label='play button'>
-          <img src='./images/icon-play.svg' alt='play icon' />
-        </button>
-        <div className='justify-start'>
+        <div className='grid grid-flow-row grid-rows-2 grid-cols-2 w-11/12 justify-between'>
+          <h1 className='self-center text-4xl font-bold'>{word}</h1>
+          <button
+            className='justify-self-end'
+            aria-label='play button'
+            onClick={handleClick}
+          >
+            <img
+              src='./images/icon-play.svg'
+              alt='play icon'
+              className='w-10/12'
+            />
+          </button>
+          <p className='flex justify-start text-2xl'>
+            <span className='text-purple'>
+              /{data[0]?.hwi?.prs?.[0]?.mw ?? ''}/
+            </span>
+          </p>
+        </div>
+
+        <div className='mx-4 justify-start min-w-[90%]'>
           <Meaning meaning={meaningOne} />
           {meaningTwo && <Meaning meaning={meaningTwo} />}
           {meaningThree && <Meaning meaning={meaningThree} />}
