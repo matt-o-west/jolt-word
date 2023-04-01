@@ -57,15 +57,21 @@ const replaceTokens = (text: string) => {
   const matrixTokens = reactStringReplace(
     superscriptTokens,
     /\{ma\}(.*?)\{\/ma\}/g,
-    (_, i) => <span key={i}></span>
+    (match, i) => <span key={i}></span>
   )
 
   const linkTokens = reactStringReplace(
     matrixTokens,
-    /\{et_link\|([^:]+):(\d+)\|([^:]+):(\d+)\}/g,
-    (match, i) => {
-      return <span key={i}></span>
-    }
+    /\{et_link\|([^:]+)\:\d+\|[^:]+\:\d+\}/g,
+    (match, i) => (
+      <Link
+        to={`/${match.split(':')[0]}`}
+        className='text-lowercase link'
+        key={i}
+      >
+        {match.split(':')[0]}
+      </Link>
+    )
   )
 
   return linkTokens

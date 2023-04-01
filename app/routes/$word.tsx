@@ -55,8 +55,12 @@ const Word = () => {
   const meaningTwo: Definition = data[1]
   const meaningThree: Definition = data[2]
   const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
-  const etymology = data[0]?.et[0][1] // etymology
-  console.log(data[0]?.et[0][1])
+  // etymology
+  //console.log(data[0]?.et[0][1])
+  const etymology =
+    data.length > 0 && data[0].et && data[0].et.length > 0
+      ? data[0].et[0][1]
+      : ''
 
   const checkSubdirectory = (subDirectory: string) => {
     if (subDirectory === 'bix') {
@@ -89,6 +93,8 @@ const Word = () => {
     return <div>Sorry, could not find data for {word}</div>
   }
 
+  console.log(replaceTokens(etymology), etymology)
+
   return (
     <>
       <Nav />
@@ -120,9 +126,12 @@ const Word = () => {
           {meaningTwo && <Meaning meaning={meaningTwo} />}
           {meaningThree && <Meaning meaning={meaningThree} />}
         </div>
-        <span className='text-primary.gray text-sm text-end font-light bg-tertiary.gray rounded-lg self-end mt-6 p-2 pr-3 w-10/12'>
-          {etymology && replaceTokens(etymology)}
-        </span>
+
+        {etymology && (
+          <span className='text-primary.gray text-sm text-end font-light bg-tertiary.gray rounded-lg self-end mt-6 p-2 pr-3 w-10/12'>
+            {replaceTokens(etymology)}
+          </span>
+        )}
       </main>
     </>
   )
