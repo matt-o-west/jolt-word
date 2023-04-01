@@ -6,6 +6,7 @@ import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import { useLoaderData } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
+import replaceTokens from '~/utils/replaceTokens'
 
 export interface Definition {
   date: string
@@ -47,13 +48,15 @@ export const loader = async ({ params }) => {
 
 const Word = () => {
   const { font, theme } = useContext(Context)
-
   const { word } = useParams()
   const data = useLoaderData<DefinitionType>()
+
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
   const meaningThree: Definition = data[2]
-  const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.audio
+  const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
+  const etymology = data[0]?.et[0][1] // etymology
+  console.log(data[0]?.et[0][1])
 
   const checkSubdirectory = (subDirectory: string) => {
     if (subDirectory === 'bix') {
@@ -117,6 +120,9 @@ const Word = () => {
           {meaningTwo && <Meaning meaning={meaningTwo} />}
           {meaningThree && <Meaning meaning={meaningThree} />}
         </div>
+        <span className='text-primary.gray text-sm text-end font-light bg-tertiary.gray rounded-lg mt-6 ml-4 p-2 pr-3 w-10/12'>
+          {replaceTokens(etymology)}
+        </span>
       </main>
     </>
   )
