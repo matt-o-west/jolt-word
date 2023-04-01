@@ -39,7 +39,7 @@ export interface Definition {
   }
 }
 
-export type DefinitionType = Definition[] | [Definition] | undefined
+export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
 export const loader = async ({ params }) => {
   const word = await getWord(params.word)
@@ -47,9 +47,9 @@ export const loader = async ({ params }) => {
 }
 
 const Word = () => {
-  const { font, theme } = useContext(Context)
   const { word } = useParams()
   const data = useLoaderData<DefinitionType>()
+  const { theme } = useContext(Context)
 
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
@@ -93,7 +93,7 @@ const Word = () => {
     <>
       <Nav />
       <main
-        className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <div className='grid grid-flow-row grid-rows-2 grid-cols-2 w-11/12 justify-between'>
           <h1 className='self-center text-4xl font-bold'>{word}</h1>
@@ -120,8 +120,8 @@ const Word = () => {
           {meaningTwo && <Meaning meaning={meaningTwo} />}
           {meaningThree && <Meaning meaning={meaningThree} />}
         </div>
-        <span className='text-primary.gray text-sm text-end font-light bg-tertiary.gray rounded-lg mt-6 ml-4 p-2 pr-3 w-10/12'>
-          {replaceTokens(etymology)}
+        <span className='text-primary.gray text-sm text-end font-light bg-tertiary.gray rounded-lg self-end mt-6 p-2 pr-3 w-10/12'>
+          {etymology && replaceTokens(etymology)}
         </span>
       </main>
     </>

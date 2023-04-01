@@ -56,7 +56,7 @@ const Autocomplete = ({ matchingWords }) => {
                 <Link
                   key={word.meta?.uuid}
                   to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
-                  className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
+                  className='text-lg font-bold text-purple transition-all duration-250 hover:scale-110 '
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
                 </Link>

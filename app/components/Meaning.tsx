@@ -117,7 +117,7 @@ const Meaning = ({ meaning }: Props) => {
     <div className='mt-6'>
       <span className='italic font-sans-serif text-xl'>{meaning?.fl}</span>
       <div className='border border-b-2' />
-      <ol className='mt-2'>
+      <ol className='mt-4'>
         <li>
           <p>{checkLinks(meaning?.shortdef?.[0])}</p>
         </li>
