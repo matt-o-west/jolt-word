@@ -24,6 +24,7 @@ export const links: LinksFunction = () => [
 interface ContextType {
   font: string
   theme: string
+  featureTheme: string
   isLoggedIn: boolean
   setFont: (font: string) => void
   setTheme: (theme: string) => void
@@ -33,6 +34,7 @@ interface ContextType {
 export const Context = createContext<ContextType>({
   font: 'sans-serif',
   theme: 'light',
+  featureTheme: 'feature-light',
   isLoggedIn: false,
   setFont: () => {},
   setTheme: () => {},
@@ -42,6 +44,7 @@ export const Context = createContext<ContextType>({
 export default function App() {
   const [font, setFont] = useState('sans-serif')
   const [theme, setTheme] = useState('light')
+  const [featureTheme, setFeatureTheme] = useState('feature-light')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const updateFont = (newFont: string) => {
@@ -50,6 +53,9 @@ export default function App() {
 
   const toggleTheme = (newTheme: string) => {
     setTheme(newTheme === 'light' ? 'light' : 'dark')
+    setFeatureTheme(
+      newTheme === 'feature-light' ? 'feature-dark' : 'feature-light'
+    )
   }
 
   const handleLogin = () => {
@@ -57,7 +63,7 @@ export default function App() {
   }
 
   return (
-    <html lang='en'>
+    <html lang='en' className={`font-${font} ${theme}`}>
       <head>
         <Meta />
         <Links />
@@ -67,6 +73,7 @@ export default function App() {
           value={{
             font,
             theme,
+            featureTheme,
             isLoggedIn,
             setFont: updateFont,
             setTheme: toggleTheme,

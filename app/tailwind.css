@@ -15,6 +15,16 @@
   }
 }
 
+.dark {
+  color: #fff;
+  background: #050505;
+}
+
+.light {
+  color: #050505;
+  background: #fff;
+}
+
 .link {
   color: #a445ed;
   text-decoration: none;

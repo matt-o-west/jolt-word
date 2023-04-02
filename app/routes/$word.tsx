@@ -69,11 +69,11 @@ const Word = () => {
     if (subDirectory === 'gg') {
       return 'gg'
     }
-    if (subDirectory[0].match(/^[^\w\s]+/)) {
+    if (subDirectory?.[0]?.match(/^[^\w\s]+/)) {
       return 'number'
     }
 
-    return subDirectory?.slice(0, 1)
+    return subDirectory?.slice(0, 1) || null
   }
 
   const audioReference = `https://media.merriam-webster.com/audio/prons/en/us/mp3/${checkSubdirectory(
@@ -103,21 +103,25 @@ const Word = () => {
       >
         <div className='grid grid-flow-row grid-rows-2 grid-cols-2 w-11/12 justify-between'>
           <h1 className='self-center text-4xl font-bold'>{word}</h1>
-          <button
-            className='justify-self-end'
-            aria-label='play button'
-            onClick={handleClick}
-          >
-            <img
-              src='./images/icon-play.svg'
-              alt='play icon'
-              className='w-10/12'
-            />
-          </button>
+          {subDirectory && (
+            <button
+              className='justify-self-end'
+              aria-label='play button'
+              onClick={handleClick}
+            >
+              <img
+                src='./images/icon-play.svg'
+                alt='play icon'
+                className='w-10/12'
+              />
+            </button>
+          )}
           <p className='flex justify-start text-2xl'>
-            <span className='text-purple'>
-              /{data[0]?.hwi?.prs?.[0]?.mw ?? ''}/
-            </span>
+            {data[0]?.hwi?.prs?.[0]?.mw && (
+              <span className='text-purple'>
+                /{data[0]?.hwi?.prs?.[0]?.mw ?? ''}/
+              </span>
+            )}
           </p>
         </div>
 
