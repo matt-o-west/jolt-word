@@ -62,7 +62,7 @@ const replaceTokens = (text: string) => {
 
   const linkTokens = reactStringReplace(
     matrixTokens,
-    /\{et_link\|([^:]+)\:\d+\|[^:]+\:\d+\}/g,
+    /\{et_link\|([^:]+):\d+\|[^:]+:\d+\}/g,
     (match, i) => (
       <Link
         to={`/${match.split(':')[0]}`}
@@ -74,7 +74,21 @@ const replaceTokens = (text: string) => {
     )
   )
 
-  return linkTokens
+  const crossRefTokens = reactStringReplace(
+    linkTokens,
+    /\{dx_ety\}see\s+\{dxt\|([^|]+)\|\|\}\{\/dx_ety\}/g,
+    (match, i) => (
+      <>
+        {' '}
+        see
+        <Link to={`/${match}`} className='text-lowercase link' key={i}>
+          {match}
+        </Link>
+      </>
+    )
+  )
+
+  return crossRefTokens
 }
 
 export default replaceTokens
