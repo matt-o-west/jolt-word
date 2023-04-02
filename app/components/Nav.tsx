@@ -3,7 +3,7 @@ import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
 
 const Nav = () => {
-  const { font, theme, isLoggedIn, setFont, setTheme, setLogin } =
+  const { font, theme, featureTheme, isLoggedIn, setFont, setTheme, setLogin } =
     useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
@@ -62,7 +62,7 @@ const Nav = () => {
           {/* put this in a Form component */}
           <div className='flex flex-row border-r-2'>
             <select
-              className='p-0.5 mr-2 pr-2 border-none outline-none select'
+              className={`${theme} p-0.5 mr-2 pr-2 border-none outline-none select`}
               aria-label='font selector'
               onChange={setFont}
             >
@@ -76,9 +76,11 @@ const Nav = () => {
         </div>
       </nav>
       <form className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
-        <div className='flex justify-center rounded-lg bg-tertiary.gray mx-4'>
+        <div
+          className={`${featureTheme} flex justify-center rounded-lg bg-tertiary.gray mx-4`}
+        >
           <input
-            className='flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple'
+            className={`${featureTheme} flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple`}
             placeholder='Search Dictionary'
             value={searchTerm}
             onChange={handleInputChange}

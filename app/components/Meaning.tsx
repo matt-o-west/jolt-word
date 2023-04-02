@@ -3,6 +3,8 @@ import type { DefinitionType } from '~/routes/$word'
 import type { Definition } from '~/routes/$word'
 import replaceTokens from '~/utils/replaceTokens'
 import { Link } from '@remix-run/react'
+import { useContext } from 'react'
+import { Context } from '~/root'
 interface Props {
   meaning: Definition
 }
@@ -12,6 +14,9 @@ type Synonym = string[][] | undefined
 type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning }: Props) => {
+  const { featureTheme } = useContext(Context)
+  console.log(featureTheme)
+
   const synonyms: SynonymType = meaning?.syns?.[0]?.pt
 
   // check if there are synonyms and format their tokens if so
@@ -127,7 +132,11 @@ const Meaning = ({ meaning }: Props) => {
           </li>
         )}
       </ol>
-      {synonyms && <div className='synonyms'>{checkSynonyms(meaning)}</div>}
+      {synonyms && (
+        <div className={`synonyms ${featureTheme} font-light`}>
+          {checkSynonyms()}
+        </div>
+      )}
     </div>
   )
 }

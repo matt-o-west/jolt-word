@@ -54,7 +54,7 @@ export default function App() {
   const toggleTheme = (newTheme: string) => {
     setTheme(newTheme === 'light' ? 'light' : 'dark')
     setFeatureTheme(
-      newTheme === 'feature-light' ? 'feature-dark' : 'feature-light'
+      newTheme === 'feature-light' ? 'feature-light' : 'feature-dark'
     )
   }
 

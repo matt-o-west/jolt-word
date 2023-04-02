@@ -49,7 +49,7 @@ export const loader = async ({ params }) => {
 const Word = () => {
   const { word } = useParams()
   const data = useLoaderData<DefinitionType>()
-  const { theme } = useContext(Context)
+  const { theme, featureTheme } = useContext(Context)
 
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
@@ -132,7 +132,9 @@ const Word = () => {
         </div>
 
         {etymology && (
-          <span className='text-primary.gray text-sm text-end font-light bg-tertiary.gray rounded-lg self-end mt-6 p-2 pr-3 w-10/12'>
+          <span
+            className={`${featureTheme} text-sm text-end font-light rounded-lg self-end mt-6 p-2 pr-3 w-10/12`}
+          >
             {replaceTokens(etymology)}
           </span>
         )}

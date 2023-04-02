@@ -25,6 +25,16 @@
   background: #fff;
 }
 
+.feature-light {
+  color: #757575;
+  background: #f7f7f7;
+}
+
+.feature-dark {
+  color: #e9e9e9;
+  background: #3a3a3a;
+}
+
 .link {
   color: #a445ed;
   text-decoration: none;
@@ -50,8 +60,8 @@
 }
 
 .synonyms {
-  background: #f7f7f7;
   padding: 0.5rem;
+  padding-left: 1rem;
   border-radius: 0.5rem;
   margin: 0.5rem 0;
 }
