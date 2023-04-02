@@ -51,10 +51,10 @@ export default function App() {
     setFont(newFont)
   }
 
-  const toggleTheme = (newTheme: string) => {
-    setTheme(newTheme === 'light' ? 'light' : 'dark')
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
     setFeatureTheme(
-      newTheme === 'feature-light' ? 'feature-light' : 'feature-dark'
+      featureTheme === 'feature-light' ? 'feature-dark' : 'feature-light'
     )
   }
 

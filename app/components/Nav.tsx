@@ -8,6 +8,16 @@ const Nav = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
 
+  const handleToggleBackground = () => {
+    if (theme === 'light') {
+      return 'bg-white'
+    } else {
+      return 'bg-#A445ED'
+    }
+  }
+
+  const toggleBackground = handleToggleBackground()
+
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -46,9 +56,20 @@ const Nav = () => {
   )
 
   const themeButton = (
-    <button className='rounded-md px-2 py-1 ml-2' onClick={setTheme}>
-      {theme === 'light' ? 'Light Mode' : 'Dark Mode'}
-    </button>
+    <label className='relative inline-flex items-center cursor-pointer ml-4'>
+      <input
+        type='checkbox'
+        value=''
+        className={`sr-only peer bg-${toggleBackground}`}
+        onChange={setTheme}
+      />
+      <div
+        className={`w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-blue-300 dark:peer-focus:${toggleBackground} rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:${toggleBackground}`}
+      />
+      <span className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>
+        <img src='images/icon-moon.svg' alt='moon' className='h-4 w-4' />
+      </span>
+    </label>
   )
 
   return (
