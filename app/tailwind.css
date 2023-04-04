@@ -35,6 +35,24 @@
   background: #3a3a3a;
 }
 
+.toggle-light {
+  color: #e9e9e9;
+  background: #757575;
+}
+
+.toggle-dark {
+  color: #e9e9e9;
+  background: #a445ed;
+}
+
+.moon-light {
+  fill: #757575;
+}
+
+.moon-dark {
+  fill: #a445ed;
+}
+
 .link {
   color: #a445ed;
   text-decoration: none;

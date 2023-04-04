@@ -3,20 +3,18 @@ import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
 
 const Nav = () => {
-  const { font, theme, featureTheme, isLoggedIn, setFont, setTheme, setLogin } =
-    useContext(Context)
+  const {
+    font,
+    theme,
+    featureTheme,
+    toggleTheme,
+    isLoggedIn,
+    setFont,
+    setTheme,
+    setLogin,
+  } = useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
-
-  const handleToggleBackground = () => {
-    if (theme === 'light') {
-      return 'bg-white'
-    } else {
-      return 'bg-#A445ED'
-    }
-  }
-
-  const toggleBackground = handleToggleBackground()
 
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -60,14 +58,29 @@ const Nav = () => {
       <input
         type='checkbox'
         value=''
-        className={`sr-only peer bg-${toggleBackground}`}
+        className={`sr-only peer`}
         onChange={setTheme}
       />
       <div
-        className={`w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-blue-300 dark:peer-focus:${toggleBackground} rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:${toggleBackground}`}
+        className={`w-11 h-6 ${toggleTheme} peer-focus:outline-none peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600`}
       />
-      <span className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>
-        <img src='images/icon-moon.svg' alt='moon' className='h-4 w-4' />
+      <span className='ml-3'>
+        <svg
+          className={`h-4 w-4`}
+          xmlns='http://www.w3.org/2000/svg'
+          width='22'
+          height='22'
+          viewBox='0 0 22 22'
+        >
+          <path
+            fill='none'
+            stroke={featureTheme === 'feature-dark' ? '#a445ed' : '#757575'}
+            stroke-linecap='round'
+            stroke-linejoin='round'
+            stroke-width='1.5'
+            d='M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z'
+          />
+        </svg>
       </span>
     </label>
   )

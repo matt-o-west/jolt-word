@@ -25,6 +25,7 @@ interface ContextType {
   font: string
   theme: string
   featureTheme: string
+  toggleTheme: string
   isLoggedIn: boolean
   setFont: (font: string) => void
   setTheme: (theme: string) => void
@@ -35,6 +36,7 @@ export const Context = createContext<ContextType>({
   font: 'sans-serif',
   theme: 'light',
   featureTheme: 'feature-light',
+  toggleTheme: 'toggle-light',
   isLoggedIn: false,
   setFont: () => {},
   setTheme: () => {},
@@ -45,6 +47,8 @@ export default function App() {
   const [font, setFont] = useState('sans-serif')
   const [theme, setTheme] = useState('light')
   const [featureTheme, setFeatureTheme] = useState('feature-light')
+
+  const [toggleSwitch, setToggleSwitch] = useState('toggle-light')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const updateFont = (newFont: string) => {
@@ -55,6 +59,9 @@ export default function App() {
     setTheme(theme === 'light' ? 'dark' : 'light')
     setFeatureTheme(
       featureTheme === 'feature-light' ? 'feature-dark' : 'feature-light'
+    )
+    setToggleSwitch(
+      toggleSwitch === 'toggle-light' ? 'toggle-dark' : 'toggle-light'
     )
   }
 
@@ -74,6 +81,7 @@ export default function App() {
             font,
             theme,
             featureTheme,
+            toggleTheme: toggleSwitch,
             isLoggedIn,
             setFont: updateFont,
             setTheme: toggleTheme,
