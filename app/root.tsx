@@ -9,11 +9,12 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 import type { LinksFunction } from '@remix-run/node'
+import type { ChangeEvent } from 'react'
 import stylesheet from '~/tailwind.css'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
-  title: 'New Remix App',
+  title: 'jolt-word',
   viewport: 'width=device-width,initial-scale=1',
 })
 
@@ -47,13 +48,8 @@ export default function App() {
   const [font, setFont] = useState('sans-serif')
   const [theme, setTheme] = useState('light')
   const [featureTheme, setFeatureTheme] = useState('feature-light')
-
   const [toggleSwitch, setToggleSwitch] = useState('toggle-light')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  const updateFont = (newFont: string) => {
-    setFont(newFont)
-  }
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
@@ -65,12 +61,16 @@ export default function App() {
     )
   }
 
+  const toggleFont = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFont(e.target.value)
+  }
+
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn)
   }
 
   return (
-    <html lang='en' className={`font-${font} ${theme}`}>
+    <html lang='en' className={`${font} ${theme}`}>
       <head>
         <Meta />
         <Links />
@@ -83,7 +83,7 @@ export default function App() {
             featureTheme,
             toggleTheme: toggleSwitch,
             isLoggedIn,
-            setFont: updateFont,
+            setFont: toggleFont,
             setTheme: toggleTheme,
             setLogin: handleLogin,
           }}

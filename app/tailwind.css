@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'inconsolata', serif;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/inconsolata/Inconsolata-VariableFont_wdth,wght.ttf')
+    format('ttf');
+}
+
+@font-face {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/inter/Inter-VariableFont_slnt,wght.ttf') format('ttf');
+}
+
+.font-face {
+  font-family: 'Lora', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/lora/Lora-VariableFont_wght.ttf') format('ttf');
+}
+
 @layer base {
   ol {
     list-style: none;
@@ -15,6 +40,7 @@
   }
 }
 
+/* Theme classes */
 .dark {
   color: #fff;
   background: #050505;
@@ -53,6 +79,21 @@
   fill: #a445ed;
 }
 
+/* Font classes */
+
+.serif {
+  font-family: 'Lora', serif;
+}
+
+.sans-serif {
+  font-family: 'Inter', sans-serif;
+}
+
+.mono {
+  font-family: 'Fira Code', monospace;
+}
+
+/* Custom classes */
 .link {
   color: #a445ed;
   text-decoration: none;

@@ -102,7 +102,9 @@ const Word = () => {
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <div className='grid grid-flow-row grid-rows-2 grid-cols-2 w-11/12 justify-between'>
-          <h1 className='self-center text-4xl font-bold'>{word}</h1>
+          <h1 className='self-center text-5xl font-bold tracking-wide'>
+            {word}
+          </h1>
           {subDirectory && (
             <button
               className='justify-self-end'

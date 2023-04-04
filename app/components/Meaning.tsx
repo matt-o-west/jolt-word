@@ -15,7 +15,6 @@ type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning }: Props) => {
   const { featureTheme } = useContext(Context)
-  console.log(featureTheme)
 
   const synonyms: SynonymType = meaning?.syns?.[0]?.pt
 
@@ -109,20 +108,11 @@ const Meaning = ({ meaning }: Props) => {
     return <>{parsedWords}</>
   }
 
-  // check if shortdef arrays and format their children if they exist
-  const checkShortdef = (meaning: Definition) => {
-    const def = meaning?.shortdef?.[0]
-    if (Array.isArray(meaning?.shortdef)) {
-      return def
-    }
-    return null
-  }
-
   return (
     <div className='mt-6'>
       <span className='italic font-sans-serif text-xl'>{meaning?.fl}</span>
       <div className='border border-b-2' />
-      <ol className='mt-4'>
+      <ol className='mt-4 ml-8 text-lg'>
         <li>
           <p>{checkLinks(meaning?.shortdef?.[0])}</p>
         </li>
