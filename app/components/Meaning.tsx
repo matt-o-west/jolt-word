@@ -14,7 +14,7 @@ type Synonym = string[][] | undefined
 type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning }: Props) => {
-  const { featureTheme } = useContext(Context)
+  const { featureTheme, font } = useContext(Context)
 
   const synonyms: SynonymType = meaning?.syns?.[0]?.pt
 
@@ -108,9 +108,20 @@ const Meaning = ({ meaning }: Props) => {
     return <>{parsedWords}</>
   }
 
+  const adjustPartsOfSpeech = () => {
+    if (font === 'serif') {
+      return 'normal'
+    } else if (font === 'sans-serif') {
+      return 'italic'
+    }
+    return 'font-bold'
+  }
+
   return (
     <div className='mt-6'>
-      <span className='italic font-sans-serif text-xl'>{meaning?.fl}</span>
+      <span className={`${adjustPartsOfSpeech()} font-sans-serif text-xl`}>
+        {meaning?.fl}
+      </span>
       <div className='border border-b-2' />
       <ol className='mt-4 ml-8 text-lg'>
         <li>

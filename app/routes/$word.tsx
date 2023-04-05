@@ -135,7 +135,7 @@ const Word = () => {
 
         {etymology && (
           <span
-            className={`${featureTheme} text-sm text-end font-light rounded-lg self-end mt-6 p-2 pr-3 w-10/12`}
+            className={`${featureTheme} text-sm text-end font-light rounded-lg self-end mt-6 p-2 pr-3 pl-4 w-4/5`}
           >
             {replaceTokens(etymology)}
           </span>
