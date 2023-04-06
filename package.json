@@ -28,6 +28,7 @@
     "@types/react-dom": "^18.0.8",
     "autoprefixer": "^10.4.14",
     "concurrently": "^7.6.0",
+    "esbuild-register": "^3.4.2",
     "eslint": "^8.27.0",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
