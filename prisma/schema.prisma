@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model Word {
+  id           Int          @id @default(autoincrement())
+  word         String       @unique
+  votes        Int
+  users        User[]       @relation("UserWords")
+  leaderboard  Leaderboard?
+}
+
+model Leaderboard {
+  id      Int    @id @default(autoincrement())
+  listId  Int     @unique     
+  list    Word   @relation(fields: [listId], references: [id])
+  votes   Int
+}
+
+model Score {
+  id        Int     @id @default(autoincrement())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  score     Int
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  username     String   @unique
+  passwordHash String
+  words        Word[]   @relation("UserWords")
+  scores       Score[]
+}
