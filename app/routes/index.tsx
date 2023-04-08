@@ -3,6 +3,7 @@ import { Link } from '@remix-run/react'
 import { Context } from '~/root'
 import generateRandomWord from '~/utils/generateRandomWord'
 import Nav from '~/components/Nav'
+import LeaderBoard from '~/components/LeaderBoard'
 
 export default function Index() {
   const [randomWord, setRandomWord] = useState('')
@@ -32,6 +33,7 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
+        <LeaderBoard />
       </main>
     </>
   )
