@@ -1,17 +1,17 @@
 import BoltIcon from '@mui/icons-material/Bolt'
 import { useState, useEffect } from 'react'
-import zap from './sound/zap.wav' // Import your sound effect file
+import zap from 'public/sound/zap.wav' // Import your sound effect file
 
 function ClickableIcon() {
   const maxClicks = 5
   const [clickCount, setClickCount] = useState(0)
   const [animationClass, setAnimationClass] = useState('')
-  const [audio] = useState(new Audio(zap))
+  const [audio] = useState('/sound/zap.wav')
 
   useEffect(() => {
     if (clickCount === maxClicks) {
       setAnimationClass('trigger-animation') // CSS class for the animation
-      audio.play()
+      //audio.play()
     }
   }, [clickCount, audio])
 

@@ -21,7 +21,7 @@ model Word {
 
 model Leaderboard {
   id      Int    @id @default(autoincrement())
-  listId  String    @unique     
+  listId  String @unique     
   list    Word   @relation(fields: [listId], references: [id])
   votes   Int
 }

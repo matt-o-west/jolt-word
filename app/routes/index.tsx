@@ -1,13 +1,32 @@
 import { useState, useEffect, useContext } from 'react'
 import { Link } from '@remix-run/react'
 import { Context } from '~/root'
+import { json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 import generateRandomWord from '~/utils/generateRandomWord'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
 
+import { db } from 'prisma/db.server'
+
+export const loader = async () => {
+  const leaderboard = await db.leaderboard.findMany({
+    orderBy: {
+      votes: 'desc',
+    },
+    take: 5,
+    include: {
+      list: true,
+    },
+  })
+
+  return json(leaderboard)
+}
+
 export default function Index() {
   const [randomWord, setRandomWord] = useState('')
   const { font, theme } = useContext(Context)
+  const data = useLoaderData<typeof loader>()
 
   useEffect(() => {
     const fetchRandomWord = async () => {
@@ -33,7 +52,7 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-        <LeaderBoard />
+        <LeaderBoard data={data} />
       </main>
     </>
   )
