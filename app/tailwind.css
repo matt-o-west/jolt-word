@@ -71,14 +71,6 @@
   background: #a445ed;
 }
 
-.moon-light {
-  fill: #757575;
-}
-
-.moon-dark {
-  fill: #a445ed;
-}
-
 /* Font classes */
 
 .serif {
@@ -94,6 +86,7 @@
 }
 
 /* Custom classes */
+
 .link {
   color: #a445ed;
   text-decoration: none;

@@ -1,8 +1,8 @@
 import BoltIcon from '@mui/icons-material/Bolt'
 import { useState, useEffect } from 'react'
-import zap from 'public/sound/zap.wav' // Import your sound effect file
+//import zap from 'public/sound/zap.wav' // Import your sound effect file
 
-function ClickableIcon() {
+function ClickableIcon({ votes }) {
   const maxClicks = 5
   const [clickCount, setClickCount] = useState(0)
   const [animationClass, setAnimationClass] = useState('')
@@ -23,7 +23,7 @@ function ClickableIcon() {
 
   return (
     <div
-      className={`icon ${animationClass}`}
+      className={`icon ${animationClass} justify-self-end`}
       onClick={handleClick}
       style={{
         // Style the fill effect based on the number of clicks
@@ -31,6 +31,7 @@ function ClickableIcon() {
       }}
     >
       <BoltIcon name='bolt' />
+      <span className='relative'>{votes}</span>
     </div>
   )
 }
