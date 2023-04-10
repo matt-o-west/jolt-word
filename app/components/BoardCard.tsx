@@ -23,9 +23,9 @@ const BoardCard = ({ rank, list, votes }: WordProps) => {
 
   return (
     <div
-      className={`flex items-center py-2 px-4 rounded-sm text-2xl ${rankColor} w-full`}
+      className={`flex py-2 px-4 items-center rounded-sm text-2xl ${rankColor} w-full`}
     >
-      <span className='mx-2'>{rank}</span>
+      <span className='font-subhead text-3xl mx-2 mr-6'>{rank}</span>
       <span className='mx-2'>{list.word}</span>
       <ClickableIcon votes={votes} />
     </div>

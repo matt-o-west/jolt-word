@@ -23,7 +23,7 @@ function ClickableIcon({ votes }) {
 
   return (
     <div
-      className={`icon ${animationClass} justify-self-end`}
+      className={`icon ${animationClass} ml-auto relative mb-1`}
       onClick={handleClick}
       style={{
         // Style the fill effect based on the number of clicks
@@ -31,7 +31,7 @@ function ClickableIcon({ votes }) {
       }}
     >
       <BoltIcon name='bolt' />
-      <span className='relative'>{votes}</span>
+      <span className='vote-count'>{votes}</span>
     </div>
   )
 }

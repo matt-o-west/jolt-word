@@ -25,6 +25,7 @@ module.exports = {
         'sans-serif': ['Inter', 'sans-serif'],
         serif: ['Lora', 'serif'],
         mono: ['Inconsolata', 'monospace'],
+        subhead: ['Caveat', 'cursive'],
       },
       fontSize: {
         xs: '.75rem',

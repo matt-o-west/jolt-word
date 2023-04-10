@@ -17,8 +17,10 @@ export type DataProps = {
 const LeaderBoard = ({ data }: DataProps) => {
   return (
     <div>
-      <h1 className='text-2xl font-bold text-center mt-20'>Leaderboard</h1>
-      <div className='flex flex-col items-center min-h-screen py-2 mt-6 text-center sm:py-0'>
+      <h1 className='font-subhead text-3xl font-bold text-center mt-20'>
+        Leaderboard
+      </h1>
+      <div className='flex flex-col items-center text-black min-h-screen py-2 mt-6 text-center sm:py-0'>
         {data &&
           data.map(({ list, votes, id }: LeaderBoardType, index: number) => (
             <BoardCard votes={votes} list={list} rank={index + 1} key={id} />
