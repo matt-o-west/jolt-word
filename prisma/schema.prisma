@@ -13,7 +13,7 @@ datasource db {
 
 model Word {
   id           String          @id @default(uuid())
-  word         String
+  word         String          @unique
   votes        Int
   users        User[]       @relation("UserWords")
   leaderboard  Leaderboard?

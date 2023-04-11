@@ -4,9 +4,12 @@ import { useContext } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
+import ClickableIcon from '~/components/BoltIcon'
 import { useLoaderData } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
+import { json } from '@remix-run/node'
+import { db } from 'prisma/db.server'
 
 export interface Definition {
   date: string
@@ -42,25 +45,48 @@ export interface Definition {
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
 export const loader = async ({ params }) => {
-  const word = await getWord(params.word)
-  return word
+  const word: Definition = await getWord(params.word)
+  const vote = await db.word.findUnique({
+    where: {
+      word: params.word,
+    },
+  })
+  const wordWithVote = { ...word, vote: vote?.votes }
+  return json(wordWithVote)
+}
+
+export const action = async ({ request }) => {
+  const { word } = await request.url.searchParams
+  const updatedVote = await db.word.update({
+    where: {
+      word: word,
+    },
+    data: {
+      votes: {
+        increment: 1,
+      },
+    },
+  })
+
+  return updatedVote ? updatedVote : { status: 404 }
 }
 
 const Word = () => {
   const { word } = useParams()
-  const data = useLoaderData<DefinitionType>()
   const { theme, featureTheme } = useContext(Context)
+  const data = useLoaderData<DefinitionType>()
 
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
   const meaningThree: Definition = data[2]
   const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
-  // etymology
-  //console.log(data[0]?.et[0][1])
+
   const etymology =
-    data.length > 0 && data[0].et && data[0].et.length > 0
+    data.length > 0 && data[0].et[0] && data[0].et[0].length > 0
       ? data[0].et[0][1]
       : ''
+
+  console.log(data.vote)
 
   const checkSubdirectory = (subDirectory: string) => {
     if (subDirectory === 'bix') {
@@ -93,18 +119,19 @@ const Word = () => {
     return <div>Sorry, could not find data for {word}</div>
   }
 
-  console.log(replaceTokens(etymology), etymology)
-
   return (
     <>
       <Nav />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <div className='grid grid-flow-row grid-rows-2 grid-cols-2 w-11/12 justify-between'>
+        <div className='grid grid-flow-row grid-rows-2 grid-cols-3 w-11/12 justify-between'>
           <h1 className='self-center text-5xl font-bold tracking-wide'>
             {word}
           </h1>
+          <div className='self-start mt-4'>
+            <ClickableIcon votes={data.vote} />
+          </div>
           {subDirectory && (
             <button
               className='justify-self-end'

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 //import zap from 'public/sound/zap.wav' // Import your sound effect file
 
 function ClickableIcon({ votes }) {
-  const maxClicks = 5
+  const maxClicks = 10
   const [clickCount, setClickCount] = useState(0)
   const [animationClass, setAnimationClass] = useState('')
   const [audio] = useState('/sound/zap.wav')
@@ -22,8 +22,8 @@ function ClickableIcon({ votes }) {
   }
 
   return (
-    <div
-      className={`icon ${animationClass} ml-auto relative mb-1`}
+    <button
+      className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1`}
       onClick={handleClick}
       style={{
         // Style the fill effect based on the number of clicks
@@ -32,7 +32,7 @@ function ClickableIcon({ votes }) {
     >
       <BoltIcon name='bolt' />
       <span className='vote-count'>{votes}</span>
-    </div>
+    </button>
   )
 }
 

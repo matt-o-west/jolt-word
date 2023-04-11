@@ -1,10 +1,8 @@
-import React from 'react'
 import type { Definition } from '~/routes/$word'
 import replaceTokens from '~/utils/replaceTokens'
 import { Link } from '@remix-run/react'
 import { useContext } from 'react'
 import { Context } from '~/root'
-import { PrismaClient } from '@prisma/client'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import { db } from 'prisma/db.server'
 
@@ -15,14 +13,6 @@ interface Props {
 type Synonym = string[][] | undefined
 
 type SynonymType = Synonym | undefined
-
-export const action = async ({ params }) => {
-  const word = await db.word.findUnique({
-    where: {
-      word: params.word,
-    },
-  })
-}
 
 const Meaning = ({ meaning }: Props) => {
   const { featureTheme, font } = useContext(Context)
