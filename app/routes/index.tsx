@@ -23,6 +23,11 @@ export const loader = async () => {
   return json(leaderboard)
 }
 
+export const action = async () => {
+  //add action
+  return null
+}
+
 export default function Index() {
   const [randomWord, setRandomWord] = useState('')
   const { font, theme } = useContext(Context)

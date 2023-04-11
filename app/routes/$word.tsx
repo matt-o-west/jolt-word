@@ -51,8 +51,8 @@ export const loader = async ({ params }) => {
       word: params.word,
     },
   })
-  const wordWithVote = { ...word, vote: vote?.votes }
-  return json(wordWithVote)
+  //const wordWithVote = { ...word, vote: vote?.votes }
+  return json(word)
 }
 
 export const action = async ({ request }) => {
@@ -75,18 +75,25 @@ const Word = () => {
   const { word } = useParams()
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
+  console.log(data)
+
+  //replace with error boundary
+  if (!data) {
+    return <div>Sorry, could not find data for {word}</div>
+  }
 
   const meaningOne: Definition = data[0]
   const meaningTwo: Definition = data[1]
   const meaningThree: Definition = data[2]
-  const subDirectory = data[0]?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
+  const subDirectory = meaningOne?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
 
   const etymology =
-    data.length > 0 && data[0].et[0] && data[0].et[0].length > 0
-      ? data[0].et[0][1]
+    data.length > 0 &&
+    meaningOne.et &&
+    meaningOne.et.length > 0 &&
+    meaningOne.et[0].length > 0
+      ? meaningOne.et[0][1]
       : ''
-
-  console.log(data.vote)
 
   const checkSubdirectory = (subDirectory: string) => {
     if (subDirectory === 'bix') {
@@ -113,10 +120,6 @@ const Word = () => {
     } catch (error) {
       console.log('Error playing audio:', error)
     }
-  }
-
-  if (!data) {
-    return <div>Sorry, could not find data for {word}</div>
   }
 
   return (
