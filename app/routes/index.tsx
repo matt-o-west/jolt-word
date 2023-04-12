@@ -33,6 +33,8 @@ export default function Index() {
   const { font, theme } = useContext(Context)
   const data = useLoaderData<typeof loader>()
 
+  console.log(data)
+
   useEffect(() => {
     const fetchRandomWord = async () => {
       const word = await generateRandomWord()

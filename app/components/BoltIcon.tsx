@@ -8,6 +8,8 @@ function ClickableIcon({ votes }) {
   const [animationClass, setAnimationClass] = useState('')
   const [audio] = useState('/sound/zap.wav')
 
+  console.log(votes)
+
   useEffect(() => {
     if (clickCount === maxClicks) {
       setAnimationClass('trigger-animation') // CSS class for the animation
