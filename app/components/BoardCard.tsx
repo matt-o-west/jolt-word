@@ -3,7 +3,7 @@ import ClickableIcon from './BoltIcon'
 
 export type WordProps = {
   rank: number
-  list: any
+  word: string
   votes: number
 }
 
@@ -18,7 +18,7 @@ const getRankColor = (rank: number) => {
   return colors[rank - 1]
 }
 
-const BoardCard = ({ rank, list, votes }: WordProps) => {
+const BoardCard = ({ rank, word, votes }: WordProps) => {
   const rankColor = getRankColor(rank)
 
   return (
@@ -26,7 +26,7 @@ const BoardCard = ({ rank, list, votes }: WordProps) => {
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${rankColor} w-full`}
     >
       <span className='font-subhead text-3xl mx-2 mr-6'>{rank}</span>
-      <span className='mx-2'>{list.word}</span>
+      <span className='mx-2'>{word}</span>
       <ClickableIcon votes={votes} />
     </div>
   )

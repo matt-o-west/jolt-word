@@ -8,7 +8,7 @@ import ClickableIcon from '~/components/BoltIcon'
 import { useLoaderData /*useActionData*/, useSubmit } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
-import { json, redirect } from '@remix-run/node'
+import { json } from '@remix-run/node'
 import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import { db } from 'prisma/db.server'
 

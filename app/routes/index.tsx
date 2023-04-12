@@ -3,6 +3,7 @@ import { Link } from '@remix-run/react'
 import { Context } from '~/root'
 import { json } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import type { ActionArgs } from '@remix-run/node'
 import generateRandomWord from '~/utils/generateRandomWord'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
@@ -10,21 +11,54 @@ import LeaderBoard from '~/components/LeaderBoard'
 import { db } from 'prisma/db.server'
 
 export const loader = async () => {
-  const leaderboard = await db.leaderboard.findMany({
+  const leaderboard = await db.word.findMany({
     orderBy: {
       votes: 'desc',
     },
     take: 5,
-    include: {
-      list: true,
-    },
   })
 
   return json(leaderboard)
 }
 
-export const action = async () => {
-  //add action
+export const action = async ({ request }: ActionArgs) => {
+  // Get the request body as a FormData object
+  const formData = await request.formData()
+
+  // Access the word from the request body
+  const word = formData.get('word')
+
+  // Try to find the existing word
+  const existingWord = await db.word.findUnique({
+    where: {
+      word: word,
+    },
+  })
+
+  if (existingWord) {
+    // If the word exists, update its vote count
+    const updatedVote = await db.word.update({
+      where: {
+        word: word,
+      },
+      data: {
+        votes: {
+          increment: 1,
+        },
+      },
+    })
+    console.log(updatedVote)
+  } else {
+    // If the word doesn't exist, create a new record with a single vote
+    const addedVote = await db.word.create({
+      data: {
+        word: word,
+        votes: 1,
+      },
+    })
+    console.log(addedVote)
+  }
+
   return null
 }
 

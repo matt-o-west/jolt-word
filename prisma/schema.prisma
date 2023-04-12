@@ -16,14 +16,6 @@ model Word {
   word         String          @unique
   votes        Int
   users        User[]       @relation("UserWords")
-  leaderboard  Leaderboard?
-}
-
-model Leaderboard {
-  id      Int    @id @default(autoincrement())
-  listId  String @unique     
-  list    Word   @relation(fields: [listId], references: [id])
-  votes   Int
 }
 
 model Score {

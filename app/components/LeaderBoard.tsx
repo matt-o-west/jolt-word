@@ -4,9 +4,7 @@ import BoardCard from './BoardCard'
 
 export type LeaderBoardType = {
   id: number
-  list: {
-    word: string
-  }
+  word: string
   votes: number
 }
 
@@ -22,8 +20,8 @@ const LeaderBoard = ({ data }: DataProps) => {
       </h1>
       <div className='flex flex-col items-center text-black min-h-screen py-2 mt-6 text-center sm:py-0'>
         {data &&
-          data.map(({ list, votes, id }: LeaderBoardType, index: number) => (
-            <BoardCard votes={votes} list={list} rank={index + 1} key={id} />
+          data.map(({ word, votes, id }: LeaderBoardType, index: number) => (
+            <BoardCard votes={votes} word={word} rank={index + 1} key={id} />
           ))}
       </div>
     </div>
