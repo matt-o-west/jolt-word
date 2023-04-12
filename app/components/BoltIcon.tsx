@@ -22,17 +22,20 @@ function ClickableIcon({ votes }) {
   }
 
   return (
-    <button
-      className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1`}
-      onClick={handleClick}
-      style={{
-        // Style the fill effect based on the number of clicks
-        backgroundSize: `100% ${(clickCount / maxClicks) * 100}%`,
-      }}
-    >
-      <BoltIcon name='bolt' />
-      <span className='vote-count'>{votes}</span>
-    </button>
+    <>
+      <button
+        className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1`}
+        onClick={handleClick}
+        style={{
+          // Style the fill effect based on the number of clicks
+          backgroundSize: `100% ${(clickCount / maxClicks) * 100}%`,
+        }}
+      >
+        <BoltIcon name='bolt' fontSize='large' />
+
+        <span className='vote-count'>{votes}</span>
+      </button>
+    </>
   )
 }
 

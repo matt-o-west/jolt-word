@@ -1,14 +1,15 @@
-import { Link } from '@remix-run/react'
+//import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import ClickableIcon from '~/components/BoltIcon'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData /*useActionData*/ } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
-import { json } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
+import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import { db } from 'prisma/db.server'
 
 export interface Definition {
@@ -40,23 +41,40 @@ export interface Definition {
     pl: string
     pt: string[][]
   }
+  votes: number
 }
 
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: LoaderArgs) => {
+  if (!params.word) {
+    return json({ error: 'Word parameter is missing.' }, { status: 404 })
+  }
+
   const word: Definition = await getWord(params.word)
   const vote = await db.word.findUnique({
     where: {
       word: params.word,
     },
   })
-  //const wordWithVote = { ...word, vote: vote?.votes }
-  return json(word)
+  const wordWithVote = { ...word, votes: vote?.votes }
+  return json(wordWithVote)
 }
 
-export const action = async ({ request }) => {
-  const { word } = await request.url.searchParams
+export const action = async ({ request }: ActionArgs) => {
+  // Create a URL object from the request URL
+  const url = new URL(request.url)
+
+  // Access the search parameters
+  const word = url.searchParams.get('word')
+
+  if (!word) {
+    // Handle the case where the word parameter is missing
+    return { status: 400, error: 'Word parameter is missing' }
+  }
+
+  console.log('word', word)
+
   const updatedVote = await db.word.update({
     where: {
       word: word,
@@ -68,14 +86,28 @@ export const action = async ({ request }) => {
     },
   })
 
-  return updatedVote ? updatedVote : { status: 404 }
+  if (updatedVote) {
+    return redirect(`/${word}`)
+  }
+
+  return redirect('/')
 }
 
 const Word = () => {
   const { word } = useParams()
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
-  console.log(data)
+  const maxClicks = 10
+  const [clickCount, setClickCount] = useState(0)
+  const [animationClass, setAnimationClass] = useState('')
+  const [audio] = useState('/sound/zap.wav')
+
+  useEffect(() => {
+    if (clickCount === maxClicks) {
+      setAnimationClass('trigger-animation') // CSS class for the animation
+      //audio.play()
+    }
+  }, [clickCount, audio])
 
   //replace with error boundary
   if (!data) {
@@ -113,7 +145,7 @@ const Word = () => {
     subDirectory
   )}/${subDirectory}.mp3`
 
-  const handleClick = () => {
+  const handleAudioClick = () => {
     try {
       const audio = new Audio(audioReference)
       audio.play()
@@ -128,18 +160,20 @@ const Word = () => {
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <div className='grid grid-flow-row grid-rows-2 grid-cols-3 w-11/12 justify-between'>
+        <div className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 justify-between'>
           <h1 className='self-center text-5xl font-bold tracking-wide'>
             {word}
           </h1>
-          <div className='self-start mt-4'>
-            <ClickableIcon votes={data.vote} />
+          <div className='self-start mt-4 ml-2'>
+            <form method='POST' action={`/${word}`}>
+              <ClickableIcon votes={data.votes} />
+            </form>
           </div>
           {subDirectory && (
             <button
               className='justify-self-end'
               aria-label='play button'
-              onClick={handleClick}
+              onClick={handleAudioClick}
             >
               <img
                 src='./images/icon-play.svg'
