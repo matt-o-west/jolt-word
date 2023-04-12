@@ -1,11 +1,11 @@
 //import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import ClickableIcon from '~/components/BoltIcon'
-import { useLoaderData /*useActionData*/ } from '@remix-run/react'
+import { useLoaderData /*useActionData*/, useSubmit } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json, redirect } from '@remix-run/node'
@@ -62,18 +62,16 @@ export const loader = async ({ params }: LoaderArgs) => {
 }
 
 export const action = async ({ request }: ActionArgs) => {
-  // Create a URL object from the request URL
-  const url = new URL(request.url)
+  // Get the request body as a FormData object
+  const formData = await request.formData()
 
-  // Access the search parameters
-  const word = url.searchParams.get('word')
+  // Access the word from the request body
+  const word = formData.get('word')
 
   if (!word) {
     // Handle the case where the word parameter is missing
     return { status: 400, error: 'Word parameter is missing' }
   }
-
-  console.log('word', word)
 
   const updatedVote = await db.word.update({
     where: {
@@ -86,11 +84,7 @@ export const action = async ({ request }: ActionArgs) => {
     },
   })
 
-  if (updatedVote) {
-    return redirect(`/${word}`)
-  }
-
-  return redirect('/')
+  return null
 }
 
 const Word = () => {
@@ -155,7 +149,11 @@ const Word = () => {
           </h1>
           <div className='self-start mt-4 ml-2'>
             <form method='POST' action={`/${word}`}>
+              <input type='hidden' name='word' value={word} />
               <ClickableIcon votes={data.votes} />
+              <button type='submit' className='hidden'>
+                Submit
+              </button>
             </form>
           </div>
           {subDirectory && (

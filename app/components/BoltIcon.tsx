@@ -26,6 +26,7 @@ function ClickableIcon({ votes }) {
       <button
         className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1`}
         onClick={handleClick}
+        type='submit'
         style={{
           // Style the fill effect based on the number of clicks
           backgroundSize: `100% ${(clickCount / maxClicks) * 100}%`,
