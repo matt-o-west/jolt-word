@@ -97,17 +97,6 @@ const Word = () => {
   const { word } = useParams()
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
-  const maxClicks = 10
-  const [clickCount, setClickCount] = useState(0)
-  const [animationClass, setAnimationClass] = useState('')
-  const [audio] = useState('/sound/zap.wav')
-
-  useEffect(() => {
-    if (clickCount === maxClicks) {
-      setAnimationClass('trigger-animation') // CSS class for the animation
-      //audio.play()
-    }
-  }, [clickCount, audio])
 
   //replace with error boundary
   if (!data) {
