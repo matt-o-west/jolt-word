@@ -7,6 +7,8 @@ import type { ActionArgs } from '@remix-run/node'
 import generateRandomWord from '~/utils/generateRandomWord'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
+import ClickableIcon from '~/components/BoltIcon'
+import type { LeaderBoardType } from '~/components/LeaderBoard'
 
 import { db } from 'prisma/db.server'
 
@@ -77,6 +79,18 @@ export default function Index() {
     fetchRandomWord()
   }, [])
 
+  const actionForm = ({ word, votes }: LeaderBoardType) => {
+    return (
+      <form method='POST' action={`/${word}`}>
+        <input type='hidden' name='word' value={word} />
+        <ClickableIcon votes={votes} />
+        <button type='submit' className='hidden'>
+          Submit
+        </button>
+      </form>
+    )
+  }
+
   return (
     <>
       <Nav />
@@ -93,7 +107,7 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-        <LeaderBoard data={data} />
+        <LeaderBoard data={data} actionForm={actionForm} />
       </main>
     </>
   )

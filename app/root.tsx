@@ -28,6 +28,8 @@ interface ContextType {
   featureTheme: string
   toggleTheme: string
   isLoggedIn: boolean
+  onSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  setContextValue: (value: Partial<ContextType>) => void
   setFont: (font: string) => void
   setTheme: (theme: string) => void
   setLogin: () => void
@@ -39,6 +41,8 @@ export const Context = createContext<ContextType>({
   featureTheme: 'feature-light',
   toggleTheme: 'toggle-light',
   isLoggedIn: false,
+  onSubmit: () => {},
+  setContextValue: () => {},
   setFont: () => {},
   setTheme: () => {},
   setLogin: () => {},
@@ -67,6 +71,10 @@ export default function App() {
 
   const handleLogin = () => {
     setIsLoggedIn(!isLoggedIn)
+  }
+
+  const handleSubmit = () => {
+    console.log('submit')
   }
 
   return (

@@ -5,7 +5,7 @@ import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import ClickableIcon from '~/components/BoltIcon'
-import { useLoaderData /*useActionData*/, useSubmit } from '@remix-run/react'
+import { useLoaderData /*useActionData*/ } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
@@ -41,7 +41,6 @@ export interface Definition {
     pl: string
     pt: string[][]
   }
-  votes: number
 }
 
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined

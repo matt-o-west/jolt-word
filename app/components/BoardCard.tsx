@@ -1,10 +1,13 @@
 import React from 'react'
-import ClickableIcon from './BoltIcon'
+import type { LeaderBoardType } from './LeaderBoard'
+
+type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
 export type WordProps = {
   rank: number
   word: string
   votes: number
+  actionForm: ActionFormFunction
 }
 
 const getRankColor = (rank: number) => {
@@ -18,7 +21,7 @@ const getRankColor = (rank: number) => {
   return colors[rank - 1]
 }
 
-const BoardCard = ({ rank, word, votes }: WordProps) => {
+const BoardCard = ({ rank, word, votes, actionForm }: WordProps) => {
   const rankColor = getRankColor(rank)
 
   return (
@@ -27,7 +30,7 @@ const BoardCard = ({ rank, word, votes }: WordProps) => {
     >
       <span className='font-subhead text-3xl mx-2 mr-6'>{rank}</span>
       <span className='mx-2'>{word}</span>
-      <ClickableIcon votes={votes} />
+      {actionForm({ word, votes })}
     </div>
   )
 }
