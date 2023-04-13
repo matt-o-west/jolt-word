@@ -5,7 +5,7 @@ import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import ClickableIcon from '~/components/BoltIcon'
-import { useLoaderData /*useActionData*/ } from '@remix-run/react'
+import { useLoaderData /*useActionData*/, Form } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
@@ -162,13 +162,13 @@ const Word = () => {
             {word}
           </h1>
           <div className='self-start mt-4 ml-2'>
-            <form method='POST' action={`/${word}`}>
+            <Form method='POST' action={`/${word}`}>
               <input type='hidden' name='word' value={word} />
               <ClickableIcon votes={data.votes} />
               <button type='submit' className='hidden'>
                 Submit
               </button>
-            </form>
+            </Form>
           </div>
           {subDirectory && (
             <button

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
-import { Link } from '@remix-run/react'
+import { Link, Form } from '@remix-run/react'
 import { Context } from '~/root'
-import { json } from '@remix-run/node'
+import { json, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import generateRandomWord from '~/utils/generateRandomWord'
@@ -61,7 +61,7 @@ export const action = async ({ request }: ActionArgs) => {
     console.log(addedVote)
   }
 
-  return null
+  return redirect('/')
 }
 
 export default function Index() {
@@ -81,13 +81,13 @@ export default function Index() {
 
   const actionForm = ({ word, votes }: LeaderBoardType) => {
     return (
-      <form method='POST' action={`/${word}`}>
+      <Form method='POST' action=''>
         <input type='hidden' name='word' value={word} />
         <ClickableIcon votes={votes} />
         <button type='submit' className='hidden'>
           Submit
         </button>
-      </form>
+      </Form>
     )
   }
 
