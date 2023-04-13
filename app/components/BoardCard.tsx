@@ -30,7 +30,7 @@ const BoardCard = ({ rank, word, votes, actionForm }: WordProps) => {
     >
       <span className='font-subhead text-3xl mx-2 mr-6'>{rank}</span>
       <span className='mx-2'>{word}</span>
-      {actionForm({ word, votes })}
+      <div className='ml-auto'>{actionForm({ word, votes })}</div>
     </div>
   )
 }
