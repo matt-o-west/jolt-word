@@ -21,17 +21,7 @@ async function seed() {
         })
       }
 
-      // Then, create a Leaderboard entry that references the created Word's id for each Word
-      return db.leaderboard.create({
-        data: {
-          list: {
-            connect: {
-              id: word.id,
-            },
-          },
-          votes: wordData.votes,
-        },
-      })
+      return null
     })
   )
 }
