@@ -145,3 +145,13 @@
   border-radius: 0.25rem;
   padding: 0.5rem 1rem;
 }
+
+.alert {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.alert-hidden {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
