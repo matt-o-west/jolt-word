@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
+import type { ActionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
 
@@ -25,7 +26,7 @@ const validateUrl = (url: string) => {
   return '/'
 }
 
-export const action = async (request: Request) => {
+export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
   const user = form.get('username')
   const password = form.get('password')
@@ -67,12 +68,20 @@ export const action = async (request: Request) => {
     })
   }
 
-  if (!userExists) {
-    await db.user.create({
-      data: {
-        username: user,
-        passwordHash: password,
-      },
+  const passwordMatches = await db.user.findUnique({
+    where: {
+      username: user,
+    },
+    select: {
+      passwordHash: true,
+    },
+  })
+
+  if (password !== passwordMatches?.passwordHash) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: 'Incorrect password.',
     })
   }
 
@@ -89,7 +98,7 @@ const Login = () => {
     <div className=' min-h-screen flex items-center justify-center'>
       <div className='bg-white rounded-lg shadow-md w-full md:w-96 p-6'>
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
-        <Form>
+        <Form method='post' action='/login'>
           <input
             type='hidden'
             className='hidden'

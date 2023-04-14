@@ -2,6 +2,8 @@ import React from 'react'
 import { badRequest } from '~/utils/request.server'
 import { redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
+import type { ActionArgs } from '@remix-run/node'
+
 import { db } from 'prisma/db.server'
 
 const validateUser = (user: unknown) => {
@@ -24,11 +26,13 @@ const validateUrl = (url: string) => {
   return '/'
 }
 
-export const action = async (request: Request) => {
+export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
-  const user = form.get('username')
-  const password = form.get('password')
-  const redirectTo = validateUrl('/login')
+  const user = form.get('username') as string
+  const password = form.get('password') as string
+  const redirectTo = validateUrl('/login') as string
+
+  console.log(user, password)
 
   if (
     typeof user !== 'string' ||
@@ -58,28 +62,20 @@ export const action = async (request: Request) => {
     },
   })
 
-  if (!userExists) {
+  if (userExists) {
     return badRequest({
       fieldErrors: null,
       fields: null,
-      formError: 'User does not exist.',
+      formError: 'User already exists.',
     })
   }
 
-  const passwordMatches = await db.user.findUnique({
-    where: {
-      username: user,
-    },
-    select: {
-      passwordHash: true,
-    },
-  })
-
-  if (password !== passwordMatches?.passwordHash) {
-    return badRequest({
-      fieldErrors: null,
-      fields: null,
-      formError: 'Incorrect password.',
+  if (!userExists) {
+    await db.user.create({
+      data: {
+        username: user,
+        passwordHash: password,
+      },
     })
   }
 
@@ -87,7 +83,8 @@ export const action = async (request: Request) => {
 }
 
 const Register = () => {
-  const actionData = useActionData()
+  const actionData = useActionData() || { fields: {} }
+  console.log(actionData)
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -95,7 +92,7 @@ const Register = () => {
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>
           Register
         </h1>
-        <Form>
+        <Form method='post' action='/register'>
           <div className='mb-4'>
             <label htmlFor='username' className='block mb-2 text-primary-gray'>
               Username
