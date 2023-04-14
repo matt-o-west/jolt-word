@@ -1,8 +1,9 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { badRequest } from '~/utils/request.server'
 import { redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
+import { Alert } from '@mui/material'
 
 import { db } from 'prisma/db.server'
 
@@ -79,12 +80,28 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
-  return redirect(redirectTo)
+  return redirect('/login?registrationSuccess=true')
 }
 
 const Register = () => {
   const actionData = useActionData() || { fields: {} }
-  console.log(actionData)
+  const [hasError, setHasError] = useState(actionData.formError)
+
+  useEffect(() => {
+    setHasError(actionData.formError)
+  }, [actionData.formError])
+
+  useEffect(() => {
+    if (hasError) {
+      const timer = setTimeout(() => {
+        setHasError(null)
+      }, 3000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [hasError])
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -92,6 +109,11 @@ const Register = () => {
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>
           Register
         </h1>
+        {hasError && (
+          <Alert variant='outlined' severity='error' className='mb-2'>
+            This is a placeholder alert — check it out!
+          </Alert>
+        )}
         <Form method='post' action='/register'>
           <div className='mb-4'>
             <label htmlFor='username' className='block mb-2 text-primary-gray'>

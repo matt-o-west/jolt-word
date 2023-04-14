@@ -1,8 +1,9 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
+import Alert from '@mui/material/Alert'
 
 import { db } from 'prisma/db.server'
 
@@ -90,14 +91,35 @@ export const action = async ({ request }: ActionArgs) => {
 
 const Login = () => {
   const [searchParams] = useSearchParams()
+  const registrationSuccess = searchParams.get('registrationSuccess') === 'true'
+  const [showSuccessMessage, setShowSuccessMessage] =
+    useState(registrationSuccess)
+
   const actionData = useActionData() ?? { fields: {} }
 
   console.log(actionData)
+
+  useEffect(() => {
+    if (registrationSuccess) {
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(false)
+      }, 2000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [registrationSuccess])
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
       <div className='bg-white rounded-lg shadow-md w-full md:w-96 p-6'>
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
+        {showSuccessMessage && (
+          <Alert variant='outlined' severity='success' className='mb-3'>
+            This is a success alert — check it out!
+          </Alert>
+        )}
         <Form method='post' action='/login'>
           <input
             type='hidden'
