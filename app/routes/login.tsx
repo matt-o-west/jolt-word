@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
 
@@ -30,7 +29,7 @@ export const action = async (request: Request) => {
   const form = await request.formData()
   const user = form.get('username')
   const password = form.get('password')
-  const redirectTo = validateUrl(form.get('redirectTo') as string)
+  const redirectTo = validateUrl('/')
 
   if (
     typeof user !== 'string' ||
@@ -60,28 +59,20 @@ export const action = async (request: Request) => {
     },
   })
 
-  if (!userExists) {
+  if (userExists) {
     return badRequest({
       fieldErrors: null,
       fields: null,
-      formError: 'User does not exist.',
+      formError: 'This user already exists.',
     })
   }
 
-  const passwordMatches = await db.user.findUnique({
-    where: {
-      username: user,
-    },
-    select: {
-      passwordHash: true,
-    },
-  })
-
-  if (password !== passwordMatches?.passwordHash) {
-    return badRequest({
-      fieldErrors: null,
-      fields: null,
-      formError: 'Incorrect password.',
+  if (!userExists) {
+    await db.user.create({
+      data: {
+        username: user,
+        passwordHash: password,
+      },
     })
   }
 
@@ -95,7 +86,7 @@ const Login = () => {
   console.log(actionData)
 
   return (
-    <div className='bg-tertiary.gray min-h-screen flex items-center justify-center'>
+    <div className=' min-h-screen flex items-center justify-center'>
       <div className='bg-white rounded-lg shadow-md w-full md:w-96 p-6'>
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
         <Form>
