@@ -131,3 +131,17 @@
   border-radius: 0.5rem;
   margin: 0.5rem 0;
 }
+
+/* Error states */
+.form-validation-error {
+  margin: 0;
+  margin-top: 0.25em;
+  color: var(--color-invalid);
+  font-size: 0.8rem;
+}
+
+.error-container {
+  background-color: hsla(356, 77%, 59%, 0.747);
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+}

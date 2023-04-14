@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { LinksFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
 
 import { db } from 'prisma/db.server'
@@ -17,11 +18,19 @@ const validatePassword = (password: string) => {
   }
 }
 
+const validateUrl = (url: string) => {
+  let urls = ['/', '/login', '/register']
+  if (urls.includes(url)) {
+    return url
+  }
+  return '/'
+}
+
 export const action = async (request: Request) => {
   const form = await request.formData()
   const user = form.get('username')
   const password = form.get('password')
-  const redirectTo = form.get('redirectTo')
+  const redirectTo = validateUrl(form.get('redirectTo') as string)
 
   if (
     typeof user !== 'string' ||
@@ -75,10 +84,15 @@ export const action = async (request: Request) => {
       formError: 'Incorrect password.',
     })
   }
+
+  return redirect(redirectTo)
 }
 
 const Login = () => {
   const [searchParams] = useSearchParams()
+  const actionData = useActionData() ?? { fields: {} }
+
+  console.log(actionData)
 
   return (
     <div className='bg-tertiary.gray min-h-screen flex items-center justify-center'>
@@ -101,7 +115,17 @@ const Login = () => {
               name='username'
               className='w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple'
               required
+              defaultValue={actionData?.fields?.username}
+              aria-invalid={Boolean(actionData?.fieldErrors?.username)}
+              aria-errormessage={
+                actionData?.fieldErrors?.username ? 'username-error' : undefined
+              }
             />
+            {actionData?.fieldErrors?.user && (
+              <p className='form-validation-error'>
+                {actionData.fieldErrors.user}
+              </p>
+            )}
           </div>
           <div className='mb-4'>
             <label htmlFor='password' className='block mb-2 text-primary.gray'>
@@ -113,7 +137,17 @@ const Login = () => {
               name='password'
               className='w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple'
               required
+              defaultValue={actionData?.fields?.password}
+              aria-invalid={Boolean(actionData?.fieldErrors?.password)}
+              aria-errormessage={
+                actionData?.fieldErrors?.password ? 'password-error' : undefined
+              }
             />
+            {actionData?.fieldErrors?.password && (
+              <p className='form-validation-error'>
+                {actionData.fieldErrors.password}
+              </p>
+            )}
           </div>
           <button
             type='submit'

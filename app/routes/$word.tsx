@@ -70,7 +70,7 @@ export const action = async ({ request }: ActionArgs) => {
   // Try to find the existing word
   const existingWord = await db.word.findUnique({
     where: {
-      word: word,
+      word: word as string,
     },
   })
 
@@ -78,7 +78,7 @@ export const action = async ({ request }: ActionArgs) => {
     // If the word exists, update its vote count
     const updatedVote = await db.word.update({
       where: {
-        word: word,
+        word: word as string,
       },
       data: {
         votes: {
@@ -91,7 +91,7 @@ export const action = async ({ request }: ActionArgs) => {
     // If the word doesn't exist, create a new record with a single vote
     const addedVote = await db.word.create({
       data: {
-        word: word,
+        word: word as string,
         votes: 1,
       },
     })
