@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
-import type { ActionArgs, LinksFunction } from '@remix-run/node'
+import type { LinksFunction } from '@remix-run/node'
+import { badRequest } from '~/utils/request.server'
 
 import { db } from 'prisma/db.server'
 
@@ -11,8 +12,68 @@ const validateUser = (user: unknown) => {
 }
 
 const validatePassword = (password: string) => {
-  if (password.length < 8) {
-    return 'Password must be at least 8 characters long.'
+  if (password.length < 6) {
+    return 'Password must be at least 6 characters long.'
+  }
+}
+
+export const action = async (request: Request) => {
+  const form = await request.formData()
+  const user = form.get('username')
+  const password = form.get('password')
+  const redirectTo = form.get('redirectTo')
+
+  if (
+    typeof user !== 'string' ||
+    typeof password !== 'string' ||
+    typeof redirectTo !== 'string'
+  ) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: 'Form not submitted correctly.',
+    })
+  }
+
+  const fields = { user, password }
+  const fieldErrors = {
+    user: validateUser(user),
+    password: validatePassword(password),
+  }
+
+  if (fieldErrors.user || fieldErrors.password) {
+    return badRequest({ fieldErrors, fields, formError: null })
+  }
+
+  const userExists = await db.user.findUnique({
+    where: {
+      username: user,
+    },
+  })
+
+  if (!userExists) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: 'User does not exist.',
+    })
+  }
+
+  const passwordMatches = await db.user.findUnique({
+    where: {
+      username: user,
+    },
+    select: {
+      passwordHash: true,
+    },
+  })
+
+  if (password !== passwordMatches?.passwordHash) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: 'Incorrect password.',
+    })
   }
 }
 
