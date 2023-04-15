@@ -86,6 +86,8 @@ export const action = async ({ request }: ActionArgs) => {
 
 const Register = () => {
   const actionData = useActionData() || { fields: {} }
+
+  //error alerts
   const [hasError, setHasError] = useState(actionData.formError)
   const [showError, setShowError] = useState(Boolean(hasError))
   const errorRef = useRef(null)
@@ -137,12 +139,14 @@ const Register = () => {
               type='text'
               id='username'
               name='username'
-              className='w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple'
+              className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
+                actionData?.fieldErrors?.user ? 'error-container' : null
+              }`}
               required
-              defaultValue={actionData?.fields?.username}
-              aria-invalid={Boolean(actionData?.fieldErrors?.username)}
+              defaultValue={actionData?.fields?.user}
+              aria-invalid={Boolean(actionData?.fieldErrors?.user)}
               aria-errormessage={
-                actionData?.fieldErrors?.username ? 'username-error' : undefined
+                actionData?.fieldErrors?.user ? 'username-error' : undefined
               }
             />
             {actionData?.fieldErrors?.user && (
@@ -159,7 +163,9 @@ const Register = () => {
               type='password'
               id='password'
               name='password'
-              className='w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple'
+              className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
+                actionData?.fieldErrors?.password ? 'error-container' : null
+              }`}
               required
               defaultValue={actionData?.fields?.password}
               aria-invalid={Boolean(actionData?.fieldErrors?.password)}

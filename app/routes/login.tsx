@@ -42,7 +42,10 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({
       fieldErrors: null,
       fields: null,
-      formError: 'Form not submitted correctly.',
+      formError: {
+        message: 'Form not submitted correctly.',
+        timestamp: Date.now().toString(),
+      },
     })
   }
 
@@ -62,11 +65,14 @@ export const action = async ({ request }: ActionArgs) => {
     },
   })
 
-  if (userExists) {
+  if (!userExists) {
     return badRequest({
       fieldErrors: null,
       fields: null,
-      formError: 'This user already exists.',
+      formError: {
+        message: 'This user does not exist.',
+        timestamp: Date.now().toString(),
+      },
     })
   }
 
@@ -83,7 +89,10 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({
       fieldErrors: null,
       fields: null,
-      formError: 'Incorrect password.',
+      formError: {
+        message: 'Incorrect password.',
+        timestamp: Date.now().toString(),
+      },
     })
   }
 
@@ -92,18 +101,20 @@ export const action = async ({ request }: ActionArgs) => {
 
 const Login = () => {
   const [searchParams] = useSearchParams()
+  const formRef = useRef<HTMLFormElement>(null)
+
+  //success alerts
   const registrationSuccess = searchParams.get('registrationSuccess') === 'true'
   const [showSuccessMessage, setShowSuccessMessage] =
     useState(registrationSuccess)
   const [hasSuccess, setHasSuccess] = useState(Boolean(registrationSuccess))
 
+  //error alerts
   const actionData = useActionData() ?? { fields: {} }
   const successRef = useRef(null)
   const [hasError, setHasError] = useState(actionData.formError)
-  const [showError, setShowError] = useState(Boolean(hasError))
+  const [showErrorMessage, setShowErrorMessage] = useState(Boolean(hasError))
   const errorRef = useRef(null)
-
-  console.log(actionData)
 
   useEffect(() => {
     setHasSuccess(registrationSuccess)
@@ -114,7 +125,7 @@ const Login = () => {
       setShowSuccessMessage(true)
       const timer = setTimeout(() => {
         setShowSuccessMessage(false)
-      }, 2000)
+      }, 3000)
 
       return () => {
         clearTimeout(timer)
@@ -127,17 +138,18 @@ const Login = () => {
   }, [actionData.formError])
 
   useEffect(() => {
-    if (hasError) {
-      setShowError(true)
+    if (hasError && actionData.formError) {
+      setShowErrorMessage(true)
+      formRef.current?.reset()
       const timer = setTimeout(() => {
-        setShowError(false)
+        setShowErrorMessage(false)
       }, 3000)
 
       return () => {
         clearTimeout(timer)
       }
     }
-  }, [hasError])
+  }, [hasError, actionData.formError])
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
@@ -168,12 +180,12 @@ const Login = () => {
           >
             <div ref={errorRef} className='mb-3'>
               <Alert variant='outlined' severity='error' className='mb-3'>
-                {actionData.formError}
+                {actionData.formError?.message}
               </Alert>
             </div>
           </CSSTransition>
         )}
-        <Form method='post' action='/login'>
+        <Form method='post' action='/login' ref={formRef}>
           <input
             type='hidden'
             className='hidden'
@@ -188,12 +200,14 @@ const Login = () => {
               type='text'
               id='username'
               name='username'
-              className='w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple'
+              className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
+                actionData?.fieldErrors?.user ? 'error-container' : null
+              }`}
               required
               defaultValue={actionData?.fields?.username}
-              aria-invalid={Boolean(actionData?.fieldErrors?.username)}
+              aria-invalid={Boolean(actionData?.fieldErrors?.user)}
               aria-errormessage={
-                actionData?.fieldErrors?.username ? 'username-error' : undefined
+                actionData?.fieldErrors?.user ? 'username-error' : undefined
               }
             />
             {actionData?.fieldErrors?.user && (
@@ -210,7 +224,9 @@ const Login = () => {
               type='password'
               id='password'
               name='password'
-              className='w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple'
+              className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
+                actionData?.fieldErrors?.password ? 'error-container' : null
+              }`}
               required
               defaultValue={actionData?.fields?.password}
               aria-invalid={Boolean(actionData?.fieldErrors?.password)}
