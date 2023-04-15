@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { badRequest } from '~/utils/request.server'
 import { redirect } from '@remix-run/node'
 import { Form, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { Alert } from '@mui/material'
+import { CSSTransition } from 'react-transition-group'
 
 import { db } from 'prisma/db.server'
 
@@ -86,6 +87,8 @@ export const action = async ({ request }: ActionArgs) => {
 const Register = () => {
   const actionData = useActionData() || { fields: {} }
   const [hasError, setHasError] = useState(actionData.formError)
+  const [showError, setShowError] = useState(Boolean(hasError))
+  const errorRef = useRef(null)
 
   useEffect(() => {
     setHasError(actionData.formError)
@@ -93,8 +96,9 @@ const Register = () => {
 
   useEffect(() => {
     if (hasError) {
+      setShowError(true)
       const timer = setTimeout(() => {
-        setHasError(null)
+        setShowError(false)
       }, 3000)
 
       return () => {
@@ -110,9 +114,19 @@ const Register = () => {
           Register
         </h1>
         {hasError && (
-          <Alert variant='outlined' severity='error' className='mb-2'>
-            This is a placeholder alert — check it out!
-          </Alert>
+          <CSSTransition
+            in={showError}
+            timeout={300}
+            classNames='alert'
+            nodeRef={errorRef}
+            unmountOnExit
+          >
+            <div ref={errorRef} className='mb-3'>
+              <Alert variant='outlined' severity='error'>
+                {hasError as string}
+              </Alert>
+            </div>
+          </CSSTransition>
         )}
         <Form method='post' action='/register'>
           <div className='mb-4'>

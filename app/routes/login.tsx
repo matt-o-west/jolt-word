@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
 import Alert from '@mui/material/Alert'
+import { CSSTransition } from 'react-transition-group'
 
 import { db } from 'prisma/db.server'
 
@@ -94,13 +95,23 @@ const Login = () => {
   const registrationSuccess = searchParams.get('registrationSuccess') === 'true'
   const [showSuccessMessage, setShowSuccessMessage] =
     useState(registrationSuccess)
+  const [hasSuccess, setHasSuccess] = useState(Boolean(registrationSuccess))
 
   const actionData = useActionData() ?? { fields: {} }
+  const successRef = useRef(null)
+  const [hasError, setHasError] = useState(actionData.formError)
+  const [showError, setShowError] = useState(Boolean(hasError))
+  const errorRef = useRef(null)
 
   console.log(actionData)
 
   useEffect(() => {
+    setHasSuccess(registrationSuccess)
+  }, [registrationSuccess])
+
+  useEffect(() => {
     if (registrationSuccess) {
+      setShowSuccessMessage(true)
       const timer = setTimeout(() => {
         setShowSuccessMessage(false)
       }, 2000)
@@ -111,14 +122,56 @@ const Login = () => {
     }
   }, [registrationSuccess])
 
+  useEffect(() => {
+    setHasError(actionData.formError)
+  }, [actionData.formError])
+
+  useEffect(() => {
+    if (hasError) {
+      setShowError(true)
+      const timer = setTimeout(() => {
+        setShowError(false)
+      }, 3000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [hasError])
+
   return (
     <div className=' min-h-screen flex items-center justify-center'>
       <div className='bg-white rounded-lg shadow-md w-full md:w-96 p-6'>
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
-        {showSuccessMessage && (
-          <Alert variant='outlined' severity='success' className='mb-3'>
-            This is a success alert — check it out!
-          </Alert>
+        {hasSuccess && (
+          <CSSTransition
+            in={showSuccessMessage}
+            timeout={300}
+            classNames='alert'
+            nodeRef={successRef}
+            unmountOnExit
+          >
+            <div ref={successRef} className='mb-3'>
+              <Alert variant='outlined' severity='success' className='mb-3'>
+                You registered successfully! Please login.
+              </Alert>
+            </div>
+          </CSSTransition>
+        )}
+        {hasError && (
+          <CSSTransition
+            in={showErrorMessage}
+            timeout={300}
+            classNames='alert'
+            nodeRef={errorRef}
+            unmountOnExit
+          >
+            <div ref={errorRef} className='mb-3'>
+              <Alert variant='outlined' severity='error' className='mb-3'>
+                {actionData.formError}
+              </Alert>
+            </div>
+          </CSSTransition>
         )}
         <Form method='post' action='/login'>
           <input

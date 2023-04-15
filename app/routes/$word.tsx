@@ -162,7 +162,7 @@ const Word = () => {
             {word}
           </h1>
           <div className='self-start mt-4 ml-2'>
-            <Form method='POST' action={`/${word}`}>
+            <Form method='post' action={`/${word}`}>
               <input type='hidden' name='word' value={word} />
               <ClickableIcon votes={data.votes} />
               <button type='submit' className='hidden'>
