@@ -5,6 +5,7 @@ import { Form, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { Alert } from '@mui/material'
 import { CSSTransition } from 'react-transition-group'
+import bcrypt from 'bcryptjs'
 
 import { db } from 'prisma/db.server'
 
@@ -33,6 +34,8 @@ export const action = async ({ request }: ActionArgs) => {
   const user = form.get('username') as string
   const password = form.get('password') as string
   const redirectTo = validateUrl('/login') as string
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(password, salt)
 
   console.log(user, password)
 
@@ -76,7 +79,7 @@ export const action = async ({ request }: ActionArgs) => {
     await db.user.create({
       data: {
         username: user,
-        passwordHash: password,
+        passwordHash: hashedPassword,
       },
     })
   }

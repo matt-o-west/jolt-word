@@ -3,7 +3,7 @@ import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
-import { login, requireUserId, createUserSession } from '~/utils/session.server'
+import { login, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
 import { CSSTransition } from 'react-transition-group'
 
@@ -60,6 +60,20 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({ fieldErrors, fields, formError: null })
   }
 
+  //remove loggedInUser for the other validation to work
+  const loggedInUser = await login({ username: user, password })
+
+  if (!loggedInUser) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: {
+        message: 'Incorrect username or password.',
+        timestamp: Date.now().toString(),
+      },
+    })
+  }
+
   const userExists = await db.user.findUnique({
     where: {
       username: user,
@@ -97,7 +111,7 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
-  return createUserSession(userExists.id, redirectTo)
+  return createUserSession(loggedInUser.id, redirectTo)
 }
 
 const Login = () => {
