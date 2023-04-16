@@ -3,6 +3,7 @@ import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
+import { login, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
 import { CSSTransition } from 'react-transition-group'
 
@@ -33,6 +34,11 @@ export const action = async ({ request }: ActionArgs) => {
   const user = form.get('username')
   const password = form.get('password')
   const redirectTo = validateUrl('/')
+  const userLogin = await login({ user, password })
+
+  if (userLogin) {
+    return createUserSession(userLogin.id, redirectTo)
+  }
 
   if (
     typeof user !== 'string' ||
@@ -153,7 +159,7 @@ const Login = () => {
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
-      <div className='bg-white rounded-lg shadow-md w-full md:w-96 p-6'>
+      <div className='bg-white rounded-lg shadow-md md:w-96 p-6'>
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
         {hasSuccess && (
           <CSSTransition
