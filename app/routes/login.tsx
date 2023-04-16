@@ -3,7 +3,7 @@ import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
-import { login, createUserSession } from '~/utils/session.server'
+import { login, requireUserId, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
 import { CSSTransition } from 'react-transition-group'
 
@@ -33,12 +33,7 @@ export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
   const user = form.get('username')
   const password = form.get('password')
-  const redirectTo = validateUrl('/')
-  const userLogin = await login({ user, password })
-
-  if (userLogin) {
-    return createUserSession(userLogin.id, redirectTo)
-  }
+  const redirectTo = validateUrl('/login')
 
   if (
     typeof user !== 'string' ||
@@ -102,7 +97,7 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
-  return redirect(redirectTo)
+  return createUserSession(userExists.id, redirectTo)
 }
 
 const Login = () => {
