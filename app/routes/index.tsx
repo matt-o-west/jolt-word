@@ -15,6 +15,7 @@ import { db } from 'prisma/db.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
   const redirectTo = '/login'
+
   const leaderboard = await db.word.findMany({
     orderBy: {
       votes: 'desc',
@@ -23,8 +24,15 @@ export const loader = async ({ request }: LoaderArgs) => {
   })
 
   const loggedInUser = await requireUserId(request, redirectTo)
+  const user = loggedInUser
+    ? await db.user.findUnique({
+        where: {
+          id: loggedInUser,
+        },
+      })
+    : null
 
-  return json({ leaderboard, loggedInUser })
+  return json({ leaderboard, loggedInUser, user })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -71,7 +79,9 @@ export const action = async ({ request }: ActionArgs) => {
 export default function Index() {
   const [randomWord, setRandomWord] = useState('')
   const { font, theme } = useContext(Context)
-  const { leaderboard, loggedInUser } = useLoaderData<typeof loader>()
+  const { leaderboard, loggedInUser, user } = useLoaderData<typeof loader>()
+
+  console.log(typeof loggedInUser)
 
   useEffect(() => {
     const fetchRandomWord = async () => {
@@ -95,7 +105,7 @@ export default function Index() {
 
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} username={user?.username} />
       <main
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
@@ -110,7 +120,6 @@ export default function Index() {
           </Link>
         ) || 'sorry, we ran out of words'}
         <LeaderBoard data={leaderboard} actionForm={actionForm} />
-        {loggedInUser && <span>{loggedInUser}</span>}
       </main>
     </>
   )

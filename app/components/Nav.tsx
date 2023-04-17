@@ -2,20 +2,27 @@ import { useState, useContext } from 'react'
 import { Link } from '@remix-run/react'
 import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
+import DropdownMenu from './DropdownMenu'
 
-const Nav = () => {
+type LoggedInUser = {
+  username: string | undefined
+  loggedInUser: string | null
+}
+
+const Nav = ({ username, loggedInUser }: LoggedInUser) => {
   const {
     font,
     theme,
     featureTheme,
     toggleTheme,
-    isLoggedIn,
     setFont,
     setTheme,
     setLogin,
   } = useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
+
+  console.log(loggedInUser, username)
 
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -41,10 +48,8 @@ const Nav = () => {
     }
   }
 
-  const userButton = isLoggedIn ? (
-    <button className='border border-none rounded-md px-2 py-1'>
-      <img src='images/avatar.png' alt='avatar' className='h-8 rounded-full' />
-    </button>
+  const userButton = loggedInUser ? (
+    <DropdownMenu />
   ) : (
     <button
       className='bg-gray text-primary.black rounded-md px-2 py-1 ml-2 hover:bg-background'
