@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
-import { login, createUserSession } from '~/utils/session.server'
+import { login, createUserSession, requireUserId } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
 import { CSSTransition } from 'react-transition-group'
 
@@ -33,13 +32,14 @@ export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
   const user = form.get('username')
   const password = form.get('password')
-  const redirectTo = validateUrl('/login')
+  const redirectTo = validateUrl('/')
 
   if (
     typeof user !== 'string' ||
     typeof password !== 'string' ||
     typeof redirectTo !== 'string'
   ) {
+    console.log('Form data issue:', user, password, redirectTo)
     return badRequest({
       fieldErrors: null,
       fields: null,
@@ -60,10 +60,16 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({ fieldErrors, fields, formError: null })
   }
 
+  if (fieldErrors.user || fieldErrors.password) {
+    console.log('Validation issue:', fieldErrors)
+    return badRequest({ fieldErrors, fields, formError: null })
+  }
+
   //remove loggedInUser for the other validation to work
   const loggedInUser = await login({ username: user, password })
 
   if (!loggedInUser) {
+    console.log('Login issue:', user, password)
     return badRequest({
       fieldErrors: null,
       fields: null,
@@ -86,26 +92,6 @@ export const action = async ({ request }: ActionArgs) => {
       fields: null,
       formError: {
         message: 'This user does not exist.',
-        timestamp: Date.now().toString(),
-      },
-    })
-  }
-
-  const passwordMatches = await db.user.findUnique({
-    where: {
-      username: user,
-    },
-    select: {
-      passwordHash: true,
-    },
-  })
-
-  if (password !== passwordMatches?.passwordHash) {
-    return badRequest({
-      fieldErrors: null,
-      fields: null,
-      formError: {
-        message: 'Incorrect password.',
         timestamp: Date.now().toString(),
       },
     })
