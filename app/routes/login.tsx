@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
-import { login, createUserSession, requireUserId } from '~/utils/session.server'
+import { login, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
 import { CSSTransition } from 'react-transition-group'
 
@@ -39,7 +39,6 @@ export const action = async ({ request }: ActionArgs) => {
     typeof password !== 'string' ||
     typeof redirectTo !== 'string'
   ) {
-    console.log('Form data issue:', user, password, redirectTo)
     return badRequest({
       fieldErrors: null,
       fields: null,
@@ -60,16 +59,10 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({ fieldErrors, fields, formError: null })
   }
 
-  if (fieldErrors.user || fieldErrors.password) {
-    console.log('Validation issue:', fieldErrors)
-    return badRequest({ fieldErrors, fields, formError: null })
-  }
-
   //remove loggedInUser for the other validation to work
   const loggedInUser = await login({ username: user, password })
 
   if (!loggedInUser) {
-    console.log('Login issue:', user, password)
     return badRequest({
       fieldErrors: null,
       fields: null,

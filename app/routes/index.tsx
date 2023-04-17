@@ -3,16 +3,18 @@ import { Link, Form } from '@remix-run/react'
 import { Context } from '~/root'
 import { json, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import type { ActionArgs } from '@remix-run/node'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import generateRandomWord from '~/utils/generateRandomWord'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
 import ClickableIcon from '~/components/BoltIcon'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
+import { requireUserId } from '~/utils/session.server'
 
 import { db } from 'prisma/db.server'
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderArgs) => {
+  const redirectTo = '/login'
   const leaderboard = await db.word.findMany({
     orderBy: {
       votes: 'desc',
@@ -20,7 +22,9 @@ export const loader = async () => {
     take: 5,
   })
 
-  return json(leaderboard)
+  const loggedInUser = await requireUserId(request, redirectTo)
+
+  return json({ leaderboard, loggedInUser })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -67,9 +71,7 @@ export const action = async ({ request }: ActionArgs) => {
 export default function Index() {
   const [randomWord, setRandomWord] = useState('')
   const { font, theme } = useContext(Context)
-  const data = useLoaderData<typeof loader>()
-
-  console.log(data)
+  const { leaderboard, loggedInUser } = useLoaderData<typeof loader>()
 
   useEffect(() => {
     const fetchRandomWord = async () => {
@@ -107,7 +109,8 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-        <LeaderBoard data={data} actionForm={actionForm} />
+        <LeaderBoard data={leaderboard} actionForm={actionForm} />
+        {loggedInUser && <span>{loggedInUser}</span>}
       </main>
     </>
   )

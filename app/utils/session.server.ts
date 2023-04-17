@@ -64,7 +64,7 @@ export async function requireUserId(
   const session = await getUserSession(request)
   const userId = session.get('userId')
   if (!userId || typeof userId !== 'string') {
-    throw redirect(redirectTo)
+    return null
   }
   return userId
 }
