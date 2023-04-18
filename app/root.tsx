@@ -28,9 +28,9 @@ interface ContextType {
   featureTheme: string
   toggleTheme: string
   isLoggedIn: boolean
+  setUser: (user: string) => void
   setFont: (font: string) => void
   setTheme: (theme: string) => void
-  setLogin: () => void
 }
 
 export const Context = createContext<ContextType>({
@@ -39,9 +39,9 @@ export const Context = createContext<ContextType>({
   featureTheme: 'feature-light',
   toggleTheme: 'toggle-light',
   isLoggedIn: false,
+  setUser: () => {},
   setFont: () => {},
   setTheme: () => {},
-  setLogin: () => {},
 })
 
 export default function App() {
@@ -49,7 +49,7 @@ export default function App() {
   const [theme, setTheme] = useState('light')
   const [featureTheme, setFeatureTheme] = useState('feature-light')
   const [toggleSwitch, setToggleSwitch] = useState('toggle-light')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState('')
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
@@ -63,10 +63,6 @@ export default function App() {
 
   const toggleFont = (e: ChangeEvent<HTMLSelectElement>) => {
     setFont(e.target.value)
-  }
-
-  const handleLogin = () => {
-    setIsLoggedIn(!isLoggedIn)
   }
 
   return (
@@ -88,10 +84,10 @@ export default function App() {
             theme,
             featureTheme,
             toggleTheme: toggleSwitch,
-            isLoggedIn,
+            user,
+            setUser,
             setFont: toggleFont,
             setTheme: toggleTheme,
-            setLogin: handleLogin,
           }}
         >
           <Outlet />

@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
 import Stack from '@mui/material/Stack'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 export default function DropdownMenu() {
   const [open, setOpen] = useState(false)
@@ -94,16 +95,30 @@ export default function DropdownMenu() {
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList
-                    autoFocusItem={open}
-                    id='composition-menu'
-                    aria-labelledby='composition-button'
-                    onKeyDown={handleListKeyDown}
-                  >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                  </MenuList>
+                  <div className='overflow-hidden'>
+                    <MenuList
+                      autoFocusItem={open}
+                      id='composition-menu'
+                      aria-labelledby='composition-button'
+                      onKeyDown={handleListKeyDown}
+                      className={`rounded-sm ${
+                        theme === 'light'
+                          ? 'bg-white text-black'
+                          : 'bg-secondary.black text-white'
+                      }`}
+                    >
+                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleClose}>My Words</MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <span className='mr-auto'>Logout</span>
+                        <LogoutIcon
+                          sx={{
+                            fontSize: 'medium',
+                          }}
+                        />
+                      </MenuItem>
+                    </MenuList>
+                  </div>
                 </ClickAwayListener>
               </Paper>
             </Grow>

@@ -78,10 +78,8 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default function Index() {
   const [randomWord, setRandomWord] = useState('')
-  const { font, theme } = useContext(Context)
+  const { font, theme, setUser } = useContext(Context)
   const { leaderboard, loggedInUser, user } = useLoaderData<typeof loader>()
-
-  console.log(typeof loggedInUser)
 
   useEffect(() => {
     const fetchRandomWord = async () => {
@@ -90,6 +88,10 @@ export default function Index() {
     }
     fetchRandomWord()
   }, [])
+
+  if (loggedInUser) {
+    setUser(user?.username)
+  }
 
   const actionForm = ({ word, votes }: LeaderBoardType) => {
     return (
@@ -105,7 +107,7 @@ export default function Index() {
 
   return (
     <>
-      <Nav loggedInUser={loggedInUser} username={user?.username} />
+      <Nav />
       <main
         className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >

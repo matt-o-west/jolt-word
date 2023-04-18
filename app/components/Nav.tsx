@@ -4,25 +4,11 @@ import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
-type LoggedInUser = {
-  username: string | undefined
-  loggedInUser: string | null
-}
-
-const Nav = ({ username, loggedInUser }: LoggedInUser) => {
-  const {
-    font,
-    theme,
-    featureTheme,
-    toggleTheme,
-    setFont,
-    setTheme,
-    setLogin,
-  } = useContext(Context)
+const Nav = () => {
+  const { font, theme, featureTheme, toggleTheme, user, setFont, setTheme } =
+    useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
-
-  console.log(loggedInUser, username)
 
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -48,13 +34,10 @@ const Nav = ({ username, loggedInUser }: LoggedInUser) => {
     }
   }
 
-  const userButton = loggedInUser ? (
+  const userButton = user ? (
     <DropdownMenu />
   ) : (
-    <button
-      className='bg-gray text-primary.black rounded-md px-2 py-1 ml-2 hover:bg-background'
-      onClick={setLogin}
-    >
+    <button className='bg-gray text-primary.black rounded-md px-2 py-1 ml-2 hover:bg-background'>
       <Link to='/login'>Log In</Link>
     </button>
   )
