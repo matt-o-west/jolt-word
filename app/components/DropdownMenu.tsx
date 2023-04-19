@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import { Context } from '~/root'
+import { Form } from '@remix-run/react'
 import Button from '@mui/material/Button'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import Grow from '@mui/material/Grow'
@@ -110,12 +111,16 @@ export default function DropdownMenu() {
                       <MenuItem onClick={handleClose}>Profile</MenuItem>
                       <MenuItem onClick={handleClose}>My Words</MenuItem>
                       <MenuItem onClick={handleClose}>
-                        <span className='mr-auto'>Logout</span>
-                        <LogoutIcon
-                          sx={{
-                            fontSize: 'medium',
-                          }}
-                        />
+                        <Form action='/logout' method='post'>
+                          <button type='submit' className='mr-4'>
+                            Logout
+                          </button>
+                          <LogoutIcon
+                            sx={{
+                              fontSize: 'medium',
+                            }}
+                          />
+                        </Form>
                       </MenuItem>
                     </MenuList>
                   </div>

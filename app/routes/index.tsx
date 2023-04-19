@@ -89,9 +89,11 @@ export default function Index() {
     fetchRandomWord()
   }, [])
 
-  if (loggedInUser) {
-    setUser(user?.username)
-  }
+  useEffect(() => {
+    if (loggedInUser && (user?.username || user?.username === '')) {
+      setUser(user?.username)
+    }
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const actionForm = ({ word, votes }: LeaderBoardType) => {
     return (
@@ -102,6 +104,17 @@ export default function Index() {
           Submit
         </button>
       </Form>
+    )
+  }
+
+  const LogoutForm = (component: JSX.Element) => {
+    return (
+      <form action='/logout' method='post'>
+        {component}
+        <button type='submit' className='hidden'>
+          Logout
+        </button>
+      </form>
     )
   }
 
