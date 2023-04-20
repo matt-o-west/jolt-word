@@ -28,6 +28,7 @@ interface ContextType {
   featureTheme: string
   toggleTheme: string
   isLoggedIn: boolean
+  user: string
   setUser: (user: string) => void
   setFont: (font: string) => void
   setTheme: (theme: string) => void
@@ -39,6 +40,7 @@ export const Context = createContext<ContextType>({
   featureTheme: 'feature-light',
   toggleTheme: 'toggle-light',
   isLoggedIn: false,
+  user: '',
   setUser: () => {},
   setFont: () => {},
   setTheme: () => {},

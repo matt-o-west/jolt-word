@@ -92,6 +92,8 @@ export default function Index() {
   useEffect(() => {
     if (loggedInUser && (user?.username || user?.username === '')) {
       setUser(user?.username)
+    } else {
+      setUser('') // or setUser('');
     }
   }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -104,17 +106,6 @@ export default function Index() {
           Submit
         </button>
       </Form>
-    )
-  }
-
-  const LogoutForm = (component: JSX.Element) => {
-    return (
-      <form action='/logout' method='post'>
-        {component}
-        <button type='submit' className='hidden'>
-          Logout
-        </button>
-      </form>
     )
   }
 
