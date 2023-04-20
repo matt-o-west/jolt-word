@@ -4,7 +4,7 @@ import { Context } from '~/root'
 import { json, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
-import generateRandomWord from '~/utils/generateRandomWord'
+import generateRandomWord from '~/utils/generateRandomWord.server'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
 import ClickableIcon from '~/components/BoltIcon'
@@ -32,7 +32,9 @@ export const loader = async ({ request }: LoaderArgs) => {
       })
     : null
 
-  return json({ leaderboard, loggedInUser, user })
+  const randomWord = await generateRandomWord()
+
+  return json({ leaderboard, loggedInUser, user, randomWord })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -77,17 +79,9 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 export default function Index() {
-  const [randomWord, setRandomWord] = useState('')
   const { font, theme, setUser } = useContext(Context)
-  const { leaderboard, loggedInUser, user } = useLoaderData<typeof loader>()
-
-  useEffect(() => {
-    const fetchRandomWord = async () => {
-      const word = await generateRandomWord()
-      setRandomWord(word)
-    }
-    fetchRandomWord()
-  }, [])
+  const { leaderboard, loggedInUser, user, randomWord } =
+    useLoaderData<typeof loader>()
 
   useEffect(() => {
     if (loggedInUser && (user?.username || user?.username === '')) {

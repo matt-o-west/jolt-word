@@ -1,3 +1,4 @@
+import { db } from 'prisma/db.server'
 // remove below client-side code, replace with loaders to server-side code
 
 const options = {
@@ -33,10 +34,25 @@ export async function getWord(searchTerm: string) {
   return word
 }
 
+const startOfToday = new Date(new Date().setUTCHours(0, 0, 0, 0))
+
+async function storeRandomWord(word: string) {
+  const existingWord = await db.randomWord.findFirst({
+    where: { createdAt: { gte: startOfToday } },
+  })
+
+  if (!existingWord) {
+    await db.randomWord.create({ data: { word } })
+  }
+}
+
 async function generateRandomWord(): Promise<string> {
-  const storedWord = localStorage.getItem('word')
-  if (storedWord) {
-    return storedWord
+  const existingWord = await db.randomWord.findFirst({
+    where: { createdAt: { gte: startOfToday } },
+  })
+
+  if (existingWord) {
+    return existingWord.word
   }
 
   const word = await getRandomWord()
@@ -45,18 +61,8 @@ async function generateRandomWord(): Promise<string> {
   const definition = await getWord(word)
 
   if (definition !== undefined) {
-    // If the definition is found, return the word
-    const now = new Date()
-    const midnight = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + 1
-    )
-    const timeToMidnight = midnight.getTime() - now.getTime()
-    localStorage.setItem('word', word)
-    setTimeout(() => {
-      localStorage.removeItem('word')
-    }, timeToMidnight)
+    // If the definition is found, store the word in the database
+    await storeRandomWord(word)
     return word
   } else {
     // If the definition is not found, call the function again recursively
