@@ -9,7 +9,7 @@ import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
 import ClickableIcon from '~/components/BoltIcon'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
-import { requireUserId } from '~/utils/session.server'
+import { requireUserId, getUserId } from '~/utils/session.server'
 
 import { db } from 'prisma/db.server'
 
@@ -33,6 +33,15 @@ export const loader = async ({ request }: LoaderArgs) => {
     : null
 
   const randomWord = await generateRandomWord()
+
+  if (user) {
+    const userWords = await db.userWord.findMany({
+      where: {
+        user,
+      },
+    })
+    return json({ loggedInUser, userWords, leaderboard, user, randomWord })
+  }
 
   return json({ leaderboard, loggedInUser, user, randomWord })
 }
@@ -80,8 +89,10 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default function Index() {
   const { font, theme, setUser } = useContext(Context)
-  const { leaderboard, loggedInUser, user, randomWord } =
+  const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
+
+  console.log(userWords)
 
   useEffect(() => {
     if (loggedInUser && (user?.username || user?.username === '')) {
