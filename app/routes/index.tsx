@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect, useContext } from 'react'
 import { Link, Form } from '@remix-run/react'
 import { Context } from '~/root'
 import { json, redirect } from '@remix-run/node'
@@ -87,7 +87,7 @@ export default function Index() {
     if (loggedInUser && (user?.username || user?.username === '')) {
       setUser(user?.username)
     } else {
-      setUser('') // or setUser('');
+      setUser('')
     }
   }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 

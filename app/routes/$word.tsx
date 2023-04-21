@@ -11,6 +11,7 @@ import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
 import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import { db } from 'prisma/db.server'
+import { getUserId } from '~/utils/session.server'
 
 export interface Definition {
   date: string
@@ -73,6 +74,8 @@ export const action = async ({ request }: ActionArgs) => {
       word: word as string,
     },
   })
+  const userId = await getUserId(request)
+  let wordId: string
 
   if (existingWord) {
     // If the word exists, update its vote count
@@ -87,6 +90,7 @@ export const action = async ({ request }: ActionArgs) => {
       },
     })
     console.log(updatedVote)
+    wordId = updatedVote.id
   } else {
     // If the word doesn't exist, create a new record with a single vote
     const addedVote = await db.word.create({
@@ -96,6 +100,16 @@ export const action = async ({ request }: ActionArgs) => {
       },
     })
     console.log(addedVote)
+    wordId = addedVote.id
+  }
+
+  if (userId) {
+    await db.userWord.create({
+      data: {
+        userId,
+        wordId,
+      },
+    })
   }
 
   return null
