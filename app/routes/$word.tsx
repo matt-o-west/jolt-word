@@ -11,7 +11,7 @@ import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
 import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import { db } from 'prisma/db.server'
-import { getUserId } from '~/utils/session.server'
+import { requireUserId } from '~/utils/session.server'
 
 export interface Definition {
   date: string
@@ -74,7 +74,7 @@ export const action = async ({ request }: ActionArgs) => {
       word: word as string,
     },
   })
-  const userId = await getUserId(request)
+
   let wordId: string
 
   if (existingWord) {
@@ -103,13 +103,40 @@ export const action = async ({ request }: ActionArgs) => {
     wordId = addedVote.id
   }
 
+  const userId = await requireUserId(request)
+  console.log(userId)
+
   if (userId) {
-    await db.userWord.create({
-      data: {
-        userId,
-        wordId,
+    console.log('Checking for existing userWord:', userId, wordId)
+    const userWord = await db.userWord.findUnique({
+      where: {
+        userId_wordId: {
+          userId,
+          wordId,
+        },
       },
     })
+
+    const userWords = await db.userWord.findMany({
+      where: {
+        userId,
+      },
+    })
+
+    if (!userWord) {
+      console.log('Creating userWord:', userId, wordId)
+      console.log('Existing user words:', userWords)
+      try {
+        await db.userWord.create({
+          data: {
+            userId,
+            wordId,
+          },
+        })
+      } catch (error) {
+        console.error('Error creating userWord:', error)
+      }
+    }
   }
 
   return null
