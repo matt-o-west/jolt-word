@@ -39,8 +39,15 @@ export const loader = async ({ request }: LoaderArgs) => {
       where: {
         user,
       },
+      include: {
+        word: true,
+      },
     })
-    return json({ loggedInUser, userWords, leaderboard, user, randomWord })
+
+    if (userWords.length === 0) {
+      return json({ loggedInUser, userWords, leaderboard, user, randomWord })
+    }
+    return json({ loggedInUser, leaderboard, user, randomWord })
   }
 
   return json({ leaderboard, loggedInUser, user, randomWord })

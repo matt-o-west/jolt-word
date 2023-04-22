@@ -52,20 +52,24 @@ async function generateRandomWord(): Promise<string> {
   })
 
   if (existingWord) {
-    return existingWord.word
+    const checkWord = await getWord(existingWord.word)
+    if (checkWord && checkWord[0] && checkWord[0].meta) {
+      return existingWord.word
+    } else {
+      await db.randomWord.delete({ where: { id: existingWord.id } })
+      return generateRandomWord()
+    }
   }
 
   const word = await getRandomWord()
-
-  // Check if the word is valid by looking up its definition
   const definition = await getWord(word)
 
-  if (definition !== undefined) {
-    // If the definition is found, store the word in the database
+  if (definition && definition[0] && definition[0].meta) {
+    // If the definition is found and it has a 'meta' property, store the word in the database
     await storeRandomWord(word)
     return word
   } else {
-    // If the definition is not found, call the function again recursively
+    // If the definition is not found or doesn't have a 'meta' property, call the function again recursively
     return generateRandomWord()
   }
 }
