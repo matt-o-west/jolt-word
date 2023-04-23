@@ -4,7 +4,8 @@ import type { LeaderBoardType } from './LeaderBoard'
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
 export type WordProps = {
-  rank: number
+  rank?: number | undefined
+  ranked?: boolean | undefined
   word: string
   votes: number
   actionForm: ActionFormFunction
@@ -21,14 +22,26 @@ const getRankColor = (rank: number) => {
   return colors[rank - 1]
 }
 
-const BoardCard = ({ rank, word, votes, actionForm }: WordProps) => {
-  const rankColor = getRankColor(rank)
+const BoardCard = ({
+  rank = 0,
+  ranked = false,
+  word,
+  votes,
+  actionForm,
+}: WordProps) => {
+  const rankColor = ranked ? getRankColor(rank) : false
+
+  const notRanked = 'bg-tertiary.gray border-b-2 border-gray'
 
   return (
     <div
-      className={`flex py-2 px-4 items-center rounded-sm text-2xl ${rankColor} w-full`}
+      className={`flex py-2 px-4 items-center rounded-sm text-2xl ${
+        rankColor || notRanked
+      } w-48`}
     >
-      <span className='font-subhead text-3xl mx-2 mr-6'>{rank}</span>
+      <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
+        {rank}
+      </span>
       <span className='mx-2'>{word}</span>
       <div className='ml-auto'>{actionForm({ word, votes })}</div>
     </div>

@@ -9,7 +9,7 @@ import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
 import ClickableIcon from '~/components/BoltIcon'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
-import { requireUserId, getUserId } from '~/utils/session.server'
+import { requireUserId } from '~/utils/session.server'
 
 import { db } from 'prisma/db.server'
 
@@ -47,10 +47,10 @@ export const loader = async ({ request }: LoaderArgs) => {
     if (userWords.length === 0) {
       return json({ loggedInUser, userWords, leaderboard, user, randomWord })
     }
-    return json({ loggedInUser, leaderboard, user, randomWord })
+    return json({ loggedInUser, userWords, leaderboard, user, randomWord })
   }
 
-  return json({ leaderboard, loggedInUser, user, randomWord })
+  return json({ leaderboard, loggedInUser, user, randomWord, userWords: [] })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -121,6 +121,13 @@ export default function Index() {
     )
   }
 
+  const wordData = userWords.map((word) => {
+    return {
+      word: word.word.word,
+      votes: word.word.votes,
+    }
+  })
+
   return (
     <>
       <Nav />
@@ -137,7 +144,14 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-        <LeaderBoard data={leaderboard} actionForm={actionForm} />
+        <div className='grid grid-cols-2'>
+          <LeaderBoard
+            data={leaderboard}
+            actionForm={actionForm}
+            ranked={true}
+          />
+          <LeaderBoard data={wordData} actionForm={actionForm} ranked={false} />
+        </div>
       </main>
     </>
   )
