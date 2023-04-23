@@ -29,7 +29,7 @@ const BoardCard = ({
   votes,
   actionForm,
 }: WordProps) => {
-  const rankColor = ranked ? getRankColor(rank) : false
+  const rankColor = getRankColor(rank)
 
   const notRanked = 'bg-tertiary.gray border-b-2 border-gray'
 
@@ -37,7 +37,7 @@ const BoardCard = ({
     <div
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${
         rankColor || notRanked
-      } w-[235px]`}
+      } w-[235px] h-[62px]`}
     >
       <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
         {rank}
