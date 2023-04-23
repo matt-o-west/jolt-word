@@ -150,10 +150,20 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-        <LeaderBoard data={leaderboard} actionForm={actionForm} ranked={true} />
-        {loggedInUser && (
-          <LeaderBoard data={wordData} actionForm={actionForm} ranked={false} />
-        )}
+        <div className='grid grid-cols-2 gap-10'>
+          <LeaderBoard
+            data={leaderboard}
+            actionForm={actionForm}
+            ranked={true}
+          />
+          {loggedInUser && (
+            <LeaderBoard
+              data={wordData}
+              actionForm={actionForm}
+              ranked={false}
+            />
+          )}
+        </div>
       </main>
     </>
   )
