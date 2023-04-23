@@ -39,6 +39,12 @@ export const loader = async ({ request }: LoaderArgs) => {
       where: {
         user,
       },
+      orderBy: {
+        word: {
+          votes: 'desc',
+        },
+      },
+      take: 5,
       include: {
         word: true,
       },
@@ -144,14 +150,10 @@ export default function Index() {
             {randomWord}
           </Link>
         ) || 'sorry, we ran out of words'}
-        <div className='grid grid-cols-2'>
-          <LeaderBoard
-            data={leaderboard}
-            actionForm={actionForm}
-            ranked={true}
-          />
+        <LeaderBoard data={leaderboard} actionForm={actionForm} ranked={true} />
+        {loggedInUser && (
           <LeaderBoard data={wordData} actionForm={actionForm} ranked={false} />
-        </div>
+        )}
       </main>
     </>
   )

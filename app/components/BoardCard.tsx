@@ -37,7 +37,7 @@ const BoardCard = ({
     <div
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${
         rankColor || notRanked
-      } w-48`}
+      } w-[235px]`}
     >
       <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
         {rank}
