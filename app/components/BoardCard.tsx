@@ -22,13 +22,7 @@ const getRankColor = (rank: number) => {
   return colors[rank - 1]
 }
 
-const BoardCard = ({
-  rank = 0,
-  ranked = false,
-  word,
-  votes,
-  actionForm,
-}: WordProps) => {
+const BoardCard = ({ rank = 0, word, votes, actionForm }: WordProps) => {
   const rankColor = getRankColor(rank)
 
   const notRanked = 'bg-tertiary.gray border-b-2 border-gray'

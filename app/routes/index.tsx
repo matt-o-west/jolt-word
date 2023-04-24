@@ -1,16 +1,18 @@
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import { Link, Form } from '@remix-run/react'
-import { Context } from '~/root'
-import { json, redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { json, redirect } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
-import generateRandomWord from '~/utils/generateRandomWord.server'
-import Nav from '~/components/Nav'
-import LeaderBoard from '~/components/LeaderBoard'
-import ClickableIcon from '~/components/BoltIcon'
+import { Context } from '~/root'
 import DescriptionPane from '~/components/DescriptionPane'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
+import Nav from '~/components/Nav'
+import LeaderBoard from '~/components/LeaderBoard'
 import { requireUserId } from '~/utils/session.server'
+import generateRandomWord from '~/utils/generateRandomWord.server'
+import ClickableIcon from '~/components/BoltIcon'
+import LeaderboardIcon from '@mui/icons-material/Leaderboard'
+import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 
 import { db } from 'prisma/db.server'
 
@@ -105,6 +107,7 @@ export default function Index() {
   const { font, theme, setUser } = useContext(Context)
   const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
+  const [showLeaderBoard, setShowLeaderBoard] = useState(true)
 
   console.log(userWords)
 
@@ -155,18 +158,56 @@ export default function Index() {
           </span>
         </div>
 
-        <div className='grid grid-cols-2 gap-10'>
-          <LeaderBoard
-            data={leaderboard}
-            actionForm={actionForm}
-            ranked={true}
-          />
-          {loggedInUser && (
+        <div className='flex justify-between w-full mt-12'>
+          <h1
+            onClick={() => setShowLeaderBoard(true)}
+            className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
+          >
+            <span className='flex items-center'>
+              <LeaderboardIcon />
+              LEADERBOARD
+            </span>
+          </h1>
+          <h1
+            onClick={() => setShowLeaderBoard(false)}
+            className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
+          >
+            <span className='flex items-center'>
+              <SavedSearchIcon />
+              MY WORDS
+            </span>
+          </h1>
+        </div>
+        <div className='relative min-h-[450px]'>
+          <div
+            className='absolute w-full'
+            style={{
+              zIndex: showLeaderBoard ? 1 : 0,
+              top: showLeaderBoard ? 0 : '10px',
+              left: showLeaderBoard ? 0 : '10px',
+            }}
+          >
             <LeaderBoard
-              data={wordData}
+              data={leaderboard}
               actionForm={actionForm}
-              ranked={false}
+              ranked={true}
             />
+          </div>
+          {loggedInUser && (
+            <div
+              className='absolute w-full'
+              style={{
+                zIndex: !showLeaderBoard ? 1 : 0,
+                top: showLeaderBoard ? '10px' : 0,
+                left: showLeaderBoard ? '10px' : 0,
+              }}
+            >
+              <LeaderBoard
+                data={wordData}
+                actionForm={actionForm}
+                ranked={false}
+              />
+            </div>
           )}
         </div>
         <DescriptionPane />
