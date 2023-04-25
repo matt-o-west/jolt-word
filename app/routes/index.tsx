@@ -227,14 +227,14 @@ export default function Index() {
             <div className='absolute bottom-24 left-12 inset-0 flex items-center justify-center'>
               <span className='text-5xl font-bold text-green-500'>1</span>
             </div>
-            <span className='text-green-500'>JOLT</span>
+            <span className='text-green-500'>JOLT +</span>
           </div>
           <div className='relative flex flex-col w-1/3 items-center col-span-2 row-span-1 font-bold ml-14'>
             <img src='/images/icons-meter.png' alt='voltmeter' />
             <div className='absolute bottom-24 left-12 inset-0 flex items-center justify-center'>
               <span className='text-5xl font-bold text-red'>1</span>
             </div>
-            <span className='text-red'>LEECH</span>
+            <span className='text-red'>LEECH –</span>
           </div>
         </div>
         <DescriptionPane />
