@@ -31,7 +31,7 @@ const BoardCard = ({ rank = 0, word, votes, actionForm }: WordProps) => {
     <div
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${
         rankColor || notRanked
-      } w-[235px] h-[62px]`}
+      } w-[335px] h-[62px]`}
     >
       <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
         {rank}

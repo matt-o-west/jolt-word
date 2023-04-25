@@ -157,58 +157,71 @@ export default function Index() {
             Random Word of the Day
           </span>
         </div>
-
-        <div className='flex justify-between w-full mt-12'>
-          <h1
-            onClick={() => setShowLeaderBoard(true)}
-            className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
-          >
-            <span className='flex items-center'>
-              <LeaderboardIcon />
-              LEADERBOARD
-            </span>
-          </h1>
-          <h1
-            onClick={() => setShowLeaderBoard(false)}
-            className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
-          >
-            <span className='flex items-center'>
-              <SavedSearchIcon />
-              MY WORDS
-            </span>
-          </h1>
-        </div>
-        <div className='relative min-h-[450px]'>
-          <div
-            className='absolute w-full'
-            style={{
-              zIndex: showLeaderBoard ? 1 : 0,
-              top: showLeaderBoard ? 0 : '10px',
-              left: showLeaderBoard ? 0 : '10px',
-            }}
-          >
-            <LeaderBoard
-              data={leaderboard}
-              actionForm={actionForm}
-              ranked={true}
-            />
-          </div>
+        <div className='grid grid-cols-5 grid-rows-2 w-full'>
           {loggedInUser && (
+            <div className='col-span-3 row-span-2'>
+              <div className='flex justify-between w-full gap-4 mt-12'>
+                <h1
+                  onClick={() => setShowLeaderBoard(true)}
+                  className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
+                >
+                  <span className='flex cursor-pointer bg-purple.100 px-4 py-1 rounded-md italic'>
+                    <span className='pr-2'>
+                      <LeaderboardIcon />
+                    </span>
+                    Leaderboard
+                  </span>
+                </h1>
+
+                <h1
+                  onClick={() => setShowLeaderBoard(false)}
+                  className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
+                >
+                  <span className='flex cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic'>
+                    <SavedSearchIcon />
+                    <span className='pl-2'>My Words</span>
+                  </span>
+                </h1>
+              </div>
+            </div>
+          )}
+
+          <div
+            className={`relative min-h-[450px] col-span-3 row-span-2 ${
+              !loggedInUser && 'mt-16'
+            }`}
+          >
             <div
               className='absolute w-full'
               style={{
-                zIndex: !showLeaderBoard ? 1 : 0,
-                top: showLeaderBoard ? '10px' : 0,
-                left: showLeaderBoard ? '10px' : 0,
+                zIndex: showLeaderBoard ? 1 : 0,
+                top: showLeaderBoard ? 0 : '10px',
+                left: showLeaderBoard ? 0 : '10px',
               }}
             >
               <LeaderBoard
-                data={wordData}
+                data={leaderboard}
                 actionForm={actionForm}
-                ranked={false}
+                ranked={true}
               />
             </div>
-          )}
+            {loggedInUser && (
+              <div
+                className='absolute w-full'
+                style={{
+                  zIndex: !showLeaderBoard ? 1 : 0,
+                  top: showLeaderBoard ? '10px' : 0,
+                  left: showLeaderBoard ? '10px' : 0,
+                }}
+              >
+                <LeaderBoard
+                  data={wordData}
+                  actionForm={actionForm}
+                  ranked={false}
+                />
+              </div>
+            )}
+          </div>
         </div>
         <DescriptionPane />
       </main>
