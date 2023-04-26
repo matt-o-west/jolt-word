@@ -13,6 +13,7 @@ import generateRandomWord from '~/utils/generateRandomWord.server'
 import ClickableIcon from '~/components/BoltIcon'
 import LeaderboardIcon from '@mui/icons-material/Leaderboard'
 import SavedSearchIcon from '@mui/icons-material/SavedSearch'
+import ShowMoreChip from '~/components/ShowMoreChip'
 
 import { db } from 'prisma/db.server'
 
@@ -214,27 +215,31 @@ export default function Index() {
                   left: showLeaderBoard ? '10px' : 0,
                 }}
               >
-                <LeaderBoard
-                  data={wordData}
-                  actionForm={actionForm}
-                  ranked={false}
-                />
+                <div className='relative'>
+                  <LeaderBoard
+                    data={wordData}
+                    actionForm={actionForm}
+                    ranked={false}
+                  />
+
+                  <ShowMoreChip />
+                </div>
               </div>
             )}
           </div>
           <div className='relative flex flex-col w-1/3 items-center col-span-2 row-span-1 font-bold ml-14'>
             <img src='/images/icons-meter.png' alt='voltmeter' />
-            <div className='absolute bottom-24 left-12 inset-0 flex items-center justify-center'>
-              <span className='text-5xl font-bold text-green-500'>1</span>
+            <div className='absolute bottom-28 left-20 inset-0 flex w-full items-center justify-center'>
+              <span className='text-5xl font-bold text-green-500'>+1</span>
             </div>
-            <span className='text-green-500'>JOLT +</span>
+            <span className='text-green-500'>JOLT</span>
           </div>
           <div className='relative flex flex-col w-1/3 items-center col-span-2 row-span-1 font-bold ml-14'>
             <img src='/images/icons-meter.png' alt='voltmeter' />
-            <div className='absolute bottom-24 left-12 inset-0 flex items-center justify-center'>
-              <span className='text-5xl font-bold text-red'>1</span>
+            <div className='absolute bottom-28 left-20 inset-0 flex w-full items-center justify-center'>
+              <span className='text-5xl font-bold text-red'>–1</span>
             </div>
-            <span className='text-red'>LEECH –</span>
+            <span className='text-red'>LEECH</span>
           </div>
         </div>
         <DescriptionPane />
