@@ -188,7 +188,7 @@ export default function Index() {
           )}
 
           <div
-            className={`relative min-h-[450px] col-span-3 row-span-2 ${
+            className={`relative min-h-[24rem] col-span-3 row-span-2 content-center ${
               !loggedInUser && 'mt-16'
             }`}
           >
@@ -227,19 +227,19 @@ export default function Index() {
               </div>
             )}
           </div>
-          <div className='relative flex flex-col w-1/3 items-center col-span-2 row-span-1 font-bold ml-14'>
-            <img src='/images/icons-meter.png' alt='voltmeter' />
-            <div className='absolute bottom-28 left-20 inset-0 flex w-full items-center justify-center'>
-              <span className='text-5xl font-bold text-green-500'>+1</span>
+          <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
+            <div className='flex items-center'>
+              <img src='/images/icons-meter.png' alt='voltmeter' />
+              <span className='text-5xl font-bold text-green-500 ml-2'>+1</span>
             </div>
-            <span className='text-green-500'>JOLT</span>
+            <span className='text-green-500 mr-16'>JOLT</span>
           </div>
-          <div className='relative flex flex-col w-1/3 items-center col-span-2 row-span-1 font-bold ml-14'>
-            <img src='/images/icons-meter.png' alt='voltmeter' />
-            <div className='absolute bottom-28 left-20 inset-0 flex w-full items-center justify-center'>
-              <span className='text-5xl font-bold text-red'>–1</span>
+          <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
+            <div className='flex items-center'>
+              <img src='/images/icons-meter.png' alt='voltmeter' />
+              <span className='text-5xl font-bold text-red ml-2'>–1</span>
             </div>
-            <span className='text-red'>LEECH</span>
+            <span className='text-red mr-16'>LEECH</span>
           </div>
         </div>
         <DescriptionPane />
