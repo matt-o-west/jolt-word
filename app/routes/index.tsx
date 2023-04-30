@@ -101,7 +101,7 @@ export const action = async ({ request }: ActionArgs) => {
     console.log(addedVote)
   }
 
-  return redirect('/')
+  return null
 }
 
 export default function Index() {

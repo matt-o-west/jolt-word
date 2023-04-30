@@ -15,6 +15,12 @@ const StyledChip = styled(Chip)`
   font-weight: bold;
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transition: opacity 0.3s;
+
+  &:hover {
+    background-color: #a445ed;
+    border-color: #a445ed;
+    color: #fff;
+  }
 `
 
 const Overlay = styled('div')`
@@ -22,7 +28,7 @@ const Overlay = styled('div')`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 500px;
+  bottom: 575px;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0) 0%,
@@ -32,7 +38,7 @@ const Overlay = styled('div')`
   transition: opacity 0.3s;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.5;
   }
 `
 
@@ -48,11 +54,8 @@ const ShowMoreChip = () => {
   }
 
   return (
-    <>
-      <Overlay
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      />
+    <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <Overlay />
       <StyledChip
         isVisible={isVisible}
         label='Show More'
@@ -60,7 +63,7 @@ const ShowMoreChip = () => {
         variant='filled'
         clickable
       />
-    </>
+    </div>
   )
 }
 
