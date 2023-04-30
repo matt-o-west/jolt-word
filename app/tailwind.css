@@ -19,7 +19,7 @@
   src: url('/fonts/inter/Inter-VariableFont_slnt,wght.ttf') format('ttf');
 }
 
-.font-face {
+@font-face {
   font-family: 'Lora', sans-serif;
   font-style: normal;
   font-weight: 400;
