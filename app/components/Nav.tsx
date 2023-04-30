@@ -93,7 +93,7 @@ const Nav = () => {
       <nav
         className={`flex flex-row justify-between items-center font-${font} text-xs p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <img src='images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
+        <img src='/images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
         <div className='flex items-center'>
           {fontSelect}
           {themeButton}
@@ -113,7 +113,7 @@ const Nav = () => {
           <div className='relative inset-y-0 right-0 flex items-center pl-2 mr-4'>
             <button type='submit'>
               <img
-                src='images/icon-search.svg'
+                src='/images/icon-search.svg'
                 alt='search'
                 className='h-4 w-4'
               />

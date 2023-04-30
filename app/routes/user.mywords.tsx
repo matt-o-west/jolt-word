@@ -1,7 +1,10 @@
 import React from 'react'
+import Nav from '~/components/Nav'
 import type { LoaderArgs } from '@remix-run/node'
 import { json } from '@remix-run/node'
 import { requireUserId, getUserId } from '~/utils/session.server'
+import { Context } from '~/root'
+import { useContext } from 'react'
 import { db } from 'prisma/db.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -30,8 +33,19 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({ loggedInUser, user })
 }
 
-const user = () => {
-  return <div>user</div>
+const MyWords = () => {
+  const { theme } = useContext(Context)
+
+  return (
+    <>
+      <Nav />
+      <main
+        className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+      >
+        <h1 className='text-2xl font-bold'>My Words</h1>
+      </main>
+    </>
+  )
 }
 
-export default user
+export default MyWords

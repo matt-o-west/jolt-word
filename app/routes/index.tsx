@@ -221,8 +221,9 @@ export default function Index() {
                     actionForm={actionForm}
                     ranked={false}
                   />
-
-                  <ShowMoreChip />
+                  <Link to='/user/mywords'>
+                    <ShowMoreChip />
+                  </Link>
                 </div>
               </div>
             )}
