@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react'
 import { Link, Form } from '@remix-run/react'
 import { useLoaderData } from '@remix-run/react'
-import { json, redirect } from '@remix-run/node'
+import { json } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
 import DescriptionPane from '~/components/DescriptionPane'
@@ -109,8 +109,6 @@ export default function Index() {
   const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
-
-  console.log(userWords)
 
   useEffect(() => {
     if (loggedInUser && (user?.username || user?.username === '')) {

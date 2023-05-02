@@ -1,5 +1,6 @@
 import React from 'react'
 import type { LeaderBoardType } from './LeaderBoard'
+import { Link } from 'react-router-dom'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
@@ -8,6 +9,7 @@ export type WordProps = {
   ranked?: boolean | undefined
   word: string
   votes: number
+  width?: string | undefined
   actionForm: ActionFormFunction
 }
 
@@ -22,7 +24,13 @@ const getRankColor = (rank: number) => {
   return colors[rank - 1]
 }
 
-const BoardCard = ({ rank = 0, word, votes, actionForm }: WordProps) => {
+const BoardCard = ({
+  rank = 0,
+  word,
+  votes,
+  width = 'w-[335px]',
+  actionForm,
+}: WordProps) => {
   const rankColor = getRankColor(rank)
 
   const notRanked = 'bg-tertiary.gray border-b-2 border-gray'
@@ -31,12 +39,14 @@ const BoardCard = ({ rank = 0, word, votes, actionForm }: WordProps) => {
     <div
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${
         rankColor || notRanked
-      } w-[335px] h-[62px]`}
+      } ${width} h-[62px]`}
     >
       <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
         {rank}
       </span>
-      <span className='mx-2'>{word}</span>
+      <span className='mx-2'>
+        <Link to={`/${word}`}>{word}</Link>
+      </span>
       <div className='ml-auto'>{actionForm({ word, votes })}</div>
     </div>
   )

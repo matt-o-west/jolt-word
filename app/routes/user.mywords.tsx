@@ -6,6 +6,11 @@ import { json } from '@remix-run/node'
 import { requireUserId, getUserId } from '~/utils/session.server'
 import { Context } from '~/root'
 import { useContext } from 'react'
+import BoardCard from '~/components/BoardCard'
+import { Form } from '@remix-run/react'
+import ClickableIcon from '~/components/BoltIcon'
+import type { LeaderBoardType } from '~/components/LeaderBoard'
+
 import { db } from 'prisma/db.server'
 
 export const loader = async ({ request }: LoaderArgs) => {
@@ -27,16 +32,44 @@ export const loader = async ({ request }: LoaderArgs) => {
       where: {
         userId,
       },
+      include: {
+        word: true,
+      },
+      orderBy: {
+        word: {
+          word: 'asc',
+        },
+      },
     })
     return json({ loggedInUser, userWords })
   }
 
-  return json({ loggedInUser, user, userWords: null })
+  return json({ loggedInUser, user, userWords: [] })
 }
 
 const MyWords = () => {
   const { theme } = useContext(Context)
   const { loggedInUser, userWords } = useLoaderData<typeof loader>()
+
+  const actionForm = ({ word, votes }: LeaderBoardType) => {
+    return (
+      <Form method='post' action=''>
+        <input type='hidden' name='word' value={word} />
+        <ClickableIcon votes={votes} />
+        <button type='submit' className='hidden'>
+          Submit
+        </button>
+      </Form>
+    )
+  }
+
+  const wordData = userWords.map((word) => {
+    return {
+      word: word.word.word,
+      votes: word.word.votes,
+      wordId: word.wordId,
+    }
+  })
 
   return (
     <>
@@ -45,17 +78,20 @@ const MyWords = () => {
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='text-2xl font-bold'>My Words</h1>
+
         {loggedInUser && userWords ? (
-          <div className='flex flex-col justify-center items-center'>
-            {userWords.map((word) => {
+          <div
+            className={`gap-x-6 justify-center items-center ${theme} mt-12 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
+          >
+            {wordData.map((word) => {
               return (
-                <div
-                  className='flex flex-col justify-center items-center'
+                <BoardCard
+                  word={word.word}
+                  votes={word.votes}
+                  width={'w-[300px]'}
+                  actionForm={actionForm}
                   key={word.wordId}
-                >
-                  <h2 className='text-xl font-bold'>{word.createdAt}</h2>
-                  <p className='text-md font-bold'>{word.wordId}</p>
-                </div>
+                />
               )
             })}
           </div>
