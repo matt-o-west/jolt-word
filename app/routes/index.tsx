@@ -156,7 +156,7 @@ export default function Index() {
             Random Word of the Day
           </span>
         </div>
-        <div className='grid grid-cols-5 grid-rows-2 w-full'>
+        <div className='w-full desktop:grid desktop:grid-cols-5 desktop:grid-rows-2 phone:flex phone:flex-col'>
           {loggedInUser && (
             <div className='col-span-3 row-span-2'>
               <div className='flex justify-between w-full gap-4 mt-12'>
