@@ -1,5 +1,7 @@
 import BoltIcon from '@mui/icons-material/Bolt'
+import { is } from 'date-fns/locale'
 import { useState, useEffect } from 'react'
+import useMobileDetect from '~/hooks/useMobileDetect'
 //import zap from 'public/sound/zap.wav' // Import your sound effect file
 
 function ClickableIcon({ votes }) {
@@ -7,6 +9,10 @@ function ClickableIcon({ votes }) {
   const [clickCount, setClickCount] = useState(0)
   const [animationClass, setAnimationClass] = useState('')
   const [audio] = useState('/sound/zap.wav')
+
+  const isMobile = useMobileDetect()
+
+  let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
   console.log(votes)
 
@@ -26,7 +32,9 @@ function ClickableIcon({ votes }) {
   return (
     <>
       <button
-        className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1`}
+        className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1 ${
+          isMobile ? 'w-8 h-8' : 'w-10 h-10'
+        }}`}
         onClick={handleClick}
         type='submit'
         style={{
@@ -34,7 +42,7 @@ function ClickableIcon({ votes }) {
           backgroundSize: `100% ${(clickCount / maxClicks) * 100}%`,
         }}
       >
-        <BoltIcon name='bolt' fontSize='large' />
+        <BoltIcon name='bolt' fontSize={fontSize} />
 
         <span className='vote-count'>{votes}</span>
       </button>

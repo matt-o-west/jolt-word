@@ -95,7 +95,7 @@ const Nav = () => {
       >
         <img src='/images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
         <div className='flex items-center'>
-          {fontSelect}
+          {/*fontSelect*/}
           {themeButton}
           {userButton}
         </div>

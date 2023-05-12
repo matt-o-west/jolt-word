@@ -7,7 +7,7 @@ const useMobileDetect = () => {
     const checkMobile = () => {
       // Ensure window is defined (this code is running on the client)
       if (typeof window !== 'undefined') {
-        setMobile(window.innerWidth <= 768)
+        setMobile(window.innerWidth <= 425)
       }
     }
 
