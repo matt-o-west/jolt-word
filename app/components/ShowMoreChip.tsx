@@ -42,7 +42,7 @@ const Overlay = styled('div')`
   }
 `
 
-const ShowMoreChip = () => {
+const ShowMoreChip = ({ isStatic = false }) => {
   const [isVisible, setIsVisible] = useState(false)
 
   const handleMouseEnter = () => {
@@ -51,6 +51,18 @@ const ShowMoreChip = () => {
 
   const handleMouseLeave = () => {
     setIsVisible(false)
+  }
+
+  if (isStatic) {
+    return (
+      <StyledChip
+        isVisible={true}
+        label='Show More'
+        color='primary'
+        variant='filled'
+        clickable
+      />
+    )
   }
 
   return (
