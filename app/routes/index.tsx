@@ -153,7 +153,7 @@ export default function Index() {
             </Link>
           ) || 'sorry, we ran out of words'}
           <span className='text-sm text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-6 -ml-4 mr-10'>
-            Random Word of the Day
+            Word of the Day
           </span>
         </div>
         <div className='w-full desktop:grid desktop:grid-cols-5 desktop:grid-rows-2 phone:flex phone:flex-col'>
