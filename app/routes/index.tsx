@@ -228,19 +228,23 @@ export default function Index() {
               </div>
             )}
           </div>
-          <div className='relative desktop:flex desktop:flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
-            <div className='flex items-center'>
-              <img src='/images/icons-meter.png' alt='voltmeter' />
-              <span className='text-5xl font-bold text-green-500 ml-2'>+1</span>
+          <div className='flex desktop:flex-col tablet:flex-row phone:flex-row items-center justify-center desktop:space-x-6 mb-10'>
+            <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
+              <div className='flex items-center flex-row'>
+                <img src='/images/icons-meter.png' alt='voltmeter' />
+                <span className='text-5xl font-bold text-green-500 ml-2'>
+                  +1
+                </span>
+              </div>
+              <span className='text-green-500'>JOLT</span>
             </div>
-            <span className='text-green-500 mr-16'>JOLT</span>
-          </div>
-          <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
-            <div className='flex items-center'>
-              <img src='/images/icons-meter.png' alt='voltmeter' />
-              <span className='text-5xl font-bold text-red ml-2'>–1</span>
+            <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
+              <div className='flex items-center'>
+                <img src='/images/icons-meter.png' alt='voltmeter' />
+                <span className='text-5xl font-bold text-red ml-2'>–1</span>
+              </div>
+              <span className='text-red mr-16'>LEECH</span>
             </div>
-            <span className='text-red mr-16'>LEECH</span>
           </div>
         </div>
         <DescriptionPane />
