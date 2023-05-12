@@ -202,7 +202,7 @@ const Word = () => {
           <h1 className='self-center tablet:text-5xl phone:text-3xl font-bold tracking-wide'>
             {word}
           </h1>
-          <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-4 ml-2'>
+          <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2'>
             <Form method='post' action={`/${word}`}>
               <input type='hidden' name='word' value={word} />
               <ClickableIcon votes={data.votes} />

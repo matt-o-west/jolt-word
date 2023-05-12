@@ -32,7 +32,7 @@ function ClickableIcon({ votes }) {
   return (
     <>
       <button
-        className={`icon ${animationClass} cursor-pointer ml-auto relative mb-1 ${
+        className={`icon ${animationClass} cursor-pointer ml-auto relative tablet:mb-1 phone:mb-4 ${
           isMobile ? 'w-8 h-8' : 'w-10 h-10'
         }}`}
         onClick={handleClick}
