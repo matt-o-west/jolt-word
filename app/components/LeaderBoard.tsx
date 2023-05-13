@@ -1,17 +1,13 @@
 import React from 'react'
 import BoardCard from './BoardCard'
-import { useContext } from 'react'
-import { Context } from '~/root'
 //import type { WordProps } from './BoardCard'
-
-import { SavedSearch } from '@mui/icons-material'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
 export type LeaderBoardType = {
   id?: number
   word: string
-  votes: number
+  votes?: number
   wordData?: {
     id: number
     word: string
@@ -26,8 +22,6 @@ export type DataProps = {
 }
 
 const LeaderBoard = ({ data, actionForm, ranked }: DataProps) => {
-  const { featureTheme } = useContext(Context)
-
   return (
     <div className='flex flex-col items-center text-black min-h-screen w-full py-2 mt-2 text-center sm:py-0'>
       {data &&
@@ -38,6 +32,7 @@ const LeaderBoard = ({ data, actionForm, ranked }: DataProps) => {
               <BoardCard
                 votes={votes}
                 word={actualWord}
+                myWords={false}
                 rank={ranked ? index + 1 : 0}
                 key={id}
                 actionForm={actionForm}

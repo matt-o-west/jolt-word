@@ -3,8 +3,6 @@ import type { LeaderBoardType } from './LeaderBoard'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { Context } from '~/root'
-import { styled } from '@mui/system'
-import ClearIcon from '@mui/icons-material/Clear'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
@@ -12,22 +10,12 @@ export type WordProps = {
   rank?: number | undefined
   ranked?: boolean | undefined
   word: string
-  votes: number
+  votes?: number
   myWords: boolean
   width?: string | undefined
   actionForm: ActionFormFunction
   deleteForm?: ActionFormFunction
 }
-
-const ClearWord = styled(ClearIcon)({
-  color: 'red',
-  cursor: 'pointer',
-  margin: '0.2rem 1rem 0 0',
-  transition: 'transform 0.06s ease-in-out',
-  '&:hover': {
-    transform: 'scale(1.2)',
-  },
-})
 
 const getRankColor = (rank: number) => {
   const colors = [
@@ -63,7 +51,7 @@ const BoardCard = ({
       <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
         {rank}
       </span>
-      {myWords && <ClearWord />}
+      {myWords && deleteForm && deleteForm({ word })}
       <span className='mx-2'>
         <Link to={`/${word}`}>{word}</Link>
       </span>

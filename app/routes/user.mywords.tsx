@@ -9,9 +9,21 @@ import { useContext } from 'react'
 import BoardCard from '~/components/BoardCard'
 import { Form } from '@remix-run/react'
 import ClickableIcon from '~/components/BoltIcon'
+import { styled } from '@mui/system'
+import ClearIcon from '@mui/icons-material/Clear'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
 
 import { db } from 'prisma/db.server'
+
+const ClearWord = styled(ClearIcon)({
+  color: 'red',
+  cursor: 'pointer',
+  margin: '0.2rem 1rem 0 0',
+  transition: 'transform 0.06s ease-in-out',
+  '&:hover': {
+    transform: 'scale(1.2)',
+  },
+})
 
 export const loader = async ({ request }: LoaderArgs) => {
   const redirectTo = '/login'
@@ -50,6 +62,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
   const word = form.get('word')
+  const actionType = form.get('action')
 
   if (typeof word !== 'string' || word === null) {
     return badRequest({
@@ -94,7 +107,18 @@ export const action = async ({ request }: ActionArgs) => {
     },
   })
 
-  if (wordExists) {
+  if (!wordExists) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: {
+        message: "Word not found in user's saved words.",
+        timestamp: Date.now().toString(),
+      },
+    })
+  }
+
+  if (actionType === 'delete') {
     await db.userWord.delete({
       where: {
         userId_wordId: {
@@ -105,13 +129,15 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
-  if (!wordExists) {
-    return badRequest({
-      fieldErrors: null,
-      fields: null,
-      formError: {
-        message: "Word not found in user's saved words.",
-        timestamp: Date.now().toString(),
+  if (actionType === 'vote') {
+    await db.word.update({
+      where: {
+        id: wordId,
+      },
+      data: {
+        votes: {
+          increment: 1,
+        },
       },
     })
   }
@@ -126,8 +152,9 @@ const MyWords = () => {
   const actionForm = ({ word, votes }: LeaderBoardType) => {
     return (
       <Form method='post' action=''>
+        <input type='hidden' name='action' value='vote' />
         <input type='hidden' name='word' value={word} />
-        < />
+        <ClickableIcon votes={votes} />
         <button type='submit' className='hidden'>
           Submit
         </button>
@@ -135,15 +162,18 @@ const MyWords = () => {
     )
   }
 
-  const deleteForm = ({ word, votes }: LeaderBoardType) => {
+  const deleteForm = ({ word }: LeaderBoardType) => {
     return (
-      <Form method='post' action='/mywords'>
-          <input type='hidden' name='action' value='delete' />
+      <Form method='post' action=''>
+        <input type='hidden' name='action' value='delete' />
         <input type='hidden' name='word' value={word} />
-        <ClickableIcon votes={votes} />
-        <button type='submit' className='hidden'>
-          Submit
-        </button>
+        <div className='relative'>
+          <ClearWord />
+          <button
+            type='submit'
+            className='absolute inset-0 w-full h-full opacity-0'
+          />
+        </div>
       </Form>
     )
   }
