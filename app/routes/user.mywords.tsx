@@ -171,7 +171,7 @@ const MyWords = () => {
           <ClearWord />
           <button
             type='submit'
-            className='absolute inset-0 w-full h-full opacity-0'
+            className='absolute inset-0 w-full h-full opacity-0 hover:scale-110'
           />
         </div>
       </Form>
