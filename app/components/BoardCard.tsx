@@ -16,6 +16,7 @@ export type WordProps = {
   myWords: boolean
   width?: string | undefined
   actionForm: ActionFormFunction
+  deleteForm?: ActionFormFunction
 }
 
 const ClearWord = styled(ClearIcon)({
@@ -46,6 +47,7 @@ const BoardCard = ({
   width = 'w-[335px]',
   myWords = false,
   actionForm,
+  deleteForm,
 }: WordProps) => {
   const { featureTheme } = useContext(Context)
   const rankColor = getRankColor(rank)
