@@ -226,7 +226,10 @@ export default function Index() {
                     ranked={false}
                   />
                   <Link to='/user/mywords'>
-                    <ShowMoreChip isStatic={isMobile} />
+                    <ShowMoreChip
+                      isStatic={isMobile}
+                      isDarkMode={featureTheme === 'feature-dark'}
+                    />
                   </Link>
                 </div>
               </div>

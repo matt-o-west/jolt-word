@@ -2,47 +2,46 @@ import Chip from '@mui/material/Chip'
 import { styled } from '@mui/system'
 import { useState } from 'react'
 
-const StyledChip = styled(Chip)`
-  position: absolute;
-  top: 19rem;
-  right: 6rem;
-  bottom: ${({ theme }) => theme.spacing(1)};
-  left: 7rem;
-  z-index: 1;
-  background-color: #fff;
-  border: 1px solid #a445ed;
-  color: #a445ed;
-  font-weight: bold;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-  transition: opacity 0.3s;
+const StyledChip = styled(Chip)(({ theme, isDarkMode, isVisible }) => ({
+  position: 'absolute',
+  top: '19rem',
+  right: '6rem',
+  bottom: theme.spacing(1),
+  left: '7rem',
+  zIndex: 1,
+  backgroundColor: isDarkMode ? '#3a3a3a' : '#fff',
+  border: `1px solid ${isDarkMode ? '#e9e9e9' : '#a445ed'}`,
+  color: isDarkMode ? '#e9e9e9' : '#a445ed',
+  fontWeight: 'bold',
+  opacity: isVisible ? 1 : 0,
+  transition: 'opacity 0.3s',
 
-  &:hover {
-    background-color: #a445ed;
-    border-color: #a445ed;
-    color: #fff;
-  }
-`
+  '&:hover': {
+    backgroundColor: isDarkMode ? '#e9e9e9' : '#a445ed',
+    borderColor: isDarkMode ? '#e9e9e9' : '#a445ed',
+    color: isDarkMode ? '#3a3a3a' : '#fff',
+  },
+}))
 
-const Overlay = styled('div')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 600px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
-  opacity: 0;
-  transition: opacity 0.3s;
+const Overlay = styled('div')(({ isDarkMode }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: '666px',
+  width: '85%',
+  margin: '0 auto',
+  background: isDarkMode
+    ? 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(58, 58, 58, 1) 100%)'
+    : 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)',
+  opacity: 0,
+  transition: 'opacity 0.3s',
+  '&:hover': {
+    opacity: 0.5,
+  },
+}))
 
-  &:hover {
-    opacity: 0.5;
-  }
-`
-
-const ShowMoreChip = ({ isStatic = false }) => {
+const ShowMoreChip = ({ isStatic = false, isDarkMode = false }) => {
   const [isVisible, setIsVisible] = useState(false)
 
   const handleMouseEnter = () => {
@@ -57,6 +56,7 @@ const ShowMoreChip = ({ isStatic = false }) => {
     return (
       <StyledChip
         isVisible={true}
+        isDarkMode={isDarkMode}
         label='Show More'
         color='primary'
         variant='filled'
@@ -67,9 +67,10 @@ const ShowMoreChip = ({ isStatic = false }) => {
 
   return (
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <Overlay />
+      <Overlay isDarkMode={isDarkMode} />
       <StyledChip
         isVisible={isVisible}
+        isDarkMode={isDarkMode}
         label='Show More'
         color='primary'
         variant='filled'

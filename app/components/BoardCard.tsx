@@ -50,7 +50,7 @@ const BoardCard = ({
       <span className='mx-2'>
         <Link to={`/${word}`}>{word}</Link>
       </span>
-      <div className='ml-auto'>{actionForm({ word, votes })}</div>
+      <div className='ml-auto tablet:mb-2'>{actionForm({ word, votes })}</div>
     </div>
   )
 }
