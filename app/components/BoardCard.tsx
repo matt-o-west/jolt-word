@@ -1,6 +1,8 @@
 import React from 'react'
 import type { LeaderBoardType } from './LeaderBoard'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { Context } from '~/root'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
@@ -31,9 +33,10 @@ const BoardCard = ({
   width = 'w-[335px]',
   actionForm,
 }: WordProps) => {
+  const { featureTheme } = useContext(Context)
   const rankColor = getRankColor(rank)
 
-  const notRanked = 'bg-tertiary.gray border-b-2 border-gray'
+  const notRanked = `${featureTheme} border-b-2 border-gray`
 
   return (
     <div

@@ -106,7 +106,7 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 export default function Index() {
-  const { font, theme, setUser } = useContext(Context)
+  const { font, theme, featureTheme, setUser } = useContext(Context)
   const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
@@ -154,19 +154,21 @@ export default function Index() {
               {randomWord}
             </Link>
           ) || 'sorry, we ran out of words'}
-          <span className='text-sm text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-6 -ml-4 mr-10'>
+          <span
+            className={`${featureTheme} text-sm text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-6 -ml-4 mr-10`}
+          >
             Word of the Day
           </span>
         </div>
         <div className='w-full desktop:grid desktop:grid-cols-5 desktop:grid-rows-2 phone:flex phone:flex-col'>
           {loggedInUser && (
             <div className='col-span-3 row-span-2'>
-              <div className='flex justify-between w-full gap-4 mt-12'>
+              <div className='flex justify-between phone:justify-around w-full gap-4 mt-12'>
                 <h1
                   onClick={() => setShowLeaderBoard(true)}
                   className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
-                  <span className='flex cursor-pointer bg-purple.100 px-4 py-1 rounded-md italic'>
+                  <span className='flex cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
                     <span className='pr-2'>
                       <LeaderboardIcon />
                     </span>
@@ -178,7 +180,9 @@ export default function Index() {
                   onClick={() => setShowLeaderBoard(false)}
                   className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
-                  <span className='flex cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic'>
+                  <span
+                    className={`${featureTheme} flex cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic phone:text-lg`}
+                  >
                     <SavedSearchIcon />
                     <span className='pl-2'>My Words</span>
                   </span>
