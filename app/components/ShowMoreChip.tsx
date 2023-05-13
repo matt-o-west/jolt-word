@@ -1,6 +1,7 @@
 import Chip from '@mui/material/Chip'
 import { styled } from '@mui/system'
 import { useState } from 'react'
+import useMobileDetect from '~/hooks/useMobileDetect'
 
 const StyledChip = styled(Chip)(({ theme, isDarkMode, isVisible }) => ({
   position: 'absolute',
@@ -43,6 +44,8 @@ const Overlay = styled('div')(({ isDarkMode }) => ({
 
 const ShowMoreChip = ({ isStatic = false, isDarkMode = false }) => {
   const [isVisible, setIsVisible] = useState(false)
+  const isMobile = useMobileDetect()
+  isStatic = isMobile
 
   const handleMouseEnter = () => {
     setIsVisible(true)

@@ -89,6 +89,7 @@ const MyWords = () => {
                   word={word.word}
                   votes={word.votes}
                   width={'w-[300px]'}
+                  myWords={true}
                   actionForm={actionForm}
                   key={word.wordId}
                 />
