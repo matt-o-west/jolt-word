@@ -136,6 +136,11 @@
   margin: 0.5rem 0;
 }
 
+.leaderboard-container {
+  position: relative;
+  width: 335px; /* set the width of the container to match the leaderboard */
+}
+
 /* Parallax effect */
 .parallax-container {
   height: 100%;
