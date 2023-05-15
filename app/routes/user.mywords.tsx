@@ -154,7 +154,7 @@ const MyWords = () => {
       <Form method='post' action=''>
         <input type='hidden' name='action' value='vote' />
         <input type='hidden' name='word' value={word} />
-        <ClickableIcon votes={votes} />
+        <ClickableIcon votes={votes} word={word} />
         <button type='submit' className='hidden'>
           Submit
         </button>

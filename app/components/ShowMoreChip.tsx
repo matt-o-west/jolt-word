@@ -17,6 +17,7 @@ const StyledChip = styled(Chip)(({ theme, isDarkMode, isVisible }) => ({
   opacity: isVisible ? 1 : 0,
   transition: 'opacity 0.3s',
   margin: '0 auto',
+  width: '40%',
 
   '&:hover': {
     backgroundColor: isDarkMode ? '#e9e9e9' : '#a445ed',

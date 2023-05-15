@@ -90,6 +90,11 @@
 }
 
 /* Custom classes */
+.leaderboard-container {
+  position: relative;
+  width: 335px; /* set the width of the container to match the leaderboard */
+}
+
 .link {
   color: #a445ed;
   text-decoration: none;
@@ -106,6 +111,14 @@
 .icon {
   position: relative;
   top: 0.4rem;
+}
+
+.icon svg {
+  transition: fill 0.3s;
+}
+
+.icon.trigger-animation svg {
+  fill: #a445ed;
 }
 
 .vote-count {
@@ -136,23 +149,18 @@
   margin: 0.5rem 0;
 }
 
-.leaderboard-container {
+/* Parallax effect */
+.content {
+  padding: 50px;
   position: relative;
-  width: 335px; /* set the width of the container to match the leaderboard */
 }
 
-/* Parallax effect */
 .parallax-container {
   height: 100%;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-.content {
-  padding: 50px;
-  position: relative;
 }
 
 /* Error states */
