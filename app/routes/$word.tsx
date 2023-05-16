@@ -205,7 +205,7 @@ const Word = () => {
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2'>
             <Form method='post' action={`/${word}`}>
               <input type='hidden' name='word' value={word} />
-              <ClickableIcon votes={data.votes} />
+              <ClickableIcon votes={data.votes} word={word} />
               <button type='submit' className='hidden'>
                 Submit
               </button>

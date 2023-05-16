@@ -19,8 +19,6 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
 
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
-  console.log(votes)
-
   /*useEffect(() => {
     if (clickCount === maxClicks) {
       setAnimationClass('trigger-animation') // CSS class for the animation
@@ -31,7 +29,8 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
   const handleClick = () => {
     if (clickCount < maxClicks) {
       let newCount = clickCount + 1
-      setClickCount((prevCount) => prevCount + 1)
+      setClickCount(newCount)
+      console.log(storedValue)
       setStoredValue(newCount)
     }
   }
@@ -48,10 +47,11 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
           // Style the fill effect based on the number of clicks
           backgroundSize: `100% ${(clickCount / maxClicks) * 100}%`,
         }}
+        disabled={storedValue === maxClicks}
       >
         <BoltIcon
           fontSize={fontSize}
-          color={clickCount === storedValue ? 'primary' : 'inherit'}
+          color={maxClicks === clickCount ? 'primary' : 'inherit'}
         />
         <span className='vote-count'>{votes}</span>
       </button>

@@ -31,7 +31,7 @@ const Overlay = styled('div')(({ isDarkMode }) => ({
   top: 0,
   left: 0,
   right: 0,
-  bottom: '666px',
+  bottom: '37rem',
   width: '85%',
   margin: '0 auto',
   background: isDarkMode
