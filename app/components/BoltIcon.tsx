@@ -9,9 +9,10 @@ type ClickableIconProps = {
   votes: number
 }
 
-function ClickableIcon({ word, votes }: ClickableIconProps) {
+function ClickableIcon({ word, votes: initialVotes }: ClickableIconProps) {
   const maxClicks = 3
   const [clickCount, setClickCount] = useState(0)
+  const [votes, setVotes] = useState(initialVotes)
   const [storedValue, setStoredValue] = useLocalStorage(word, 0)
   //const [audio] = useState('/sound/zap.wav')
   //const [animationClass, setAnimationClass] = useState('')
@@ -30,6 +31,7 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
     setClickCount((prevCount) => {
       if (prevCount < maxClicks) {
         setStoredValue(prevCount + 1)
+        setVotes(votes + 1)
         console.log(votes)
         return prevCount + 1
       }

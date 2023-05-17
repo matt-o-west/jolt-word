@@ -11,6 +11,7 @@ import {
 import type { LinksFunction } from '@remix-run/node'
 import type { ChangeEvent } from 'react'
 import stylesheet from '~/tailwind.css'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -44,6 +45,21 @@ export const Context = createContext<ContextType>({
   setUser: () => {},
   setFont: () => {},
   setTheme: () => {},
+})
+
+const muiTheme = createTheme({
+  palette: {
+    mode: 'light',
+    primary: {
+      main: '#A445ED',
+    },
+    secondary: {
+      main: '#fff',
+    },
+  },
+  typography: {
+    fontFamily: 'Work Sans',
+  },
 })
 
 export default function App() {
@@ -92,7 +108,9 @@ export default function App() {
             setTheme: toggleTheme,
           }}
         >
-          <Outlet />
+          <ThemeProvider theme={muiTheme}>
+            <Outlet />
+          </ThemeProvider>
         </Context.Provider>
         <ScrollRestoration />
         <Scripts />

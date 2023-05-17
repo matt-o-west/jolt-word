@@ -1,11 +1,11 @@
 //import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import ClickableIcon from '~/components/BoltIcon'
-import { useLoaderData /*useActionData*/, Form } from '@remix-run/react'
+import { useLoaderData, useActionData, Form } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
@@ -88,9 +88,13 @@ export const action = async ({ request }: ActionArgs) => {
           increment: 1,
         },
       },
+      select: {
+        votes: true,
+      },
     })
     console.log(updatedVote)
     wordId = updatedVote.id
+    return json({ votes: updatedVote.votes })
   } else {
     // If the word doesn't exist, create a new record with a single vote
     const addedVote = await db.word.create({
@@ -104,7 +108,6 @@ export const action = async ({ request }: ActionArgs) => {
   }
 
   const userId = await requireUserId(request)
-  console.log(userId)
 
   if (userId) {
     console.log('Checking for existing userWord:', userId, wordId)
@@ -146,7 +149,12 @@ const Word = () => {
   const { word } = useParams()
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
+  const actionData = useActionData<{ votes: number }>()
+  const votes = actionData?.votes ? actionData?.votes : data?.votes
 
+  if (actionData) {
+    console.log(actionData.votes)
+  }
   //replace with error boundary
   if (!data) {
     return <div>Sorry, could not find data for {word}</div>
@@ -205,7 +213,7 @@ const Word = () => {
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2'>
             <Form method='post' action={`/${word}`}>
               <input type='hidden' name='word' value={word} />
-              <ClickableIcon votes={data.votes} word={word} />
+              <ClickableIcon votes={votes} word={word} />
               <button type='submit' className='hidden'>
                 Submit
               </button>
