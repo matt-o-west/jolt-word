@@ -27,12 +27,14 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
   }, [clickCount, audio])*/
 
   const handleClick = () => {
-    if (clickCount < maxClicks) {
-      let newCount = clickCount + 1
-      setClickCount(newCount)
-      console.log(storedValue)
-      setStoredValue(newCount)
-    }
+    setClickCount((prevCount) => {
+      if (prevCount < maxClicks) {
+        setStoredValue(prevCount + 1)
+        console.log(votes)
+        return prevCount + 1
+      }
+      return prevCount
+    })
   }
 
   return (
@@ -47,7 +49,7 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
           // Style the fill effect based on the number of clicks
           backgroundSize: `100% ${(clickCount / maxClicks) * 100}%`,
         }}
-        disabled={storedValue === maxClicks}
+        disabled={clickCount === maxClicks}
       >
         <BoltIcon
           fontSize={fontSize}
