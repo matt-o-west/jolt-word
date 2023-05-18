@@ -11,24 +11,20 @@ type ClickableIconProps = {
 
 function ClickableIcon({ word, votes: initialVotes }: ClickableIconProps) {
   const maxClicks = 3
-  const [storedValue, setStoredValue] = useState(0)
-
+  const [storedValue, setStoredValue] = useLocalStorage(word, 0)
+  //console.log(word) // this is logging correctly
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
-  useEffect(() => {
-    // This code will only run after the component has mounted on the client
-    const initialValue = JSON.parse(localStorage.getItem(word) || '0')
-    setStoredValue(initialValue)
-  }, [word])
-
   const handleClick = () => {
-    let prevCount = JSON.parse(localStorage.getItem(word) || '0')
-    if (prevCount < maxClicks) {
-      prevCount = prevCount + 1
-      localStorage.setItem(word, JSON.stringify(prevCount))
-      setStoredValue(prevCount)
-    }
+    console.log(localStorage.getItem(word)) // this is not logging
+    console.log(word) // this is not logging
+    setStoredValue((prevCount: number) => {
+      if (prevCount < maxClicks) {
+        return prevCount + 1
+      }
+      return prevCount
+    })
   }
 
   return (
@@ -39,7 +35,7 @@ function ClickableIcon({ word, votes: initialVotes }: ClickableIconProps) {
         }`}
         onClick={handleClick}
         type='submit'
-        disabled={storedValue >= maxClicks}
+        disabled={storedValue === maxClicks}
       >
         <BoltIcon
           fontSize={fontSize}
