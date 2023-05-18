@@ -92,7 +92,7 @@ export const action = async ({ request }: ActionArgs) => {
         votes: true,
       },
     })
-    console.log(updatedVote)
+
     wordId = updatedVote.id
     return json({ votes: updatedVote.votes })
   } else {
@@ -103,7 +103,7 @@ export const action = async ({ request }: ActionArgs) => {
         votes: 1,
       },
     })
-    console.log(addedVote)
+
     wordId = addedVote.id
   }
 
@@ -150,7 +150,7 @@ const Word = () => {
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
   const actionData = useActionData<{ votes: number }>()
-  const votes = actionData?.votes ? actionData?.votes : data?.votes
+  const votes = data.votes
 
   if (actionData) {
     console.log(actionData.votes)

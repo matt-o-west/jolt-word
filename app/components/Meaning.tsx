@@ -3,8 +3,6 @@ import replaceTokens from '~/utils/replaceTokens'
 import { Link } from '@remix-run/react'
 import { useContext } from 'react'
 import { Context } from '~/root'
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
-import { db } from 'prisma/db.server'
 
 interface Props {
   meaning: Definition
@@ -26,7 +24,6 @@ const Meaning = ({ meaning }: Props) => {
     }
 
     if (synonyms) {
-      console.log(synonyms)
       const formattedText = synonyms
         .slice(0, 4)
         .filter((arr) => arr[0] === 'text')

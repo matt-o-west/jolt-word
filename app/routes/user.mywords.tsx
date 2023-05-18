@@ -127,6 +127,9 @@ export const action = async ({ request }: ActionArgs) => {
         },
       },
     })
+    if (localStorage) {
+      localStorage.removeItem(word as string)
+    }
   }
 
   if (actionType === 'vote') {
