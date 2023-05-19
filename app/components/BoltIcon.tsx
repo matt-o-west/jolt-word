@@ -11,7 +11,7 @@ type ClickableIconProps = {
 
 function ClickableIcon({ word, votes }: ClickableIconProps) {
   const maxClicks = 3
-  const [storedValue, setStoredValue] = useLocalStorage(word, 0)
+  const [storedValue, setStoredValue] = useLocalStorage(word, 0, 120)
 
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'

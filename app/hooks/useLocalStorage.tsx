@@ -1,34 +1,49 @@
 import { useState, useEffect } from 'react'
 
-export const useLocalStorage = (word: string, initialValue: number) => {
+export const useLocalStorage = (
+  word: string,
+  initialValue: number,
+  expiryInMinutes: number
+) => {
   const [storedValue, setStoredValue] = useState(initialValue)
 
   useEffect(() => {
     try {
-      // Get from local storage by key
       const item = window.localStorage.getItem(word)
-      // Parse stored json or if none return initialValue
-      const value = item ? JSON.parse(item) : initialValue
-      setStoredValue(value)
+      // Check if item exists and hasn't expired
+      if (item) {
+        const data = JSON.parse(item)
+        const now = new Date()
+        // If the current time is beyond the expiry time, return initialValue
+        if (now.getTime() > data.expiry) {
+          window.localStorage.removeItem(word)
+          setStoredValue(initialValue)
+        } else {
+          setStoredValue(data.value)
+        }
+      } else {
+        setStoredValue(initialValue)
+      }
     } catch (error) {
-      // If error also return initialValue
       console.log(error)
       setStoredValue(initialValue)
     }
-  }, [word, initialValue])
+  }, [word, initialValue, expiryInMinutes])
 
-  // Return a wrapped version of useState's setter function that persists the new value to localStorage.
   const setValue = (value: Function) => {
     try {
-      // Allow value to be a function so we have same API as useState
       const valueToStore =
         value instanceof Function ? value(storedValue) : value
-      // Save state
       setStoredValue(valueToStore)
+      // Create expiry date from now
+      const now = new Date()
+      const expiry = now.getTime() + expiryInMinutes * 60 * 1000
       // Save to local storage
-      window.localStorage.setItem(word, JSON.stringify(valueToStore))
+      window.localStorage.setItem(
+        word,
+        JSON.stringify({ value: valueToStore, expiry })
+      )
     } catch (error) {
-      // A more advanced implementation would handle the error case
       console.log(error)
     }
   }
