@@ -9,22 +9,25 @@ type ClickableIconProps = {
   votes: number
 }
 
-function ClickableIcon({ word, votes: initialVotes }: ClickableIconProps) {
+function ClickableIcon({ word, votes }: ClickableIconProps) {
   const maxClicks = 3
   const [storedValue, setStoredValue] = useLocalStorage(word, 0)
-  //console.log(word) // this is logging correctly
+
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
   const handleClick = () => {
-    console.log(localStorage.getItem(word)) // this is not logging
-    console.log(word) // this is not logging
-    setStoredValue((prevCount: number) => {
-      if (prevCount < maxClicks) {
-        return prevCount + 1
-      }
-      return prevCount
-    })
+    if (storedValue < maxClicks) {
+      setStoredValue((prevCount) => prevCount + 1)
+    }
+  }
+
+  const displayVotes = () => {
+    if (storedValue === maxClicks) {
+      return votes + 1
+    } else {
+      return votes
+    }
   }
 
   return (
@@ -39,9 +42,9 @@ function ClickableIcon({ word, votes: initialVotes }: ClickableIconProps) {
       >
         <BoltIcon
           fontSize={fontSize}
-          color={maxClicks === storedValue ? 'primary' : 'inherit'}
+          color={storedValue === maxClicks ? 'primary' : 'inherit'}
         />
-        <span className='vote-count'>{initialVotes}</span>
+        <span className='vote-count'>{displayVotes()}</span>
       </button>
     </>
   )

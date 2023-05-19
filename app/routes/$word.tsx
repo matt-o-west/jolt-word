@@ -1,6 +1,6 @@
 //import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
@@ -149,12 +149,7 @@ const Word = () => {
   const { word } = useParams()
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
-  const actionData = useActionData<{ votes: number }>()
-  const votes = data.votes
 
-  if (actionData) {
-    console.log(actionData.votes)
-  }
   //replace with error boundary
   if (!data) {
     return <div>Sorry, could not find data for {word}</div>
@@ -213,7 +208,7 @@ const Word = () => {
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2'>
             <Form method='post' action={`/${word}`}>
               <input type='hidden' name='word' value={word} />
-              <ClickableIcon votes={votes} word={word} />
+              <ClickableIcon votes={data.votes} word={word} />
               <button type='submit' className='hidden'>
                 Submit
               </button>
