@@ -116,7 +116,7 @@ const Meaning = ({ meaning }: Props) => {
   }
 
   return (
-    <div className='mt-6'>
+    <div className='mt-10'>
       <span className={`${adjustPartsOfSpeech()} font-sans-serif text-xl`}>
         {meaning?.fl}
       </span>

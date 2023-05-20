@@ -13,22 +13,35 @@ type Result =
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
-  console.log(searchTerm)
+
   const wordsAsStrings = matchingWords
     .map((word) => (typeof word === 'string' ? word : word?.hwi?.hw))
     .filter((word) => !word.includes('*'))
 
   const wordsAsStringsSorted = wordsAsStrings.sort((a, b) => {
+    // Special case for exact match
     if (a.toLowerCase() === searchTerm.toLowerCase()) {
       return -1
     } else if (b.toLowerCase() === searchTerm.toLowerCase()) {
       return 1
+    }
+    // Then, prioritize words that contain the search term as a subset
+    else if (a.includes(searchTerm) && !b.includes(searchTerm)) {
+      return -1
+    } else if (b.includes(searchTerm) && !a.includes(searchTerm)) {
+      return 1
+    }
+    // Then, words starting with the search term, shorter words first
+    else if (a.startsWith(searchTerm) && b.startsWith(searchTerm)) {
+      return a.length - b.length
     } else if (a.startsWith(searchTerm)) {
       return -1
     } else if (b.startsWith(searchTerm)) {
       return 1
-    } else {
-      return a.localeCompare(b)
+    }
+    // Finally, sort remaining words by length, then alphabetically
+    else {
+      return a.length - b.length || a.localeCompare(b)
     }
   })
 
@@ -39,8 +52,6 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       ? string
       : matchingWords.find((word) => word?.hwi?.hw === string)
   )
-
-  console.log(wordsAsStrings)
 
   useEffect(() => {
     const handleKeyDown = (event) => {
