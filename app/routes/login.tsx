@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
 import type { ActionArgs } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
 import { login, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
 import { CSSTransition } from 'react-transition-group'
+import { Context } from '~/root'
 
 import { db } from 'prisma/db.server'
 
@@ -94,6 +95,7 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 const Login = () => {
+  const { theme, featureTheme } = useContext(Context)
   const [searchParams] = useSearchParams()
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -147,7 +149,11 @@ const Login = () => {
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
-      <div className='bg-white rounded-lg shadow-md md:w-96 p-6'>
+      <div
+        className={`${
+          theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
+        } rounded-lg shadow-md md:w-96 p-6`}
+      >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
         {hasSuccess && (
           <CSSTransition
@@ -194,8 +200,12 @@ const Login = () => {
               type='text'
               id='username'
               name='username'
-              className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
+              className={`w-full px-3 py-2 border-2  rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.user ? 'error-container' : null
+              } ${
+                theme === 'light'
+                  ? 'bg-white border-secondary.gray'
+                  : 'bg-tertiary.black border-primary.gray'
               }`}
               required
               defaultValue={actionData?.fields?.username}
@@ -220,6 +230,10 @@ const Login = () => {
               name='password'
               className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.password ? 'error-container' : null
+              } ${
+                theme === 'light'
+                  ? 'bg-white border-secondary.gray'
+                  : 'bg-tertiary.black border-primary.gray'
               }`}
               required
               defaultValue={actionData?.fields?.password}

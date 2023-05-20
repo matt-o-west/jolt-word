@@ -160,7 +160,11 @@ export default function Index() {
             Word of the Day
           </span>
         </div>
-        <div className='w-full desktop:grid desktop:grid-cols-5 desktop:grid-rows-2 phone:flex phone:flex-col'>
+        <div
+          className={`w-full desktop:grid desktop:grid-cols-5 ${
+            loggedInUser ? 'desktop:grid-rows-2' : 'desktop:grid-rows-1'
+          } desktop:grid-rows-2  phone:flex phone:flex-col`}
+        >
           {loggedInUser && (
             <div className='col-span-3 row-span-2'>
               <div className='flex justify-between phone:justify-around w-full gap-4 mt-12'>
