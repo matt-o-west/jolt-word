@@ -26,12 +26,12 @@ const StyledChip = styled(Chip)(({ theme, isDarkMode, isVisible }) => ({
   },
 }))
 
-const Overlay = styled('div')(({ isDarkMode }) => ({
+const Overlay = styled('div')(({ isDarkMode, isMobile }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
-  bottom: '37rem',
+  bottom: isMobile ? '44%' : '68%',
   width: '85%',
   margin: '0 auto',
   background: isDarkMode
@@ -92,9 +92,9 @@ const ShowMoreChip = ({ isStatic = false, isDarkMode = false }) => {
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className='w-[335px]'
+      className='w-auto h-auto'
     >
-      <Overlay isDarkMode={isDarkMode} />
+      <Overlay isDarkMode={isDarkMode} isMobile={isMobile} />
       <StyledChip
         isVisible={isVisible}
         isDarkMode={isDarkMode}

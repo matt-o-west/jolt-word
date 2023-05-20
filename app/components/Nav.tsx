@@ -74,7 +74,7 @@ const Nav = () => {
     </label>
   )
 
-  const fontSelect = (
+  /*const fontSelect = (
     <div className='flex flex-row border-r-2'>
       <select
         className={`${theme} p-0.5 mr-2 pr-2 border-none outline-none select text-end`}
@@ -86,14 +86,16 @@ const Nav = () => {
         <option value='mono'>Mono</option>
       </select>
     </div>
-  )
+  )*/
 
   return (
     <>
       <nav
         className={`flex flex-row justify-between items-center font-${font} text-xs p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <img src='/images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
+        <Link to='/'>
+          <img src='/images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
+        </Link>
         <div className='flex items-center'>
           {/*fontSelect*/}
           {themeButton}
