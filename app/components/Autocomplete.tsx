@@ -14,6 +14,33 @@ type Result =
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
   console.log(searchTerm)
+  const wordsAsStrings = matchingWords
+    .map((word) => (typeof word === 'string' ? word : word?.hwi?.hw))
+    .filter((word) => !word.includes('*'))
+
+  const wordsAsStringsSorted = wordsAsStrings.sort((a, b) => {
+    if (a.toLowerCase() === searchTerm.toLowerCase()) {
+      return -1
+    } else if (b.toLowerCase() === searchTerm.toLowerCase()) {
+      return 1
+    } else if (a.startsWith(searchTerm)) {
+      return -1
+    } else if (b.startsWith(searchTerm)) {
+      return 1
+    } else {
+      return a.localeCompare(b)
+    }
+  })
+
+  const uniqueWordsAsStrings = Array.from(new Set(wordsAsStringsSorted))
+
+  const uniqueWords = uniqueWordsAsStrings.map((string) =>
+    typeof matchingWords[0] === 'string'
+      ? string
+      : matchingWords.find((word) => word?.hwi?.hw === string)
+  )
+
+  console.log(wordsAsStringsSorted)
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -21,7 +48,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         // Move cursor down
         event.preventDefault()
         setCursor((oldCursor) =>
-          Math.min(oldCursor + 1, matchingWords.length - 1)
+          Math.min(oldCursor + 1, uniqueWords.length - 1)
         )
       } else if (event.key === 'ArrowUp') {
         // Move cursor up
@@ -30,8 +57,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       } else if (event.key === 'Enter') {
         // Navigate to selected item
         event.preventDefault()
-        if (cursor >= 0 && cursor < matchingWords.length) {
-          const word = matchingWords[cursor]
+        if (cursor >= 0 && cursor < uniqueWords.length) {
+          const word = uniqueWords[cursor]
           const path =
             typeof word === 'string'
               ? `/${word}`
@@ -59,26 +86,12 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       </Link>
     )
   } else if (Array.isArray(matchingWords)) {
-    const wordsAsStrings = matchingWords
-      .map((word) => (typeof word === 'string' ? word : word?.hwi?.hw))
-      .filter((word) => !word.includes('*'))
-
-    const uniqueWordsAsStrings = wordsAsStrings.filter(
-      (word, index) => word[index] !== word[index + 1]
-    )
-
-    const uniqueWords = uniqueWordsAsStrings.map((string) =>
-      typeof matchingWords[0] === 'string'
-        ? string
-        : matchingWords.find((word) => word?.hwi?.hw === string)
-    )
-
     //console.log(`Found matching words in ${uniqueWords}`)
     return (
       <div
-        className={`flex flex-col justify-start items-center text-md p-2 m-2 bg-tertiary.gray rounded-sm ${
+        className={`flex flex-col justify-start text-md p-2 m-2 bg-tertiary.gray rounded-sm ${
           !searchTerm ? 'hidden' : ''
-        } desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        } desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto w-full ml-4`}
         tabIndex={0}
       >
         {uniqueWords
@@ -97,8 +110,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                 <Link
                   key={word}
                   to={`/${word}`}
-                  className={`text-lg font-bold text-purple transition-all duration-250 hover:scale-110 ${
-                    cursor === i ? 'bg-secondary.gray w-full ml-8 pl-1' : ''
+                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 ${
+                    cursor === i ? 'bg-secondary.gray w-full pl-1' : ''
                   }`}
                 >
                   {word}
@@ -113,8 +126,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                 <Link
                   key={word.meta?.uuid}
                   to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
-                  className={`text-lg font-bold text-purple transition-all duration-250 hover:scale-110 ${
-                    cursor === i ? 'bg-secondary.gray' : ''
+                  className={`text-lg font-bold text-purple transition-all duration-250 ${
+                    cursor === i ? 'bg-secondary.gray ml-4' : ''
                   }`}
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
