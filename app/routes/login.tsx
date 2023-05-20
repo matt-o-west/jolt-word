@@ -193,7 +193,12 @@ const Login = () => {
             value={searchParams.get('redirectTo') ?? undefined}
           />
           <div className='mb-4'>
-            <label htmlFor='username' className='block mb-2 text-primary.gray'>
+            <label
+              htmlFor='username'
+              className={`block mb-2 ${
+                theme === 'light' ? 'text-primary.gray' : 'text-secondary.gray'
+              }`}
+            >
               Username
             </label>
             <input
@@ -221,14 +226,19 @@ const Login = () => {
             )}
           </div>
           <div className='mb-4'>
-            <label htmlFor='password' className='block mb-2 text-primary.gray'>
+            <label
+              htmlFor='password'
+              className={`block mb-2 ${
+                theme === 'light' ? 'text-primary.gray' : 'text-secondary.gray'
+              }`}
+            >
               Password
             </label>
             <input
               type='password'
               id='password'
               name='password'
-              className={`w-full px-3 py-2 border-2 border-secondary.gray rounded-md focus:outline-none focus:border-purple ${
+              className={`w-full px-3 py-2 border-2 rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.password ? 'error-container' : null
               } ${
                 theme === 'light'
