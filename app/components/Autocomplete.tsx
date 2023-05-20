@@ -40,7 +40,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       : matchingWords.find((word) => word?.hwi?.hw === string)
   )
 
-  console.log(wordsAsStringsSorted)
+  console.log(wordsAsStrings)
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -96,16 +96,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       >
         {uniqueWords
           .map((word, i) => {
-            const prevWords = matchingWords.slice(0, i)
-            const prevWordTexts = prevWords.map((prevWord) =>
-              typeof prevWord === 'string' ? prevWord : prevWord?.hwi?.hw
-            )
-            const isDuplicate =
-              typeof word === 'string'
-                ? prevWordTexts.includes(word)
-                : prevWordTexts.includes(word?.hwi?.hw)
-
-            if (typeof word === 'string' && !isDuplicate) {
+            if (typeof word === 'string') {
               return (
                 <Link
                   key={word}
@@ -117,11 +108,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                   {word}
                 </Link>
               )
-            } else if (
-              typeof word === 'object' &&
-              word.hwi?.hw &&
-              !isDuplicate
-            ) {
+            } else if (typeof word === 'object' && word.hwi?.hw) {
               return (
                 <Link
                   key={word.meta?.uuid}
