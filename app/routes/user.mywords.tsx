@@ -127,7 +127,7 @@ export const action = async ({ request }: ActionArgs) => {
         },
       },
     })
-    if (localStorage) {
+    if (typeof window !== 'undefined' && window.localStorage) {
       localStorage.removeItem(word as string)
     }
   }

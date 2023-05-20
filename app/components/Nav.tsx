@@ -123,7 +123,7 @@ const Nav = () => {
           </div>
         </div>
       </form>
-      <Autocomplete matchingWords={matchingWords} />
+      <Autocomplete matchingWords={matchingWords} searchTerm={searchTerm} />
     </>
   )
 }

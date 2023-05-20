@@ -11,14 +11,11 @@ type Result =
       }
     }
 
-const Autocomplete = ({ matchingWords }) => {
+const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
-  const listRef = useRef(null)
+  console.log(searchTerm)
 
   useEffect(() => {
-    if (listRef.current) {
-      listRef.current.focus()
-    }
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowDown') {
         // Move cursor down
@@ -79,8 +76,9 @@ const Autocomplete = ({ matchingWords }) => {
     //console.log(`Found matching words in ${uniqueWords}`)
     return (
       <div
-        className='flex flex-col justify-center items-center text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'
-        ref={listRef}
+        className={`flex flex-col justify-start items-center text-md p-2 m-2 bg-tertiary.gray rounded-sm ${
+          !searchTerm ? 'hidden' : ''
+        } desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
         tabIndex={0}
       >
         {uniqueWords
@@ -100,7 +98,7 @@ const Autocomplete = ({ matchingWords }) => {
                   key={word}
                   to={`/${word}`}
                   className={`text-lg font-bold text-purple transition-all duration-250 hover:scale-110 ${
-                    cursor === i ? 'bg-secondary.gray w-full' : ''
+                    cursor === i ? 'bg-secondary.gray w-full ml-8 pl-1' : ''
                   }`}
                 >
                   {word}
