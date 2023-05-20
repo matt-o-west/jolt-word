@@ -163,7 +163,7 @@ export default function Index() {
         <div
           className={`w-full desktop:grid desktop:grid-cols-5 ${
             loggedInUser ? 'desktop:grid-rows-2' : 'desktop:grid-rows-1'
-          } desktop:grid-rows-2  phone:flex phone:flex-col`}
+          } phone:flex phone:flex-col`}
         >
           {loggedInUser && (
             <div className='col-span-3 row-span-2'>
