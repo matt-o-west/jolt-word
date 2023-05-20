@@ -1,5 +1,5 @@
 import { Link } from '@remix-run/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 type Result =
   | string
@@ -13,39 +13,42 @@ type Result =
 
 const Autocomplete = ({ matchingWords }) => {
   const [cursor, setCursor] = useState(-1)
+  const listRef = useRef(null)
 
   useEffect(() => {
+    if (listRef.current) {
+      listRef.current.focus()
+    }
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowDown') {
+        // Move cursor down
+        event.preventDefault()
+        setCursor((oldCursor) =>
+          Math.min(oldCursor + 1, matchingWords.length - 1)
+        )
+      } else if (event.key === 'ArrowUp') {
+        // Move cursor up
+        event.preventDefault()
+        setCursor((oldCursor) => Math.max(oldCursor - 1, 0))
+      } else if (event.key === 'Enter') {
+        // Navigate to selected item
+        event.preventDefault()
+        if (cursor >= 0 && cursor < matchingWords.length) {
+          const word = matchingWords[cursor]
+          const path =
+            typeof word === 'string'
+              ? `/${word}`
+              : `/${word.meta?.id?.replace(/:[^:]*$/, '')}`
+          window.location.href = path
+        }
+      }
+    }
+
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [cursor, matchingWords])
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'ArrowDown') {
-      // Move cursor down
-      event.preventDefault()
-      setCursor((oldCursor) =>
-        Math.min(oldCursor + 1, matchingWords.length - 1)
-      )
-    } else if (event.key === 'ArrowUp') {
-      // Move cursor up
-      event.preventDefault()
-      setCursor((oldCursor) => Math.max(oldCursor - 1, 0))
-    } else if (event.key === 'Enter') {
-      // Navigate to selected item
-      event.preventDefault()
-      if (cursor >= 0 && cursor < matchingWords.length) {
-        const word = matchingWords[cursor]
-        const path =
-          typeof word === 'string'
-            ? `/${word}`
-            : `/${word.meta?.id?.replace(/:[^:]*$/, '')}`
-        // Use your preferred method for navigation
-        window.location.href = path
-      }
-    }
-  }
 
   if (typeof matchingWords === 'string') {
     // Handle case where matchingWords is a string
@@ -75,28 +78,45 @@ const Autocomplete = ({ matchingWords }) => {
 
     //console.log(`Found matching words in ${uniqueWords}`)
     return (
-      <div className='flex flex-col justify-center items-center text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
+      <div
+        className='flex flex-col justify-center items-center text-md p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'
+        ref={listRef}
+        tabIndex={0}
+      >
         {uniqueWords
           .map((word, i) => {
-            if (typeof word === 'string') {
+            const prevWords = matchingWords.slice(0, i)
+            const prevWordTexts = prevWords.map((prevWord) =>
+              typeof prevWord === 'string' ? prevWord : prevWord?.hwi?.hw
+            )
+            const isDuplicate =
+              typeof word === 'string'
+                ? prevWordTexts.includes(word)
+                : prevWordTexts.includes(word?.hwi?.hw)
+
+            if (typeof word === 'string' && !isDuplicate) {
               return (
                 <Link
                   key={word}
                   to={`/${word}`}
                   className={`text-lg font-bold text-purple transition-all duration-250 hover:scale-110 ${
-                    cursor === i ? 'bg-lightgray' : ''
+                    cursor === i ? 'bg-secondary.gray w-full' : ''
                   }`}
                 >
                   {word}
                 </Link>
               )
-            } else if (typeof word === 'object' && word.hwi?.hw) {
+            } else if (
+              typeof word === 'object' &&
+              word.hwi?.hw &&
+              !isDuplicate
+            ) {
               return (
                 <Link
                   key={word.meta?.uuid}
                   to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
                   className={`text-lg font-bold text-purple transition-all duration-250 hover:scale-110 ${
-                    cursor === i ? 'bg-lightgray' : ''
+                    cursor === i ? 'bg-secondary.gray' : ''
                   }`}
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}

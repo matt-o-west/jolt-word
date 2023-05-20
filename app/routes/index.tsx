@@ -247,7 +247,7 @@ export default function Index() {
                   +1
                 </span>
               </div>
-              <span className='text-green-500 desktop:mr-2 tablet:mr-14'>
+              <span className='text-green-500 desktop:mr-2 tablet:mr-14 phone:mr-16'>
                 JOLT
               </span>
             </div>
@@ -258,7 +258,7 @@ export default function Index() {
                   –1
                 </span>
               </div>
-              <span className='text-red mr-2 desktop:mr-2 tablet:mr-14 '>
+              <span className='text-red mr-2 desktop:mr-2 tablet:mr-14 phone:mr-16'>
                 LEECH
               </span>
             </div>
