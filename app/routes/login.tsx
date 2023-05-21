@@ -95,7 +95,7 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 const Login = () => {
-  const { theme, featureTheme } = useContext(Context)
+  const { theme } = useContext(Context)
   const [searchParams] = useSearchParams()
   const formRef = useRef<HTMLFormElement>(null)
 

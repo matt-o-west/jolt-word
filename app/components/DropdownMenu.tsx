@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import { Context } from '~/root'
-import { Form } from '@remix-run/react'
+import { Form, Link } from '@remix-run/react'
 import Button from '@mui/material/Button'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import Grow from '@mui/material/Grow'
@@ -108,8 +108,12 @@ export default function DropdownMenu() {
                           : 'bg-secondary.black text-white'
                       }`}
                     >
-                      <MenuItem onClick={handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={handleClose}>My Words</MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to='/user/profile'>Profile</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <Link to='/user/mywords'>My Words</Link>
+                      </MenuItem>
                       <MenuItem onClick={handleClose}>
                         <Form action='/logout' method='post'>
                           <button type='submit' className='mr-4'>

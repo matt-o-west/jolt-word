@@ -176,7 +176,7 @@ export default function Index() {
                     <span className='pr-2'>
                       <LeaderboardIcon />
                     </span>
-                    Leaderboard
+                    Trending
                   </span>
                 </h1>
 
