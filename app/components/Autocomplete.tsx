@@ -1,5 +1,7 @@
 import { Link } from '@remix-run/react'
-import { useEffect, useState, useRef } from 'react'
+import { useNavigate } from '@remix-run/react'
+import { useEffect, useState, useContext } from 'react'
+import { Context } from '~/root'
 
 type Result =
   | string
@@ -13,7 +15,15 @@ type Result =
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
+  const { theme } = useContext(Context)
+  const navigate = useNavigate()
   console.log(matchingWords)
+
+  const cursorHoverLight = (i: number) =>
+    theme === 'light' && cursor === i ? 'bg-secondary.gray w-full pl-1' : ''
+
+  const cursorHoverDark = (i: number) =>
+    theme === 'dark' && cursor === i ? 'bg-tertiary.black w-full pl-1' : ''
 
   const wordsAsStrings = matchingWords
     .map((word) => (typeof word === 'string' ? word : word?.hwi?.hw))
@@ -75,7 +85,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
             typeof word === 'string'
               ? `/${word}`
               : `/${word.meta?.id?.replace(/:[^:]*$/, '')}`
-          window.location.href = path
+          navigate(path)
         }
       }
     }
@@ -101,7 +111,9 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
     //console.log(`Found matching words in ${uniqueWords}`)
     return (
       <div
-        className={`flex flex-col justify-start text-md p-2 m-2 bg-tertiary.gray rounded-sm ${
+        className={`flex flex-col justify-start text-md p-2 m-2 rounded-sm ${
+          theme === 'light' ? 'bg-tertiary.gray' : 'bg-secondary.black'
+        } ${
           !searchTerm ? 'hidden' : ''
         } desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto w-full ml-4`}
         tabIndex={0}
@@ -113,9 +125,9 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                 <Link
                   key={word}
                   to={`/${word}`}
-                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 ${
-                    cursor === i ? 'bg-secondary.gray w-full pl-1' : ''
-                  }`}
+                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 ${cursorHoverLight(
+                    i
+                  )} ${cursorHoverDark(i)}`}
                 >
                   {word}
                 </Link>
@@ -125,9 +137,9 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                 <Link
                   key={word.meta?.uuid}
                   to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
-                  className={`text-lg font-bold text-purple transition-all duration-250 ${
-                    cursor === i ? 'bg-secondary.gray ml-4' : ''
-                  }`}
+                  className={`text-lg font-bold text-purple transition-all duration-250 ${cursorHoverLight(
+                    i
+                  )} ${cursorHoverDark(i)}`}
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
                 </Link>

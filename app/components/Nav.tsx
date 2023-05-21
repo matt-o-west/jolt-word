@@ -50,7 +50,11 @@ const Nav = () => {
   const userButton = user ? (
     <DropdownMenu />
   ) : (
-    <button className='bg-gray text-primary.black rounded-md px-2 py-1 ml-2 hover:bg-background'>
+    <button
+      className={`bg-gray text-primary.black rounded-md px-2 py-1 ml-2 ${
+        theme === 'light' ? 'hover:bg-background' : 'hover:bg-secondary.black'
+      } `}
+    >
       <Link to='/login'>Log In</Link>
     </button>
   )
