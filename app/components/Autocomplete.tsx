@@ -13,6 +13,7 @@ type Result =
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
+  console.log(matchingWords)
 
   const wordsAsStrings = matchingWords
     .map((word) => (typeof word === 'string' ? word : word?.hwi?.hw))

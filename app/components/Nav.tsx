@@ -28,8 +28,21 @@ const Nav = () => {
         return data
       } else if (Array.isArray(data) && typeof data[0] !== 'string') {
         //console.log(data[0].hwi?.hw)
+        if (data.length === 1) {
+          const fixedResult = data[0].hwi?.hw
+            .split('')
+            .filter((char: string) => {
+              return char !== '*'
+            })
+            .join('')
+
+          console.log([data[0].hwi?.hw], fixedResult)
+          return fixedResult
+        }
+
         setMatchingWords(data)
-        return [data[0].hwi?.hw]
+
+        return data
       }
     }
   }
