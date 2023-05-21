@@ -131,6 +131,14 @@
   font-size: 0.7rem;
 }
 
+@media (min-width: 768px) {
+  .vote-count {
+    top: -4px;
+    right: -8px;
+    font-size: 0.8rem;
+  }
+}
+
 .select {
   -webkit-appearance: none;
   -moz-appearance: none;

@@ -33,7 +33,7 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
   return (
     <>
       <button
-        className={`icon cursor-pointer ml-auto relative mb-1 ${
+        className={`icon cursor-pointer ml-auto relative tablet:mb-1 phone:mb-3 ${
           isMobile ? 'w-6 h-6' : 'w-10 h-10'
         }`}
         onClick={handleClick}
