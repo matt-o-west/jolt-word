@@ -9,19 +9,19 @@ import { Context } from '~/root'
 
 import { db } from 'prisma/db.server'
 
-const validateUser = (user: unknown) => {
+export const validateUser = (user: unknown) => {
   if (typeof user !== 'string' || user.length < 3) {
     return 'Username must be at least 3 characters long.'
   }
 }
 
-const validatePassword = (password: string) => {
+export const validatePassword = (password: string) => {
   if (password.length < 6) {
     return 'Password must be at least 6 characters long.'
   }
 }
 
-const validateUrl = (url: string) => {
+export const validateUrl = (url: string) => {
   let urls = ['/', '/login', '/register']
   if (urls.includes(url)) {
     return url

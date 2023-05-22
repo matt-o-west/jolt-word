@@ -86,6 +86,40 @@ export async function getUser(request: Request) {
   }
 }
 
+export async function getUserPassword(request: Request) {
+  const userId = await getUserId(request)
+  if (typeof userId !== 'string') {
+    return null
+  }
+
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { passwordHash: true },
+    })
+    return user ? user.passwordHash : null
+  } catch {
+    throw logout(request)
+  }
+}
+
+export async function getUserName(request: Request) {
+  const userId = await getUserId(request)
+  if (typeof userId !== 'string') {
+    return null
+  }
+
+  try {
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { username: true },
+    })
+    return user ? user.username : null
+  } catch {
+    throw logout(request)
+  }
+}
+
 export async function logout(request: Request) {
   const session = await getUserSession(request)
   return redirect('/', {

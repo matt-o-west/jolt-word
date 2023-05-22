@@ -1,17 +1,37 @@
 import Nav from '~/components/Nav'
-import { Form, useActionData } from '@remix-run/react'
-import { redirect } from '@remix-run/node'
-import type { ActionArgs } from '@remix-run/node'
+import { Form, useActionData, useLoaderData } from '@remix-run/react'
+import { redirect, json } from '@remix-run/node'
+import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { useContext } from 'react'
 import { badRequest } from '~/utils/request.server'
 import { validateUser, validatePassword } from '~/routes/login'
 import { Context } from '~/root'
+import { getUser, getUserPassword, requireUserId } from '~/utils/session.server'
+import bcrypt from 'bcryptjs'
+
+import { db } from 'prisma/db.server'
+
+export const loader = async ({ request }: LoaderArgs) => {
+  const redirectTo = '/login'
+  const loggedInUser = await requireUserId(request, redirectTo)
+  const user = loggedInUser
+    ? await db.user.findUnique({
+        where: {
+          id: loggedInUser,
+        },
+      })
+    : null
+
+  return json({ user })
+}
 
 export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
   const user = form.get('username')
-  const currentPassword = form.get('current-password')
-  const newPassword = form.get('new-password')
+  const currentPassword = form.get('current-password') as string
+  const newPassword = form.get('new-password') as string
+  const salt = await bcrypt.genSalt(10)
+  const hashedPassword = await bcrypt.hash(newPassword, salt)
 
   if (
     typeof user !== 'string' ||
@@ -54,12 +74,48 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({ fieldErrors, fields, formError: null })
   }
 
+  const userRecord = await getUser(request)
+  const userPassword = await getUserPassword(request)
+
+  if (
+    !userRecord ||
+    !userPassword ||
+    !(await bcrypt.compare(currentPassword, userPassword))
+  ) {
+    return badRequest({
+      fieldErrors: null,
+      fields: null,
+      formError: {
+        message: 'Invalid current password.',
+        timestamp: Date.now().toString(),
+      },
+    })
+  }
+
+  const userExists = await db.user.findUnique({
+    where: {
+      username: user,
+    },
+  })
+
+  const updatePassword = await db.user.update({
+    where: {
+      id: userRecord.id,
+    },
+    data: {
+      username: user,
+      passwordHash: hashedPassword,
+    },
+  })
+
   return redirect('/login')
 }
 
 const Profile = () => {
   const { theme } = useContext(Context)
   const actionData = useActionData()
+  const data = useLoaderData()
+  console.log(data.user.Username)
 
   return (
     <>
@@ -81,13 +137,15 @@ const Profile = () => {
             <input
               type='text'
               id='username'
+              value={data.user.username}
               name='username'
+              readOnly
               className={`w-full px-3 py-2 border-2  rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.user ? 'error-container' : null
               } ${
                 theme === 'light'
-                  ? 'bg-white border-secondary.gray'
-                  : 'bg-tertiary.black border-primary.gray'
+                  ? 'bg-purple.100 border-secondary.gray'
+                  : 'bg-primary.gray border-primary.gray'
               }`}
               required
               defaultValue={actionData?.fields?.username}

@@ -3,16 +3,6 @@ import { useNavigate } from '@remix-run/react'
 import { useEffect, useState, useContext } from 'react'
 import { Context } from '~/root'
 
-type Result =
-  | string
-  | string[]
-  | undefined
-  | {
-      hwi?: {
-        hw?: string
-      }
-    }
-
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
   const { theme } = useContext(Context)
