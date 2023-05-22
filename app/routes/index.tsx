@@ -11,7 +11,7 @@ import LeaderBoard from '~/components/LeaderBoard'
 import { requireUserId } from '~/utils/session.server'
 import generateRandomWord from '~/utils/generateRandomWord.server'
 import ClickableIcon from '~/components/BoltIcon'
-import LeaderboardIcon from '@mui/icons-material/Leaderboard'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 import ShowMoreChip from '~/components/ShowMoreChip'
 
@@ -174,7 +174,7 @@ export default function Index() {
                 >
                   <span className='flex cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
                     <span className='pr-2'>
-                      <LeaderboardIcon />
+                      <TrendingUpIcon />
                     </span>
                     Trending
                   </span>
