@@ -121,11 +121,14 @@ const Profile = () => {
     <>
       <Nav />
       <div
-        className={`flex flex-col justify-center items-center text-md py-1 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col items-start text-md pl-10 py-1 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <h1>Profile</h1>
-        <Form action='/user/profile'>
-          <div className='mb-8'>
+        <h1 className='text-2xl font-bold'>Profile</h1>
+        <Form
+          action='/user/profile'
+          className='flex flex-col justify-between w-80'
+        >
+          <div className='w-64 mb-8 mt-10'>
             <label
               htmlFor='username'
               className={`block mb-2 ${
@@ -140,7 +143,7 @@ const Profile = () => {
               value={data.user.username}
               name='username'
               readOnly
-              className={`w-full px-3 py-2 border-2  rounded-md focus:outline-none focus:border-purple ${
+              className={`w-48 px-3 py-2 border-2  rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.user ? 'error-container' : null
               } ${
                 theme === 'light'
@@ -163,7 +166,7 @@ const Profile = () => {
           <div className='mb-4'>
             <label
               htmlFor='password'
-              className={`block mb-2 ${
+              className={`block mb-2  ${
                 theme === 'light' ? 'text-primary.gray' : 'text-secondary.gray'
               }`}
             >
@@ -228,7 +231,7 @@ const Profile = () => {
           </div>
           <button
             type='submit'
-            className={`btn btn-primary ${
+            className={`bg-purple hover:bg-light.purple text-white font-bold py-2 px-4 w-44 rounded-md mb-4 self-end ${
               theme === 'light' ? 'btn-light' : 'btn-dark'
             }`}
           >

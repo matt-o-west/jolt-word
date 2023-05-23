@@ -157,20 +157,6 @@
   margin: 0.5rem 0;
 }
 
-/* Parallax effect */
-.content {
-  padding: 50px;
-  position: relative;
-}
-
-.parallax-container {
-  height: 100%;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 /* Error states */
 .form-validation-error {
   margin: 0;
