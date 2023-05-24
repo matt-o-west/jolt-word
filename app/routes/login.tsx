@@ -4,6 +4,7 @@ import type { ActionArgs } from '@remix-run/node'
 import { badRequest } from '~/utils/request.server'
 import { login, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'
+import Grow from '@mui/material/Grow'
 import { CSSTransition } from 'react-transition-group'
 import { Context } from '~/root'
 
@@ -60,7 +61,6 @@ export const action = async ({ request }: ActionArgs) => {
     return badRequest({ fieldErrors, fields, formError: null })
   }
 
-  //remove loggedInUser for the other validation to work
   const loggedInUser = await login({ username: user, password })
 
   if (!loggedInUser) {
@@ -99,18 +99,41 @@ const Login = () => {
   const [searchParams] = useSearchParams()
   const formRef = useRef<HTMLFormElement>(null)
 
-  //success alerts
+  //password change alert
+  const passwordChange = searchParams.get('passwordChange') === 'true'
+  const [showPasswordChangeMessage, setShowPasswordChangeMessage] =
+    useState(false)
+  const passwordChangeRef = useRef(null)
+
+  //success alert
   const registrationSuccess = searchParams.get('registrationSuccess') === 'true'
   const [showSuccessMessage, setShowSuccessMessage] =
     useState(registrationSuccess)
   const [hasSuccess, setHasSuccess] = useState(Boolean(registrationSuccess))
 
-  //error alerts
+  //error alert
   const actionData = useActionData() ?? { fields: {} }
   const successRef = useRef(null)
   const [hasError, setHasError] = useState(actionData.formError)
   const [showErrorMessage, setShowErrorMessage] = useState(Boolean(hasError))
   const errorRef = useRef(null)
+
+  useEffect(() => {
+    setShowPasswordChangeMessage(passwordChange)
+  }, [passwordChange])
+
+  useEffect(() => {
+    if (passwordChange) {
+      setShowPasswordChangeMessage(true)
+      const timer = setTimeout(() => {
+        setShowPasswordChangeMessage(false)
+      }, 3000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [passwordChange])
 
   useEffect(() => {
     setHasSuccess(registrationSuccess)
@@ -155,6 +178,22 @@ const Login = () => {
         } rounded-lg shadow-md md:w-96 p-6`}
       >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
+        {showPasswordChangeMessage && (
+          <CSSTransition
+            in={showPasswordChangeMessage}
+            timeout={300}
+            classNames='alert'
+            nodeRef={passwordChangeRef}
+            transitionAppear={true}
+            unmountOnExit
+          >
+            <div ref={passwordChangeRef} className='mb-3'>
+              <Alert variant='outlined' severity='info' className='mb-3'>
+                You changed your password successfully! Please login.
+              </Alert>
+            </div>
+          </CSSTransition>
+        )}
         {hasSuccess && (
           <CSSTransition
             in={showSuccessMessage}

@@ -28,15 +28,17 @@ export const loader = async ({ request }: LoaderArgs) => {
 export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
   const user = form.get('username')
-  const currentPassword = form.get('current-password') as string
-  const newPassword = form.get('new-password') as string
+  const currentPassword = form.get('currentPassword')
+  const newPassword = form.get('newPassword')
   const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(newPassword, salt)
+  const hashedPassword = await bcrypt.hash(newPassword as string, salt)
+
+  console.log(`Comparing ${currentPassword} to ${newPassword}`)
 
   if (
     typeof user !== 'string' ||
     typeof currentPassword !== 'string' ||
-    newPassword !== 'string'
+    typeof newPassword !== 'string'
   ) {
     return badRequest({
       fieldErrors: null,
@@ -98,24 +100,29 @@ export const action = async ({ request }: ActionArgs) => {
     },
   })
 
-  const updatePassword = await db.user.update({
-    where: {
-      id: userRecord.id,
-    },
-    data: {
-      username: user,
-      passwordHash: hashedPassword,
-    },
-  })
+  if (userExists && userPassword !== hashedPassword) {
+    await db.user.update({
+      where: {
+        id: userRecord.id,
+      },
+      data: {
+        username: user,
+        passwordHash: hashedPassword,
+      },
+    })
+  }
 
-  return redirect('/login')
+  console.log(`Comparing ${userPassword} to ${hashedPassword}`)
+
+  return redirect('/login?passwordChange=true')
 }
 
 const Profile = () => {
   const { theme } = useContext(Context)
   const actionData = useActionData()
   const data = useLoaderData()
-  console.log(data.user.Username)
+
+  console.log(actionData)
 
   return (
     <>
@@ -125,6 +132,7 @@ const Profile = () => {
       >
         <h1 className='text-2xl font-bold'>Profile</h1>
         <Form
+          method='post'
           action='/user/profile'
           className='flex flex-col justify-between w-80'
         >
@@ -174,8 +182,8 @@ const Profile = () => {
             </label>
             <input
               type='password'
-              id='current-password'
-              name='current-password'
+              id='currentPassword'
+              name='currentPassword'
               className={`w-full px-3 py-2 border-2 rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.password ? 'error-container' : null
               } ${
@@ -207,8 +215,8 @@ const Profile = () => {
             </label>
             <input
               type='password'
-              id='new-password'
-              name='new-password'
+              id='newPassword'
+              name='newPassword'
               className={`w-full px-3 py-2 border-2 rounded-md focus:outline-none focus:border-purple ${
                 actionData?.fieldErrors?.password ? 'error-container' : null
               } ${

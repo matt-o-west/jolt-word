@@ -80,7 +80,7 @@ export const action = async ({ request }: ActionArgs) => {
 
   if (existingWord) {
     // If the word exists, update its vote count
-    const updatedVote = await db.word.update({
+    await db.word.update({
       where: {
         word: word as string,
       },
@@ -90,16 +90,14 @@ export const action = async ({ request }: ActionArgs) => {
         },
       },
     })
-    console.log(updatedVote)
   } else {
     // If the word doesn't exist, create a new record with a single vote
-    const addedVote = await db.word.create({
+    await db.word.create({
       data: {
         word: word as string,
         votes: 1,
       },
     })
-    console.log(addedVote)
   }
 
   return null
