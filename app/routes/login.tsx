@@ -102,7 +102,10 @@ const Login = () => {
   //password change alert
   const passwordChange = searchParams.get('passwordChange') === 'true'
   const [showPasswordChangeMessage, setShowPasswordChangeMessage] =
-    useState(false)
+    useState(passwordChange)
+  const [hasPasswordChange, setHasPasswordChange] = useState(
+    Boolean(passwordChange)
+  )
   const passwordChangeRef = useRef(null)
 
   //success alert
@@ -110,16 +113,16 @@ const Login = () => {
   const [showSuccessMessage, setShowSuccessMessage] =
     useState(registrationSuccess)
   const [hasSuccess, setHasSuccess] = useState(Boolean(registrationSuccess))
+  const successRef = useRef(null)
 
   //error alert
   const actionData = useActionData() ?? { fields: {} }
-  const successRef = useRef(null)
   const [hasError, setHasError] = useState(actionData.formError)
   const [showErrorMessage, setShowErrorMessage] = useState(Boolean(hasError))
   const errorRef = useRef(null)
 
   useEffect(() => {
-    setShowPasswordChangeMessage(passwordChange)
+    setHasPasswordChange(passwordChange)
   }, [passwordChange])
 
   useEffect(() => {
@@ -178,13 +181,12 @@ const Login = () => {
         } rounded-lg shadow-md md:w-96 p-6`}
       >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
-        {showPasswordChangeMessage && (
+        {hasPasswordChange && (
           <CSSTransition
             in={showPasswordChangeMessage}
             timeout={300}
             classNames='alert'
             nodeRef={passwordChangeRef}
-            transitionAppear={true}
             unmountOnExit
           >
             <div ref={passwordChangeRef} className='mb-3'>
