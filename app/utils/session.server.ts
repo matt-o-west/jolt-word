@@ -1,7 +1,45 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node'
 import bcrypt from 'bcryptjs'
-
+import cron from 'node-cron'
 import { db } from 'prisma/db.server'
+
+// Run the task every day at 12:00 AM.
+const schedule = '0 0 * * *'
+
+const task = async () => {
+  const dateLimit = new Date()
+  dateLimit.setSeconds(dateLimit.getSeconds() - 10)
+  const userWords = await db.userWord.findMany({
+    where: {
+      createdAt: {
+        lte: dateLimit,
+      },
+    },
+  })
+
+  for (const userWord of userWords) {
+    console.log('Processing userWord', userWord)
+    const word = await db.word.findUnique({
+      where: {
+        id: userWord.wordId,
+      },
+    })
+    if (word) {
+      console.log('Updating word', word)
+      await db.word.update({
+        where: {
+          id: userWord.wordId,
+        },
+        data: {
+          votes: Math.max(0, word.votes - 1),
+        },
+      })
+    }
+  }
+  console.log('Task completed')
+}
+
+cron.schedule(schedule, task)
 
 type LoginForm = {
   username: string

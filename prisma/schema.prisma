@@ -23,6 +23,7 @@ model UserWord {
   word      Word    @relation(fields: [wordId], references: [id])
   wordId    String  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, wordId])
 }
