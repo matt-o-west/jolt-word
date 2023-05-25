@@ -69,7 +69,7 @@ if (!sessionSecret) {
   throw new Error('SESSION_SECRET must be set')
 }
 
-const storage = createCookieSessionStorage({
+export const storage = createCookieSessionStorage({
   cookie: {
     name: process.env.SESSION_COOKIE_NAME || '__session',
     // normally you want this to be `secure: true`
@@ -84,7 +84,7 @@ const storage = createCookieSessionStorage({
   },
 })
 
-function getUserSession(request: Request) {
+export function getUserSession(request: Request) {
   return storage.getSession(request.headers.get('Cookie'))
 }
 
@@ -170,9 +170,39 @@ export async function logout(request: Request) {
 export async function createUserSession(userId: string, redirectTo: string) {
   const session = await storage.getSession()
   session.set('userId', userId)
+  session.set('votes', {})
   return redirect(redirectTo, {
     headers: {
       'Set-Cookie': await storage.commitSession(session),
     },
   })
+}
+
+export async function updateUserVote(request: Request, wordId: string) {
+  const session = await getUserSession(request)
+  const userId = session.get('userId')
+  if (!userId || typeof userId !== 'string') {
+    throw logout(request)
+  }
+  let votes = session.get('votes')
+  if (votes[wordId]) {
+    votes[wordId] += 1
+  } else {
+    votes[wordId] = 1
+  }
+  session.set('votes', votes)
+  await storage.commitSession(session)
+  return votes
+}
+
+export async function getUserVoteCount(request: Request, wordId: string) {
+  const session = await getUserSession(request)
+  const userId = session.get('userId')
+  if (!userId || typeof userId !== 'string') {
+    throw logout(request)
+  }
+
+  const votes = session.get('votes')
+
+  return votes[wordId] || 0
 }

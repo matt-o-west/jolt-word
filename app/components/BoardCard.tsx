@@ -3,6 +3,7 @@ import type { LeaderBoardType } from './LeaderBoard'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { Context } from '~/root'
+import { updateUserVote, getUserVoteCount } from '~/utils/session.server'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 

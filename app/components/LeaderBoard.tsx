@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import BoardCard from './BoardCard'
 import PaperPlane from '~/components/PaperPlane'
 import { Context } from '~/root'
+
 //import type { WordProps } from './BoardCard'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
@@ -25,6 +26,7 @@ export type DataProps = {
 
 const LeaderBoard = ({ data, actionForm, ranked }: DataProps) => {
   const { theme } = useContext(Context)
+
   return (
     <div className='flex flex-col items-center text-black min-h-screen w-full py-2 mt-2 text-center sm:py-0 rounded-sm'>
       {data &&

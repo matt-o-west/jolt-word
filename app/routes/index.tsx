@@ -8,7 +8,12 @@ import DescriptionPane from '~/components/DescriptionPane'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
-import { requireUserId } from '~/utils/session.server'
+import {
+  requireUserId,
+  getUserSession,
+  getUserVoteCount,
+  storage,
+} from '~/utils/session.server'
 import generateRandomWord from '~/utils/generateRandomWord.server'
 import ClickableIcon from '~/components/BoltIcon'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
@@ -65,13 +70,10 @@ export const loader = async ({ request }: LoaderArgs) => {
 }
 
 export const action = async ({ request }: ActionArgs) => {
-  // Get the request body as a FormData object
   const formData = await request.formData()
-
-  // Access the word from the request body
+  const session = await getUserSession(request)
   const word = formData.get('word')
 
-  // Try to find the existing word
   const existingWord = await db.word.findUnique({
     where: {
       word: word as string,
@@ -79,7 +81,6 @@ export const action = async ({ request }: ActionArgs) => {
   })
 
   if (existingWord) {
-    // If the word exists, update its vote count
     await db.word.update({
       where: {
         word: word as string,
@@ -90,14 +91,23 @@ export const action = async ({ request }: ActionArgs) => {
         },
       },
     })
+
+    let votes = session.get('votes') || {}
+    votes[word as string] = (votes[word as string] || 0) + 1
+    session.set('votes', votes)
+    await storage.commitSession(session)
   } else {
-    // If the word doesn't exist, create a new record with a single vote
     await db.word.create({
       data: {
         word: word as string,
         votes: 1,
       },
     })
+
+    let votes = session.get('votes') || {}
+    votes[word as string] = 1
+    session.set('votes', votes)
+    await storage.commitSession(session)
   }
 
   return null
