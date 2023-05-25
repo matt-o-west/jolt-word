@@ -242,7 +242,7 @@ export default function Index() {
               <div className='flex items-center flex-row'>
                 <img src='/images/icons-meter.png' alt='voltmeter' />
                 <span className='text-5xl font-bold text-green-500 ml-2 flex-grow min-w-full'>
-                  +1
+                  +3
                 </span>
               </div>
               <span className='text-green-500 desktop:mr-2 tablet:mr-14 phone:mr-16'>
