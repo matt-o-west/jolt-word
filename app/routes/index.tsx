@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { Link, Form } from '@remix-run/react'
-import { useLoaderData } from '@remix-run/react'
+import { useLoaderData, useActionData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
@@ -12,6 +12,7 @@ import {
   requireUserId,
   getUserSession,
   getUserVoteCount,
+  updateUserVote,
   storage,
 } from '~/utils/session.server'
 import generateRandomWord from '~/utils/generateRandomWord.server'
@@ -23,8 +24,11 @@ import ShowMoreChip from '~/components/ShowMoreChip'
 import { db } from 'prisma/db.server'
 import useMobileDetect from '~/hooks/useMobileDetect'
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderArgs) => {
   const redirectTo = '/login'
+  const wordId = params.wordId
+  console.log('wordId', wordId)
+  const userVotes = await getUserVoteCount(request)
 
   const leaderboard = await db.word.findMany({
     orderBy: {
@@ -32,6 +36,8 @@ export const loader = async ({ request }: LoaderArgs) => {
     },
     take: 5,
   })
+
+  console.log('userVotes', userVotes)
 
   const loggedInUser = await requireUserId(request, redirectTo)
   const user = loggedInUser
@@ -60,19 +66,53 @@ export const loader = async ({ request }: LoaderArgs) => {
       },
     })
 
-    if (userWords.length === 0) {
-      return json({ loggedInUser, userWords, leaderboard, user, randomWord })
+    if (wordId) {
+      const userVoteCount = await getUserVoteCount(request)
+      console.log('userVoteCount', userVoteCount)
+      return json({
+        loggedInUser,
+        userWords,
+        leaderboard,
+        user,
+        randomWord,
+        userVotes,
+      })
     }
-    return json({ loggedInUser, userWords, leaderboard, user, randomWord })
+
+    if (userWords.length === 0) {
+      return json({
+        loggedInUser,
+        userWords,
+        leaderboard,
+        user,
+        randomWord,
+        userVotes,
+      })
+    }
+    return json({
+      loggedInUser,
+      userWords,
+      leaderboard,
+      user,
+      randomWord,
+      userVotes,
+    })
   }
 
-  return json({ leaderboard, loggedInUser, user, randomWord, userWords: [] })
+  return json({
+    leaderboard,
+    loggedInUser,
+    user,
+    randomWord,
+    userWords: [],
+    userVotes,
+  })
 }
 
 export const action = async ({ request }: ActionArgs) => {
   const formData = await request.formData()
-  const session = await getUserSession(request)
-  const word = formData.get('word')
+  const word = formData.get('word') as string
+  const wordId = formData.get('wordId') as string
 
   const existingWord = await db.word.findUnique({
     where: {
@@ -80,10 +120,11 @@ export const action = async ({ request }: ActionArgs) => {
     },
   })
 
+  let updatedVotes
   if (existingWord) {
     await db.word.update({
       where: {
-        word: word as string,
+        id: wordId as string,
       },
       data: {
         votes: {
@@ -92,10 +133,8 @@ export const action = async ({ request }: ActionArgs) => {
       },
     })
 
-    let votes = session.get('votes') || {}
-    votes[word as string] = (votes[word as string] || 0) + 1
-    session.set('votes', votes)
-    await storage.commitSession(session)
+    updatedVotes = updateUserVote(request, word)
+    return json({ updatedVotes }, { status: 300 })
   } else {
     await db.word.create({
       data: {
@@ -104,13 +143,9 @@ export const action = async ({ request }: ActionArgs) => {
       },
     })
 
-    let votes = session.get('votes') || {}
-    votes[word as string] = 1
-    session.set('votes', votes)
-    await storage.commitSession(session)
+    updatedVotes = updateUserVote(request, word)
+    return json({ updatedVotes }, { status: 300 })
   }
-
-  return null
 }
 
 export default function Index() {
@@ -119,6 +154,8 @@ export default function Index() {
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
   const isMobile = useMobileDetect()
+  const data = useActionData<typeof action>()
+  console.log(typeof data)
 
   useEffect(() => {
     if (loggedInUser && (user?.username || user?.username === '')) {

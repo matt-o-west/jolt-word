@@ -79,7 +79,7 @@ export const storage = createCookieSessionStorage({
     secrets: [sessionSecret],
     sameSite: 'lax',
     path: '/',
-    maxAge: Number(process.env.SESSION_COOKIE_MAX_AGE) || 60 * 60 * 24 * 30,
+    maxAge: Number(process.env.SESSION_COOKIE_MAX_AGE) || 60 * 60 * 12,
     httpOnly: true,
   },
 })
@@ -195,7 +195,7 @@ export async function updateUserVote(request: Request, wordId: string) {
   return votes
 }
 
-export async function getUserVoteCount(request: Request, wordId: string) {
+export async function getUserVoteCount(request: Request) {
   const session = await getUserSession(request)
   const userId = session.get('userId')
   if (!userId || typeof userId !== 'string') {
@@ -204,5 +204,5 @@ export async function getUserVoteCount(request: Request, wordId: string) {
 
   const votes = session.get('votes')
 
-  return votes[wordId] || 0
+  return votes
 }
