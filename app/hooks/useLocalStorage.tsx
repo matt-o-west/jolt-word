@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 
-export const useLocalStorage = (
+export const useLocalStorage = <T,>(
   word: string,
-  initialValue: number,
+  initialValue: T,
   expiryInMinutes: number
-) => {
-  const [storedValue, setStoredValue] = useState(initialValue)
+): [T, (value: T | ((val: T) => T)) => void] => {
+  const [storedValue, setStoredValue] = useState<T>(initialValue)
 
   useEffect(() => {
     try {
@@ -30,7 +30,7 @@ export const useLocalStorage = (
     }
   }, [word, initialValue, expiryInMinutes])
 
-  const setValue = (value: Function) => {
+  const setValue = (value: T | ((val: T) => T)) => {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value

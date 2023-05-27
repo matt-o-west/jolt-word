@@ -1,4 +1,5 @@
 import { useEffect, useContext, useState } from 'react'
+import { useLocalStorage } from '~/hooks/useLocalStorage'
 import { Link, Form } from '@remix-run/react'
 import { useLoaderData, useActionData } from '@remix-run/react'
 import { json } from '@remix-run/node'
@@ -24,11 +25,8 @@ import ShowMoreChip from '~/components/ShowMoreChip'
 import { db } from 'prisma/db.server'
 import useMobileDetect from '~/hooks/useMobileDetect'
 
-export const loader = async ({ request, params }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderArgs) => {
   const redirectTo = '/login'
-  const wordId = params.wordId
-  console.log('wordId', wordId)
-  const userVotes = await getUserVoteCount(request)
 
   const leaderboard = await db.word.findMany({
     orderBy: {
@@ -36,8 +34,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     },
     take: 5,
   })
-
-  console.log('userVotes', userVotes)
 
   const loggedInUser = await requireUserId(request, redirectTo)
   const user = loggedInUser
@@ -66,65 +62,34 @@ export const loader = async ({ request, params }: LoaderArgs) => {
       },
     })
 
-    if (wordId) {
-      const userVoteCount = await getUserVoteCount(request)
-      console.log('userVoteCount', userVoteCount)
-      return json({
-        loggedInUser,
-        userWords,
-        leaderboard,
-        user,
-        randomWord,
-        userVotes,
-      })
-    }
-
     if (userWords.length === 0) {
-      return json({
-        loggedInUser,
-        userWords,
-        leaderboard,
-        user,
-        randomWord,
-        userVotes,
-      })
+      return json({ loggedInUser, userWords, leaderboard, user, randomWord })
     }
-    return json({
-      loggedInUser,
-      userWords,
-      leaderboard,
-      user,
-      randomWord,
-      userVotes,
-    })
+    return json({ loggedInUser, userWords, leaderboard, user, randomWord })
   }
 
-  return json({
-    leaderboard,
-    loggedInUser,
-    user,
-    randomWord,
-    userWords: [],
-    userVotes,
-  })
+  return json({ leaderboard, loggedInUser, user, randomWord, userWords: [] })
 }
 
 export const action = async ({ request }: ActionArgs) => {
+  // Get the request body as a FormData object
   const formData = await request.formData()
-  const word = formData.get('word') as string
-  const wordId = formData.get('wordId') as string
 
+  // Access the word from the request body
+  const word = formData.get('word')
+
+  // Try to find the existing word
   const existingWord = await db.word.findUnique({
     where: {
       word: word as string,
     },
   })
 
-  let updatedVotes
   if (existingWord) {
+    // If the word exists, update its vote count
     await db.word.update({
       where: {
-        id: wordId as string,
+        word: word as string,
       },
       data: {
         votes: {
@@ -132,20 +97,51 @@ export const action = async ({ request }: ActionArgs) => {
         },
       },
     })
-
-    updatedVotes = updateUserVote(request, word)
-    return json({ updatedVotes }, { status: 300 })
   } else {
+    // If the word doesn't exist, create a new record with a single vote
     await db.word.create({
       data: {
         word: word as string,
         votes: 1,
       },
     })
-
-    updatedVotes = updateUserVote(request, word)
-    return json({ updatedVotes }, { status: 300 })
   }
+
+  return null
+}
+
+const ActionForm = ({ word, votes }: LeaderBoardType) => {
+  const maxClicks = 3
+  const [storedValue, setStoredValue] = useLocalStorage<number>(word, 0, 120)
+  const [clicks, setClicks] = useState(storedValue as number)
+
+  useEffect(() => {
+    if (clicks <= maxClicks) {
+      setStoredValue(clicks)
+    }
+  }, [clicks, setStoredValue])
+
+  const handleClick = () => {
+    if (clicks < maxClicks) {
+      setClicks(clicks + 1)
+    }
+  }
+
+  return (
+    <Form method='post' action=''>
+      <input type='hidden' name='word' value={word} />
+      <ClickableIcon
+        votes={votes}
+        word={word}
+        handleClick={handleClick}
+        storedValue={storedValue}
+        maxClicks={maxClicks}
+      />
+      <button type='submit' className='hidden'>
+        Submit
+      </button>
+    </Form>
+  )
 }
 
 export default function Index() {
@@ -155,6 +151,7 @@ export default function Index() {
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
   const isMobile = useMobileDetect()
   const data = useActionData<typeof action>()
+
   console.log(typeof data)
 
   useEffect(() => {
@@ -164,18 +161,6 @@ export default function Index() {
       setUser('')
     }
   }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const actionForm = ({ word, votes }: LeaderBoardType) => {
-    return (
-      <Form method='post' action=''>
-        <input type='hidden' name='word' value={word} />
-        <ClickableIcon votes={votes} />
-        <button type='submit' className='hidden'>
-          Submit
-        </button>
-      </Form>
-    )
-  }
 
   const wordData = userWords.map((word) => {
     return {
@@ -255,7 +240,7 @@ export default function Index() {
             >
               <LeaderBoard
                 data={leaderboard}
-                actionForm={actionForm}
+                ActionForm={ActionForm}
                 ranked={true}
               />
             </div>
@@ -271,7 +256,7 @@ export default function Index() {
                 <div className='relative'>
                   <LeaderBoard
                     data={wordData}
-                    actionForm={actionForm}
+                    ActionForm={ActionForm}
                     ranked={false}
                   />
                   <Link to='/user/mywords'>

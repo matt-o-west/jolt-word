@@ -6,30 +6,23 @@ import useMobileDetect from '~/hooks/useMobileDetect'
 
 type ClickableIconProps = {
   word: string
-  votes: number
+  votes: number | undefined
+  handleClick: () => void
+  storedValue: number | ((value: Function) => void)
+  maxClicks: number
 }
 
-function ClickableIcon({ word, votes }: ClickableIconProps) {
-  const maxClicks = 3
-  const [storedValue, setStoredValue] = useLocalStorage(word, 0, 120)
-
+function ClickableIcon({
+  word,
+  votes = 0,
+  handleClick,
+  storedValue,
+  maxClicks,
+}: ClickableIconProps) {
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
-  const handleClick = () => {
-    if (storedValue < maxClicks) {
-      setStoredValue((prevCount) => prevCount + 1)
-    }
-  }
-
-  const displayVotes = () => {
-    if (storedValue === maxClicks) {
-      return votes + 1
-    } else {
-      return votes
-    }
-  }
-
+  console.log(storedValue)
   return (
     <>
       <button
@@ -44,7 +37,7 @@ function ClickableIcon({ word, votes }: ClickableIconProps) {
           fontSize={fontSize}
           color={storedValue === maxClicks ? 'primary' : 'inherit'}
         />
-        <span className='vote-count'>{displayVotes()}</span>
+        <span className='vote-count'>{votes}</span>
       </button>
     </>
   )

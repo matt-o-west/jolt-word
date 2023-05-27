@@ -21,10 +21,10 @@ export type LeaderBoardType = {
 export type DataProps = {
   ranked?: boolean
   data: LeaderBoardType[]
-  actionForm: ActionFormFunction
+  ActionForm: ActionFormFunction
 }
 
-const LeaderBoard = ({ data, actionForm, ranked }: DataProps) => {
+const LeaderBoard = ({ data, ActionForm, ranked }: DataProps) => {
   const { theme } = useContext(Context)
 
   return (
@@ -40,7 +40,7 @@ const LeaderBoard = ({ data, actionForm, ranked }: DataProps) => {
                 myWords={false}
                 rank={ranked ? index + 1 : 0}
                 key={id}
-                actionForm={actionForm}
+                ActionForm={ActionForm}
               />
             )
           }

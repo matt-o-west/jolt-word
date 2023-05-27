@@ -14,7 +14,7 @@ export type WordProps = {
   votes?: number
   myWords: boolean
   width?: string | undefined
-  actionForm: ActionFormFunction
+  ActionForm: ActionFormFunction
   deleteForm?: ActionFormFunction
 }
 
@@ -35,7 +35,7 @@ const BoardCard = ({
   votes,
   width = 'w-[335px]',
   myWords = false,
-  actionForm,
+  ActionForm,
   deleteForm,
 }: WordProps) => {
   const { featureTheme } = useContext(Context)
@@ -56,7 +56,11 @@ const BoardCard = ({
       <span className='mx-2'>
         <Link to={`/${word}`}>{word}</Link>
       </span>
-      <div className='ml-auto tablet:mb-2'>{actionForm({ word, votes })}</div>
+      <div className='ml-auto tablet:mb-2'>
+        {ActionForm && typeof ActionForm === 'function'
+          ? ActionForm({ word, votes })
+          : null}
+      </div>
     </div>
   )
 }
