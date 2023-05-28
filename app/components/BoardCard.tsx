@@ -3,7 +3,6 @@ import type { LeaderBoardType } from './LeaderBoard'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { Context } from '~/root'
-import { updateUserVote, getUserVoteCount } from '~/utils/session.server'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
@@ -40,7 +39,7 @@ const BoardCard = ({
 }: WordProps) => {
   const { featureTheme } = useContext(Context)
   const rankColor = getRankColor(rank)
-
+  console.log(`Passed down votes: ${votes}`)
   const notRanked = `${featureTheme} border-b-2 border-gray`
 
   return (
@@ -56,11 +55,7 @@ const BoardCard = ({
       <span className='mx-2'>
         <Link to={`/${word}`}>{word}</Link>
       </span>
-      <div className='ml-auto tablet:mb-2'>
-        {ActionForm && typeof ActionForm === 'function'
-          ? ActionForm({ word, votes })
-          : null}
-      </div>
+      <div className='ml-auto tablet:mb-2'>{ActionForm({ word, votes })}</div>
     </div>
   )
 }

@@ -7,15 +7,17 @@ import { Context } from '~/root'
 
 type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
 
-export type LeaderBoardType = {
+interface WordData {
+  id: number
+  word: string
+  vote: number
+}
+export interface LeaderBoardType {
   id?: number
   word: string
   votes?: number
-  wordData?: {
-    id: number
-    word: string
-    vote: number
-  }
+  userWords?: WordData[]
+  wordData?: WordData
 }
 
 export type DataProps = {

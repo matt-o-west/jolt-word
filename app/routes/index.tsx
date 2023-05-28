@@ -110,7 +110,7 @@ export const action = async ({ request }: ActionArgs) => {
   return null
 }
 
-const ActionForm = ({ word, votes }: LeaderBoardType) => {
+export const ActionForm = ({ word, votes }: LeaderBoardType) => {
   const maxClicks = 3
   const [storedValue, setStoredValue] = useLocalStorage<number>(word, 0, 120)
   const [clicks, setClicks] = useState(storedValue as number)
