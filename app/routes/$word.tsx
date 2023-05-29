@@ -12,7 +12,7 @@ import { json } from '@remix-run/node'
 import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import { db } from 'prisma/db.server'
 import { requireUserId } from '~/utils/session.server'
-
+import ActionForm from '~/components/ActionForm'
 export interface Definition {
   date: string
   fl: string
@@ -149,7 +149,7 @@ const Word = () => {
   const { word } = useParams()
   const { theme, featureTheme } = useContext(Context)
   const data = useLoaderData<DefinitionType>()
-
+  console.log(data)
   //replace with error boundary
   if (!data) {
     return <div>Sorry, could not find data for {word}</div>
@@ -206,13 +206,7 @@ const Word = () => {
             {word}
           </h1>
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2 mb-5'>
-            <Form method='post' action={`/${word}`}>
-              <input type='hidden' name='word' value={word} />
-              <ClickableIcon votes={data.votes} word={word} />
-              <button type='submit' className='hidden'>
-                Submit
-              </button>
-            </Form>
+            <ActionForm word={word} votes={data.votes} />
           </div>
           {subDirectory && (
             <button

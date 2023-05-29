@@ -5,11 +5,9 @@ import { json } from '@remix-run/node'
 import { requireUserId, getUserId } from '~/utils/session.server'
 import { badRequest } from '~/utils/request.server'
 import { Context } from '~/root'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import BoardCard from '~/components/BoardCard'
-import ClickableIcon from '~/components/BoltIcon'
 import { Form } from '@remix-run/react'
-import { useLocalStorage } from '~/hooks/useLocalStorage'
 import { styled } from '@mui/system'
 import ClearIcon from '@mui/icons-material/Clear'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
@@ -149,40 +147,6 @@ export const action = async ({ request }: ActionArgs) => {
   return json({ message: word })
 }
 
-export const ActionForm = ({ word, votes }: LeaderBoardType) => {
-  const maxClicks = 3
-  const [storedValue, setStoredValue] = useLocalStorage<number>(word, 0, 120)
-  const [clicks, setClicks] = useState(storedValue as number)
-
-  useEffect(() => {
-    if (clicks <= maxClicks) {
-      setStoredValue(clicks)
-    }
-  }, [clicks, setStoredValue])
-
-  const handleClick = () => {
-    if (clicks < maxClicks) {
-      setClicks(clicks + 1)
-    }
-  }
-
-  return (
-    <Form method='post' action=''>
-      <input type='hidden' name='word' value={word} />
-      <ClickableIcon
-        votes={votes}
-        word={word}
-        handleClick={handleClick}
-        storedValue={storedValue}
-        maxClicks={maxClicks}
-      />
-      <button type='submit' className='hidden'>
-        Submit
-      </button>
-    </Form>
-  )
-}
-
 const MyWords = () => {
   const { theme } = useContext(Context)
   const { loggedInUser, userWords } = useLoaderData<typeof loader>()
@@ -211,12 +175,6 @@ const MyWords = () => {
     }
   })
 
-  console.log(
-    wordData.map((word) => {
-      return word.votes
-    })
-  )
-
   return (
     <>
       <Nav />
@@ -236,7 +194,6 @@ const MyWords = () => {
                   votes={votes}
                   width={'w-[300px]'}
                   myWords={true}
-                  ActionForm={ActionForm}
                   deleteForm={deleteForm}
                   key={wordId}
                 />

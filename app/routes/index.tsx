@@ -21,6 +21,7 @@ import ClickableIcon from '~/components/BoltIcon'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 import ShowMoreChip from '~/components/ShowMoreChip'
+import ActionForm from '~/components/ActionForm'
 
 import { db } from 'prisma/db.server'
 import useMobileDetect from '~/hooks/useMobileDetect'
@@ -108,40 +109,6 @@ export const action = async ({ request }: ActionArgs) => {
   }
 
   return null
-}
-
-export const ActionForm = ({ word, votes }: LeaderBoardType) => {
-  const maxClicks = 3
-  const [storedValue, setStoredValue] = useLocalStorage<number>(word, 0, 120)
-  const [clicks, setClicks] = useState(storedValue as number)
-
-  useEffect(() => {
-    if (clicks <= maxClicks) {
-      setStoredValue(clicks)
-    }
-  }, [clicks, setStoredValue])
-
-  const handleClick = () => {
-    if (clicks < maxClicks) {
-      setClicks(clicks + 1)
-    }
-  }
-
-  return (
-    <Form method='post' action=''>
-      <input type='hidden' name='word' value={word} />
-      <ClickableIcon
-        votes={votes}
-        word={word}
-        handleClick={handleClick}
-        storedValue={storedValue}
-        maxClicks={maxClicks}
-      />
-      <button type='submit' className='hidden'>
-        Submit
-      </button>
-    </Form>
-  )
 }
 
 export default function Index() {
@@ -238,11 +205,7 @@ export default function Index() {
                 left: showLeaderBoard ? 0 : '10px',
               }}
             >
-              <LeaderBoard
-                data={leaderboard}
-                ActionForm={ActionForm}
-                ranked={true}
-              />
+              <LeaderBoard data={leaderboard} ranked={true} />
             </div>
             {loggedInUser && (
               <div
@@ -254,11 +217,7 @@ export default function Index() {
                 }}
               >
                 <div className='relative'>
-                  <LeaderBoard
-                    data={wordData}
-                    ActionForm={ActionForm}
-                    ranked={false}
-                  />
+                  <LeaderBoard data={wordData} ranked={false} />
                   <Link to='/user/mywords'>
                     <ShowMoreChip
                       isStatic={isMobile}

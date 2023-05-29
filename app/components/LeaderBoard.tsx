@@ -5,8 +5,6 @@ import { Context } from '~/root'
 
 //import type { WordProps } from './BoardCard'
 
-type ActionFormFunction = ({ word, votes }: LeaderBoardType) => JSX.Element
-
 interface WordData {
   id: number
   word: string
@@ -23,10 +21,9 @@ export interface LeaderBoardType {
 export type DataProps = {
   ranked?: boolean
   data: LeaderBoardType[]
-  ActionForm: ActionFormFunction
 }
 
-const LeaderBoard = ({ data, ActionForm, ranked }: DataProps) => {
+const LeaderBoard = ({ data, ranked }: DataProps) => {
   const { theme } = useContext(Context)
 
   return (
@@ -42,7 +39,6 @@ const LeaderBoard = ({ data, ActionForm, ranked }: DataProps) => {
                 myWords={false}
                 rank={ranked ? index + 1 : 0}
                 key={id}
-                ActionForm={ActionForm}
               />
             )
           }

@@ -14,7 +14,7 @@ type ClickableIconProps = {
 
 function ClickableIcon({
   word,
-  votes = 0,
+  votes,
   handleClick,
   storedValue,
   maxClicks,
@@ -22,7 +22,6 @@ function ClickableIcon({
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
-  console.log(storedValue)
   return (
     <>
       <button
