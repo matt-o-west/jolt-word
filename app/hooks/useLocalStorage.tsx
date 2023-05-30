@@ -5,30 +5,22 @@ export const useLocalStorage = <T,>(
   initialValue: T,
   expiryInMinutes: number
 ): [T, (value: T | ((val: T) => T)) => void] => {
-  console.log(initialValue + ' ' + expiryInMinutes)
-
-  const [storedValue, setStoredValue] = useState<T>(initialValue)
-
-  useEffect(() => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    let storedItem = initialValue
     try {
       const item = window.localStorage.getItem(word)
-      // Check if item exists and hasn't expired
       if (item) {
         const data = JSON.parse(item)
         const now = new Date()
-        // If the current time is beyond the expiry time, return initialValue
-        if (now.getTime() > data.expiryInMinutes) {
-          window.localStorage.removeItem(word)
-          setStoredValue(initialValue)
-        } else {
-          setStoredValue(data.value)
+        if (now.getTime() < data.expiry) {
+          storedItem = data.value
         }
       }
     } catch (error) {
-      console.log(error)
-      setStoredValue(initialValue)
+      console.error(error)
     }
-  }, [word, initialValue, expiryInMinutes])
+    return storedItem
+  })
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {

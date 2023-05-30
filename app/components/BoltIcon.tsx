@@ -21,6 +21,15 @@ function ClickableIcon({
 }: ClickableIconProps) {
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
+  console.log(
+    'word: ',
+    word,
+    '  local value: ',
+    storedValue,
+    '  max clicks: ',
+    maxClicks
+  )
+  console.log(storedValue === maxClicks)
 
   return (
     <>
@@ -34,7 +43,7 @@ function ClickableIcon({
       >
         <BoltIcon
           fontSize={fontSize}
-          color={storedValue === maxClicks ? 'primary' : 'inherit'}
+          color={storedValue === 3 ? 'primary' : 'inherit'}
         />
         <span className='vote-count'>{votes}</span>
       </button>

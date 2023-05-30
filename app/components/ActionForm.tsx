@@ -8,6 +8,7 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
   const maxClicks = 3
   const [storedValue, setStoredValue] = useLocalStorage<number>(word, 0, 120)
   const [clicks, setClicks] = useState(storedValue as number)
+  //console.log('word:', word, ' local value:', storedValue)
 
   useEffect(() => {
     if (clicks <= maxClicks) {
@@ -16,7 +17,7 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
   }, [clicks, setStoredValue])
 
   const handleClick = () => {
-    console.log('votes', votes)
+    console.log(storedValue === maxClicks)
     if (clicks < maxClicks) {
       setClicks(clicks + 1)
     }
