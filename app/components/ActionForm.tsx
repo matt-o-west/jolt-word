@@ -6,12 +6,13 @@ import ClickableIcon from './BoltIcon'
 
 const ActionForm = ({ word, votes }: LeaderBoardType) => {
   const maxClicks = 3
-  const [storedValue, setStoredValue] = useLocalStorage<number>(word, 0, 120)
+  const [storedValue, setStoredValue, storedWord, loading] =
+    useLocalStorage<number>(word, 0, 120)
   const [clicks, setClicks] = useState(storedValue as number)
-  //console.log('word:', word, ' local value:', storedValue)
+  console.log('word:', storedWord, ' local value:', storedValue)
 
   useEffect(() => {
-    if (clicks <= maxClicks) {
+    if (clicks === maxClicks) {
       setStoredValue(clicks)
     }
   }, [clicks, setStoredValue])
@@ -33,6 +34,7 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
         handleClick={handleClick}
         storedValue={storedValue}
         maxClicks={maxClicks}
+        loading={loading}
       />
       <button type='submit' className='hidden'>
         Submit

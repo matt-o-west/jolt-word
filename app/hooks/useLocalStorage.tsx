@@ -4,8 +4,11 @@ export const useLocalStorage = <T,>(
   word: string,
   initialValue: T,
   expiryInMinutes: number
-): [T, (value: T | ((val: T) => T)) => void] => {
-  const [storedValue, setStoredValue] = useState<T>(() => {
+): [T, (value: T | ((val: T) => T)) => void, String, Boolean] => {
+  const [loading, setLoading] = useState(true)
+  const [storedValue, setStoredValue] = useState<T>(initialValue)
+
+  useEffect(() => {
     let storedItem = initialValue
     try {
       const item = window.localStorage.getItem(word)
@@ -19,8 +22,9 @@ export const useLocalStorage = <T,>(
     } catch (error) {
       console.error(error)
     }
-    return storedItem
-  })
+    setStoredValue(storedItem)
+    setLoading(false)
+  }, [word, initialValue])
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {
@@ -40,5 +44,5 @@ export const useLocalStorage = <T,>(
     }
   }
 
-  return [storedValue, setValue]
+  return [storedValue, setValue, word, loading]
 }
