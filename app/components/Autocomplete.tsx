@@ -15,8 +15,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
     theme === 'dark' && cursor === i ? 'bg-tertiary.black w-full pl-1' : ''
 
   const wordsAsStrings = matchingWords
-    .map((word) => (typeof word === 'string' ? word : word?.hwi?.hw))
-    .filter((word) => !word.includes('*'))
+    .map((word: unknown) => (typeof word === 'string' ? word : word?.hwi?.hw))
+    .filter((word: string) => !word.includes('*'))
 
   const wordsAsStringsSorted = wordsAsStrings.sort((a, b) => {
     // Special case for exact match

@@ -1,7 +1,8 @@
 import { useContext } from 'react'
 import BoardCard from './BoardCard'
-import PaperPlane from '~/components/PaperPlane'
+import PaperPlane from '~/components/icon/PaperPlane'
 import { Context } from '~/root'
+import PlaceholderCard from './PlaceholderCard'
 
 //import type { WordProps } from './BoardCard'
 
@@ -28,7 +29,7 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
 
   return (
     <div className='flex flex-col items-center text-black min-h-screen w-full py-2 mt-2 text-center sm:py-0 rounded-sm'>
-      {data &&
+      {data.length >= 5 &&
         data.map(
           ({ word, votes, id, wordData }: LeaderBoardType, index: number) => {
             const actualWord = wordData ? wordData.word : word
@@ -59,6 +60,25 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
           </span>
         </div>
       )}
+      {data.length < 5 &&
+        data.map(
+          // Can we make a hack to make the leaderboard look full when there are less than 5 words? I have a couple SVGs to place in a BoardCard that could work, they are basically handdrawn crossed out lines.
+          ({ word, votes, id, wordData }: LeaderBoardType, index: number) => {
+            const actualWord = wordData ? wordData.word : word
+            return (
+              <BoardCard
+                votes={votes}
+                word={actualWord}
+                myWords={false}
+                rank={ranked ? index + 1 : 0}
+                key={id}
+              />
+            )
+          }
+        )}
+      {Array.from({ length: 5 - data.length }).map((_, index) => (
+        <PlaceholderCard key={`placeholder-${index}`} index={index} />
+      ))}
     </div>
   )
 }

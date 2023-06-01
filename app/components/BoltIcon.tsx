@@ -1,6 +1,7 @@
 import BoltIcon from '@mui/icons-material/Bolt'
 import Skeleton from '@mui/material/Skeleton'
 import useMobileDetect from '~/hooks/useMobileDetect'
+import { useEffect, useState } from 'react'
 //import zap from 'public/sound/zap.wav' // Import your sound effect file
 
 type ClickableIconProps = {
@@ -22,20 +23,11 @@ function ClickableIcon({
 }: ClickableIconProps) {
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
-  console.log(
-    'word: ',
-    word,
-    '  local value: ',
-    storedValue,
-    '  max clicks: ',
-    maxClicks
-  )
-  console.log(storedValue === maxClicks)
 
   return (
     <>
       {loading && (
-        <Skeleton variant='rectangular' animation='wave'>
+        <Skeleton variant='rectangular' animation='wave' className='mt-2 ml-2'>
           <BoltIcon fontSize={fontSize} />
         </Skeleton>
       )}
