@@ -7,6 +7,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
   const { theme } = useContext(Context)
   const navigate = useNavigate()
+  console.log('Search results:', matchingWords)
 
   const cursorHoverLight = (i: number) =>
     theme === 'light' && cursor === i ? 'bg-secondary.gray w-full pl-1' : ''

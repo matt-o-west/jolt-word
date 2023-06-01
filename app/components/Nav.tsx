@@ -5,7 +5,7 @@ import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
 const Nav = () => {
-  const { font, theme, featureTheme, toggleTheme, user, setFont, setTheme } =
+  const { font, theme, featureTheme, toggleTheme, user, setTheme } =
     useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
@@ -36,8 +36,20 @@ const Nav = () => {
             })
             .join('')
 
-          console.log([data[0].hwi?.hw], fixedResult)
+          setMatchingWords([fixedResult])
           return fixedResult
+        } else if (data.length > 1) {
+          const fixedResults = data.map((result: any) => {
+            return result.hwi?.hw
+              .split('')
+              .filter((char: string) => {
+                return char !== '*'
+              })
+              .join('')
+          })
+
+          setMatchingWords(fixedResults)
+          return fixedResults
         }
 
         setMatchingWords(data)
