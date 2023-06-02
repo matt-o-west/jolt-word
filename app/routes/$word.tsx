@@ -232,8 +232,12 @@ const Word = () => {
 
         <div className='mx-4 justify-start min-w-[90%]'>
           <Meaning meaning={meaningOne} />
-          {meaningTwo && <Meaning meaning={meaningTwo} />}
-          {meaningThree && <Meaning meaning={meaningThree} />}
+          {meaningTwo && (
+            <Meaning meaning={meaningTwo} previousMeaning={meaningOne} />
+          )}
+          {meaningThree && (
+            <Meaning meaning={meaningThree} previousMeaning={meaningTwo} />
+          )}
         </div>
 
         {etymology && (

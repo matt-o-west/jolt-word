@@ -6,13 +6,14 @@ import { Context } from '~/root'
 
 interface Props {
   meaning: Definition
+  previousMeaning?: Definition | undefined
 }
 
 type Synonym = string[][] | undefined
 
 type SynonymType = Synonym | undefined
 
-const Meaning = ({ meaning }: Props) => {
+const Meaning = ({ meaning, previousMeaning }: Props) => {
   const { featureTheme, font } = useContext(Context)
 
   const synonyms: SynonymType = meaning?.syns?.[0]?.pt
@@ -113,7 +114,7 @@ const Meaning = ({ meaning }: Props) => {
     }
     return 'font-bold'
   }
-  console.log(meaning.fl)
+  console.log(previousMeaning)
   return (
     <>
       {meaning.fl && (
@@ -139,25 +140,23 @@ const Meaning = ({ meaning }: Props) => {
           )}
         </div>
       )}
-      {meaning.cxs &&
-        !meaning.fl &&
-        (meaning.shortdef === undefined || meaning.shortdef.length === 0) && (
-          <div className='mt-10'>
-            <span className='italic text-xl font-light '>
-              {meaning.cxs[0].cxl}{' '}
-            </span>
-            <span className='text-xl font-base '>
-              {meaning.cxs[0].cxtis.map((cxti, index, array) => (
-                <Fragment key={cxti.cxt}>
-                  <Link to={`/${cxti.cxt}`} className='link'>
-                    {cxti.cxt.toUpperCase()}
-                  </Link>
-                  {index < array.length - 1 ? ', ' : ''}
-                </Fragment>
-              ))}
-            </span>
-          </div>
-        )}
+      {meaning.cxs && !previousMeaning?.fl && (
+        <div className='mt-10'>
+          <span className='italic text-xl font-light '>
+            {meaning.cxs[0].cxl}{' '}
+          </span>
+          <span className='text-xl font-base '>
+            {meaning.cxs[0].cxtis.map((cxti, index, array) => (
+              <Fragment key={cxti.cxt}>
+                <Link to={`/${cxti.cxt}`} className='link'>
+                  {cxti.cxt}
+                </Link>
+                {index < array.length - 1 ? ', ' : ''}
+              </Fragment>
+            ))}
+          </span>
+        </div>
+      )}
     </>
   )
 }
