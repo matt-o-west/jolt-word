@@ -1,7 +1,7 @@
 import type { Definition } from '~/routes/$word'
 import replaceTokens from '~/utils/replaceTokens'
 import { Link } from '@remix-run/react'
-import { useContext } from 'react'
+import { useContext, Fragment } from 'react'
 import { Context } from '~/root'
 
 interface Props {
@@ -48,7 +48,6 @@ const Meaning = ({ meaning }: Props) => {
             )
           })
         })
-      // join the strings with a space
 
       return <span>{formattedText}</span>
     }
@@ -114,29 +113,52 @@ const Meaning = ({ meaning }: Props) => {
     }
     return 'font-bold'
   }
-
+  console.log(meaning.fl)
   return (
-    <div className='mt-10'>
-      <span className={`${adjustPartsOfSpeech()} font-sans-serif text-xl`}>
-        {meaning?.fl}
-      </span>
-      <div className='border border-b-2' />
-      <ol className='mt-4 ml-8 text-lg'>
-        <li>
-          <p>{checkLinks(meaning?.shortdef?.[0])}</p>
-        </li>
-        {meaning?.shortdef?.[1] && (
-          <li>
-            <p>{checkLinks(meaning?.shortdef?.[1])}</p>
-          </li>
-        )}
-      </ol>
-      {synonyms && (
-        <div className={`synonyms ${featureTheme} font-light`}>
-          {checkSynonyms()}
+    <>
+      {meaning.fl && (
+        <div className='mt-10'>
+          <span className={`${adjustPartsOfSpeech()} font-sans-serif text-xl`}>
+            {meaning?.fl}
+          </span>
+          <div className='border border-b-2' />
+          <ol className='mt-4 ml-8 text-lg'>
+            <li>
+              <p>{checkLinks(meaning?.shortdef?.[0])}</p>
+            </li>
+            {meaning?.shortdef?.[1] && (
+              <li>
+                <p>{checkLinks(meaning?.shortdef?.[1])}</p>
+              </li>
+            )}
+          </ol>
+          {synonyms && (
+            <div className={`synonyms ${featureTheme} font-light`}>
+              {checkSynonyms()}
+            </div>
+          )}
         </div>
       )}
-    </div>
+      {meaning.cxs &&
+        !meaning.fl &&
+        (meaning.shortdef === undefined || meaning.shortdef.length === 0) && (
+          <div className='mt-10'>
+            <span className='italic text-xl font-light '>
+              {meaning.cxs[0].cxl}{' '}
+            </span>
+            <span className='text-xl font-base '>
+              {meaning.cxs[0].cxtis.map((cxti, index, array) => (
+                <Fragment key={cxti.cxt}>
+                  <Link to={`/${cxti.cxt}`} className='link'>
+                    {cxti.cxt.toUpperCase()}
+                  </Link>
+                  {index < array.length - 1 ? ', ' : ''}
+                </Fragment>
+              ))}
+            </span>
+          </div>
+        )}
+    </>
   )
 }
 
