@@ -3,6 +3,7 @@ import replaceTokens from '~/utils/replaceTokens'
 import { Link } from '@remix-run/react'
 import { useContext, Fragment } from 'react'
 import { Context } from '~/root'
+import _ from 'lodash'
 
 interface Props {
   meaning: Definition
@@ -106,20 +107,32 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
     return <>{parsedWords}</>
   }
 
-  const adjustPartsOfSpeech = () => {
-    if (font === 'serif') {
-      return 'normal'
-    } else if (font === 'sans-serif') {
-      return 'italic'
-    }
-    return 'font-bold'
-  }
-  console.log(previousMeaning)
+  let exampleSentenceOne = _.get(
+    meaning,
+    'def[0].sseq[0][0][1].dt[1][1][0].t',
+    ''
+  )
+
+  /*let exampleSentences = []
+  _.forEach(meaning.def, (defItem) => {
+    _.forEach(defItem.sseq, (sseqItem) => {
+      _.forEach(sseqItem, (senseItem) => {
+        if (senseItem[0] === 'sense') {
+          _.forEach(senseItem[1].dt, (dtItem) => {
+            if (dtItem[0] === 'vis' && Array.isArray(exampleSentences)) {
+              exampleSentences.push(dtItem[1][0].t)
+            }
+          })
+        }
+      })
+    })
+  })*/
+
   return (
     <>
       {meaning.fl && (
         <div className='mt-10'>
-          <span className={`${adjustPartsOfSpeech()} font-sans-serif text-xl`}>
+          <span className={`italic font-sans-serif text-xl`}>
             {meaning?.fl}
           </span>
           <div className='border border-b-2' />
@@ -127,12 +140,20 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
             <li>
               <p>{checkLinks(meaning?.shortdef?.[0])}</p>
             </li>
+
             {meaning?.shortdef?.[1] && (
               <li>
                 <p>{checkLinks(meaning?.shortdef?.[1])}</p>
               </li>
             )}
           </ol>
+          <div className='mt-4 flex justify-end'>
+            {exampleSentenceOne && (
+              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200 text-xl'>
+                <p>{replaceTokens(exampleSentenceOne)}</p>
+              </div>
+            )}
+          </div>
           {synonyms && (
             <div className={`synonyms ${featureTheme} font-light`}>
               {checkSynonyms()}

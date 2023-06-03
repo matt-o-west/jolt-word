@@ -88,7 +88,17 @@ const replaceTokens = (text: string) => {
     )
   )
 
-  return crossRefTokens
+  const wiTokens = reactStringReplace(
+    crossRefTokens,
+    /\{wi\}(.*?)\{\/wi\}/g,
+    (match, i) => (
+      <span className='italic font-lg' key={i}>
+        {match}
+      </span>
+    )
+  )
+
+  return wiTokens
 }
 
 export default replaceTokens
