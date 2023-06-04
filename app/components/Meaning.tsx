@@ -107,6 +107,13 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
     return <>{parsedWords}</>
   }
 
+  const definitionOne =
+    meaning?.def?.[0]?.sseq?.[0]?.[0]?.[1]?.dt?.[0]?.[1]?.[0]?.t
+  const definitionTwo =
+    meaning?.def?.[0]?.sseq?.[0]?.[1]?.[1]?.dt?.[0]?.[1]?.[0]?.t
+  const definitionThree =
+    meaning?.def?.[0]?.sseq?.[0]?.[2]?.[1]?.dt?.[0]?.[1]?.[0]?.t
+
   let exampleSentenceOne = _.get(
     meaning,
     'def[0].sseq[0][0][1].dt[1][1][0].t',
@@ -152,18 +159,28 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
                 <p>{checkLinks(meaning?.shortdef?.[1])}</p>
               </li>
             )}
+            {meaning?.shortdef?.[2] && (
+              <li>
+                <p>{checkLinks(meaning?.shortdef?.[2])}</p>
+              </li>
+            )}
+            {meaning?.shortdef?.[3] && (
+              <li>
+                <p>{checkLinks(meaning?.shortdef?.[3])}</p>
+              </li>
+            )}
           </ol>
           <div className='mt-4 flex justify-end'>
             {exampleSentenceOne && (
-              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200 text-xl tex'>
-                <p>{replaceTokens(exampleSentenceOne)}</p>
+              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200'>
+                <p className='text-base'>{replaceTokens(exampleSentenceOne)}</p>
               </div>
             )}
           </div>
           <div className='mt-2 mb-4 flex justify-end'>
             {exampleSentenceTwo && (
-              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200 text-xl tex'>
-                <p>{replaceTokens(exampleSentenceTwo)}</p>
+              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200'>
+                <p className='text-base'>{replaceTokens(exampleSentenceTwo)}</p>
               </div>
             )}
           </div>
