@@ -1,13 +1,20 @@
+import React from 'react'
 import { Link } from '@remix-run/react'
 import reactStringReplace from 'react-string-replace'
 
 const replaceTokens = (text: string) => {
-  const parsedTokens = reactStringReplace(
+  let parsedTokens = reactStringReplace(
     text,
     /\{b\}(.*?)\{\/b\}/g,
     (match, i) => <strong key={i}>{match}</strong>
-  ).map((element, i) => {
-    if (i < parsedTokens.length - 1) {
+  )
+
+  parsedTokens = parsedTokens.map((element, i) => {
+    if (
+      React.isValidElement(element) &&
+      element.type === 'strong' &&
+      i < parsedTokens.length - 1
+    ) {
       return [element, <span key={i}>{': '}</span>]
     } else {
       return element

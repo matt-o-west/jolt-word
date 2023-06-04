@@ -233,11 +233,11 @@ const Word = () => {
         </div>
 
         <div className='flex flex-col mx-4 justify-start min-w-[90%]'>
-          <div className='place-self-end text-sm text-end w-11/12 ml-4 pr-6 pl-3 py-1 bg-light.purple rounded-md'>
-            {data[0].et
-              ? replaceTokens(data[0]?.et[0][1])
-              : replaceTokens(data[1]?.et[0][1])}
-          </div>
+          {data[0].et ? (
+            <div className='place-self-end text-sm text-end w-11/12 ml-4 pr-6 pl-3 py-1 bg-light.purple rounded-md'>
+              {data[0].et && replaceTokens(data[1]?.et[0][1])}
+            </div>
+          ) : null}
           <Meaning meaning={meaningOne} />
           {meaningTwo && (
             <Meaning meaning={meaningTwo} previousMeaning={meaningOne} />
@@ -246,14 +246,6 @@ const Word = () => {
             <Meaning meaning={meaningThree} previousMeaning={meaningTwo} />
           )}
         </div>
-
-        {etymology && (
-          <span
-            className={`${featureTheme} text-sm text-end font-light rounded-lg self-end mt-6 p-2 pr-3 pl-4 w-4/5`}
-          >
-            {replaceTokens(etymology)}
-          </span>
-        )}
       </main>
     </>
   )
