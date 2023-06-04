@@ -7,7 +7,7 @@ const replaceTokens = (text: string) => {
     /\{b\}(.*?)\{\/b\}/g,
     (match, i) => <strong key={i}>{match}</strong>
   ).map((element, i) => {
-    if (element.type === 'strong' && i < parsedTokens.length - 1) {
+    if (i < parsedTokens.length - 1) {
       return [element, <span key={i}>{': '}</span>]
     } else {
       return element

@@ -113,6 +113,12 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
     ''
   )
 
+  let exampleSentenceTwo = _.get(
+    meaning,
+    'def[0].sseq[0][1][1].dt[1][1][0].t',
+    ''
+  )
+
   /*let exampleSentences = []
   _.forEach(meaning.def, (defItem) => {
     _.forEach(defItem.sseq, (sseqItem) => {
@@ -149,8 +155,15 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
           </ol>
           <div className='mt-4 flex justify-end'>
             {exampleSentenceOne && (
-              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200 text-xl'>
+              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200 text-xl tex'>
                 <p>{replaceTokens(exampleSentenceOne)}</p>
+              </div>
+            )}
+          </div>
+          <div className='mt-2 mb-4 flex justify-end'>
+            {exampleSentenceTwo && (
+              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200 text-xl tex'>
+                <p>{replaceTokens(exampleSentenceTwo)}</p>
               </div>
             )}
           </div>
