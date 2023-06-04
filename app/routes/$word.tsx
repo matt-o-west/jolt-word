@@ -160,14 +160,6 @@ const Word = () => {
   const meaningThree: Definition = data[2]
   const subDirectory = meaningOne?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
 
-  const etymology =
-    data.length > 0 &&
-    meaningOne.et &&
-    meaningOne.et.length > 0 &&
-    meaningOne.et[0].length > 0
-      ? meaningOne.et[0][1]
-      : ''
-
   const checkSubdirectory = (subDirectory: string) => {
     if (subDirectory === 'bix') {
       return 'bix'
@@ -233,11 +225,13 @@ const Word = () => {
         </div>
 
         <div className='flex flex-col mx-4 justify-start min-w-[90%]'>
-          {data[0].et ? (
+          {data[0].et && !data[0].et[0][1].startsWith('see') && (
             <div className='place-self-end text-sm text-end w-11/12 ml-4 pr-6 pl-3 py-1 bg-light.purple rounded-md'>
-              {data[0].et && replaceTokens(data[1]?.et[0][1])}
+              {data[0].et
+                ? replaceTokens(data[0]?.et[0][1])
+                : replaceTokens(data[1]?.et[0][1])}
             </div>
-          ) : null}
+          )}
           <Meaning meaning={meaningOne} />
           {meaningTwo && (
             <Meaning meaning={meaningTwo} previousMeaning={meaningOne} />
