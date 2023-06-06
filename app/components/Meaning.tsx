@@ -144,7 +144,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
   return (
     <>
       {meaning.fl && (
-        <div className='mt-10'>
+        <div className='mt-2'>
           <span className={`italic font-sans-serif text-xl`}>
             {meaning?.fl}
           </span>
@@ -185,7 +185,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
             )}
           </div>
           {synonyms && (
-            <div className={`synonyms ${featureTheme} font-light`}>
+            <div className={`synonyms ${featureTheme} font-light mb-2`}>
               {checkSynonyms()}
             </div>
           )}

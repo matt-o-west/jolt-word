@@ -153,8 +153,8 @@
 .synonyms {
   padding: 0.5rem;
   padding-left: 1rem;
-  border-radius: 0.5rem;
-  margin: 0.5rem 0;
+  padding-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 /* Error states */

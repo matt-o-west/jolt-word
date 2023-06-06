@@ -226,7 +226,7 @@ const Word = () => {
 
         <div className='flex flex-col mx-4 justify-start min-w-[90%]'>
           {data[0].et && !data[0].et[0][1].startsWith('see') && (
-            <div className='place-self-end text-sm text-end w-9/12 ml-4 pr-6 pl-3 py-1 bg-light.purple rounded-md'>
+            <div className='place-self-end text-sm text-end w-9/12 ml-4 pr-6 pl-3 py-1 bg-purple.100 rounded-md max-w-[70%]'>
               {data[0].et
                 ? replaceTokens(data[0]?.et[0][1])
                 : replaceTokens(data[1]?.et[0][1])}
