@@ -301,7 +301,7 @@ const Login = () => {
           </div>
           <button
             type='submit'
-            className='bg-purple hover:bg-light.purple text-white font-bold py-2 px-4 w-full rounded-md mb-4'
+            className='bg-purple hover:bg-purple.500 text-white font-bold py-2 px-4 w-full rounded-md mb-4'
           >
             Login
           </button>
@@ -313,7 +313,10 @@ const Login = () => {
           <i className='fab fa-google'></i> Sign in with Google (placeholder)
         </button>
         <div className='text-center'>
-          <Link to='/register' className='text-purple hover:text-light.purple'>
+          <Link
+            to='/register'
+            className='text-purple hover:text-dark.feature.purple'
+          >
             Register
           </Link>
         </div>
