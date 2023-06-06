@@ -19,6 +19,8 @@ module.exports = {
         'purple.400': '#B88BEF',
         'purple.500': '#A974EA',
         'light.purple': '#E8D0FB',
+        'dark.purple': '#523B63',
+        'dark.feature.purple': '#5F288A',
         background: '#F2F2F2',
       },
       fontFamily: {

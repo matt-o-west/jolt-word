@@ -15,7 +15,7 @@ type Synonym = string[][] | undefined
 type SynonymType = Synonym | undefined
 
 const Meaning = ({ meaning, previousMeaning }: Props) => {
-  const { featureTheme, font } = useContext(Context)
+  const { featureTheme, theme } = useContext(Context)
 
   const synonyms: SynonymType = meaning?.syns?.[0]?.pt
 
@@ -172,20 +172,28 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
           </ol>
           <div className='mt-4 flex justify-end'>
             {exampleSentenceOne && (
-              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200'>
+              <div
+                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
+                  theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
+                }`}
+              >
                 <p className='text-base'>{replaceTokens(exampleSentenceOne)}</p>
               </div>
             )}
           </div>
           <div className='mt-2 mb-4 flex justify-end'>
             {exampleSentenceTwo && (
-              <div className='inline-flex flex-row rounded-md px-3 py-1 items-center bg-purple.200'>
+              <div
+                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
+                  theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
+                }`}
+              >
                 <p className='text-base'>{replaceTokens(exampleSentenceTwo)}</p>
               </div>
             )}
           </div>
           {synonyms && (
-            <div className={`synonyms ${featureTheme} font-light mb-2`}>
+            <div className={`synonyms ${featureTheme} font-light`}>
               {checkSynonyms()}
             </div>
           )}
