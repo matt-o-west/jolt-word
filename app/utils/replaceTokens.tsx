@@ -28,7 +28,7 @@ const replaceTokens = (text: string) => {
   )
 
   const italicTokens = reactStringReplace(
-    subscriptTokens,
+    subscriptTokens.join(''),
     /\{it\}(.*?)\{\/it\}/g,
     (match, i) => <i key={i}>{match}</i>
   )
