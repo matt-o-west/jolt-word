@@ -2,133 +2,108 @@ import React from 'react'
 import { Link } from '@remix-run/react'
 import reactStringReplace from 'react-string-replace'
 
-const replaceInElements = (elements, regex, replaceFunc) => {
-  elements = Array.isArray(elements) ? elements : [elements]
+const replaceTokens = (text: string) => {
+  let parsedTokens = reactStringReplace(
+    text,
+    /\{b\}(.*?)\{\/b\}/g,
+    (match, i) => <strong key={i}>{match}</strong>
+  )
 
-  return elements.flatMap((element, i) => {
-    if (React.isValidElement(element)) {
-      return React.cloneElement(
-        element,
-        { key: i },
-        replaceInElements(
-          React.Children.toArray(element.props.children),
-          regex,
-          replaceFunc
-        )
-      )
-    } else if (typeof element === 'string') {
-      return reactStringReplace(element, regex, replaceFunc)
+  parsedTokens = parsedTokens.map((element, i) => {
+    if (
+      React.isValidElement(element) &&
+      element.type === 'strong' &&
+      i < parsedTokens.length - 1
+    ) {
+      return [element, <span key={i}>{': '}</span>]
     } else {
       return element
     }
   })
-}
 
-const replaceTokens = (text) => {
-  let parsedTokens = [text]
-  let prevLength = 0
+  const subscriptTokens = reactStringReplace(
+    parsedTokens,
+    /\{inf\}(.*?)\{\/inf\}/g,
+    (match, i) => ''
+  )
 
-  while (parsedTokens.length !== prevLength) {
-    prevLength = parsedTokens.length
+  const italicTokens = reactStringReplace(
+    subscriptTokens,
+    /\{it\}(.*?)\{\/it\}/g,
+    (match, i) => <i key={i}>{match}</i>
+  )
 
-    parsedTokens = replaceInElements(
-      text,
-      /\{b\}(.*?)\{\/b\}/g,
-      (match: string, i: number) => <strong key={i}>{match}</strong>
+  const leftDoubleQuoteTokens = reactStringReplace(
+    italicTokens,
+    /\{ldquo\}/g,
+    (match, i) => <span key={i}>&ldquo;</span>
+  )
+
+  const rightDoubleQuoteTokens = reactStringReplace(
+    leftDoubleQuoteTokens,
+    /\{rdquo\}/g,
+    (match, i) => <span key={i}>&rdquo;</span>
+  )
+
+  const smallCapsTokens = reactStringReplace(
+    rightDoubleQuoteTokens,
+    /\{sc\}(.*?)\{\/sc\}/g,
+    (match, i) => (
+      <span style={{ fontVariant: 'small-caps' }} key={i}>
+        {match}
+      </span>
     )
+  )
 
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{inf\}(.*?)\{\/inf\}/g,
-      (match: string, i: number) => <sub key={i}>{match}</sub>
+  const superscriptTokens = reactStringReplace(
+    smallCapsTokens,
+    /\{sup\}(.*?)\{\/sup\}/g,
+    (match, i) => <sup key={i}>{match}</sup>
+  )
+
+  const matrixTokens = reactStringReplace(
+    superscriptTokens,
+    /\{ma\}(.*?)\{\/ma\}/g,
+    (match, i) => <span key={i}></span>
+  )
+
+  const linkTokens = reactStringReplace(
+    matrixTokens,
+    /\{et_link\|([^:]+):\d+\|[^:]+:\d+\}/g,
+    (match, i) => ''
+  )
+
+  const crossRefTokens = reactStringReplace(
+    linkTokens,
+    /\{dx_ety\}see\s+\{dxt\|([^|]+)\|\|\}\{\/dx_ety\}/g,
+    (match, i) => (
+      <>
+        {' '}
+        see
+        <Link to={`/${match}`} className='text-lowercase link' key={i}>
+          {match.replace(/:\d+$/, '')}
+        </Link>
+      </>
     )
+  )
 
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{it\}(.*?)\{\/it\}/g,
-      (match: string, i: number) => <i key={i}>{match}</i>
+  const wiTokens = reactStringReplace(
+    crossRefTokens,
+    /\{wi\}(.*?)\{\/wi\}/g,
+    (match, i) => (
+      <span className='italic font-lg' key={i}>
+        {match}
+      </span>
     )
+  )
 
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{inf\}(.*?)\{\/inf\}/g,
-      (match: string, i: number) => {
-        return <sub key={i}>{match}</sub>
-      }
-    )
+  const etLinkTokens = reactStringReplace(
+    wiTokens,
+    /\{et_link\|([a-z-]+)\|([a-z-]+)\}/g,
+    (match, i) => ''
+  )
 
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{it\}(.*?)\{\/it\}/g,
-      (match: string, i: number) => <i key={i}>{match}</i>
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{ldquo\}/g,
-      (match: string, i: number) => <span key={i}>&ldquo;</span>
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{rdquo\}/g,
-      (match: string, i: number) => <span key={i}>&rdquo;</span>
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{sc\}(.*?)\{\/sc\}/g,
-      (match: string, i: number) => (
-        <span style={{ fontVariant: 'small-caps' }} key={i}>
-          {match}
-        </span>
-      )
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{sup\}(.*?)\{\/sup\}/g,
-      (match: string, i: number) => <sup key={i}>{match}</sup>
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{ma\}(.*?)\{\/ma\}/g,
-      (match: string, i: number) => <span key={i}></span>
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{et_link\|([^|]+):\d+\|[^|]+:\d+\}/g,
-      (match: string, i: number) => ''
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{dx_ety\}see\s+\{dxt\|([^|]+)\|\|\}\{\/dx_ety\}/g,
-      (match: string, i: number) => (
-        <>
-          {' '}
-          see
-          <Link to={`/${match}`} className='text-lowercase link' key={i}>
-            {match.replace(/:\d+$/, '')}
-          </Link>
-        </>
-      )
-    )
-
-    parsedTokens = replaceInElements(
-      parsedTokens,
-      /\{wi\}(.*?)\{\/wi\}/g,
-      (match: string, i: number) => (
-        <span className='italic font-lg' key={i}>
-          {match}
-        </span>
-      )
-    )
-  }
-
-  return parsedTokens
+  return etLinkTokens
 }
 
 export default replaceTokens
