@@ -187,8 +187,6 @@ const Word = () => {
     }
   }
 
-  console.log(data[0])
-
   return (
     <>
       <Nav />
@@ -237,12 +235,13 @@ const Word = () => {
             </div>
           )}
           <Meaning meaning={meaningOne} />
-          {meaningTwo && (
+          {meaningTwo && meaningTwo.shortdef[0] !== meaningOne.shortdef[0] && (
             <Meaning meaning={meaningTwo} previousMeaning={meaningOne} />
           )}
-          {meaningThree && (
-            <Meaning meaning={meaningThree} previousMeaning={meaningTwo} />
-          )}
+          {meaningThree &&
+            meaningTwo.shortdef[0] !== meaningThree.shortdef[0] && (
+              <Meaning meaning={meaningThree} previousMeaning={meaningTwo} />
+            )}
         </div>
       </main>
     </>
