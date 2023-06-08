@@ -222,12 +222,12 @@ const Word = () => {
           </p>
         </div>
 
-        <div className='flex flex-col mx-4 justify-start min-w-[90%]'>
+        <div className='flex flex-col mx-4 justify-start'>
           {data[0].et && !data[0].et[0][1].startsWith('see') && (
             <div
-              className={`place-self-end text-sm text-end w-9/12 ml-4 pr-4 pl-3 py-1 ${
+              className={`place-self-end text-sm text-end ml-10 pr-4 pl-3 py-1 ${
                 theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
-              } rounded-md max-w-[70%]`}
+              } rounded-md`}
             >
               {data[0].et
                 ? replaceTokens(data[0]?.et[0][1])
