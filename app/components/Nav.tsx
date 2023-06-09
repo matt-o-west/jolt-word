@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { Link } from '@remix-run/react'
 import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
@@ -9,6 +9,29 @@ const Nav = () => {
     useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
+  const searchRef = useRef<HTMLInputElement>()
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchTerm('')
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (
+      searchRef.current &&
+      !searchRef.current.contains(document.activeElement)
+    ) {
+      searchRef.current.focus()
+    }
+  }, [])
 
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -140,6 +163,7 @@ const Nav = () => {
             placeholder='Search Dictionary'
             value={searchTerm}
             onChange={handleInputChange}
+            ref={searchRef}
           />
           <div className='relative inset-y-0 right-0 flex items-center pl-2 mr-4'>
             <button type='submit'>

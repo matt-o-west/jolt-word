@@ -1,11 +1,10 @@
 //import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext, useState, useEffect } from 'react'
+import { useContext } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
-import ClickableIcon from '~/components/BoltIcon'
-import { useLoaderData, useActionData, Form } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
@@ -147,7 +146,8 @@ export const action = async ({ request }: ActionArgs) => {
 
 const Word = () => {
   const { word } = useParams()
-  const { theme, featureTheme } = useContext(Context)
+  const { theme } = useContext(Context)
+
   const data = useLoaderData<DefinitionType>()
   console.log(data)
   //replace with error boundary
