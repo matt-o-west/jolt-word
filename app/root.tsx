@@ -1,5 +1,5 @@
 import type { MetaFunction } from '@remix-run/node'
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import {
   Links,
   LiveReload,
@@ -9,7 +9,6 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 import type { LinksFunction } from '@remix-run/node'
-import type { ChangeEvent } from 'react'
 import stylesheet from '~/tailwind.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
@@ -24,26 +23,24 @@ export const links: LinksFunction = () => [
 ]
 
 interface ContextType {
-  font: string
   theme: string
   featureTheme: string
   toggleTheme: string
-  isLoggedIn: boolean
+  //isLoggedIn: boolean
   user: string
   setUser: (user: string) => void
-  setFont: (font: string) => void
+  //setFont: (font: string) => void
   setTheme: (theme: string) => void
 }
 
 export const Context = createContext<ContextType>({
-  font: 'sans-serif',
   theme: 'light',
   featureTheme: 'feature-light',
   toggleTheme: 'toggle-light',
-  isLoggedIn: false,
+  //isLoggedIn: false,
   user: '',
   setUser: () => {},
-  setFont: () => {},
+  //setFont: () => {},
   setTheme: () => {},
 })
 
@@ -63,28 +60,47 @@ const muiTheme = createTheme({
 })
 
 export default function App() {
-  const [font, setFont] = useState('sans-serif')
+  //const [font, setFont] = useState('sans-serif')
   const [theme, setTheme] = useState('light')
   const [featureTheme, setFeatureTheme] = useState('feature-light')
   const [toggleSwitch, setToggleSwitch] = useState('toggle-light')
   const [user, setUser] = useState('')
 
+  useEffect(() => {
+    const localTheme = window.localStorage.getItem('theme') || 'dark'
+    setTheme(localTheme)
+
+    const localFeatureTheme =
+      window.localStorage.getItem('feature-theme') || 'feature-dark'
+    setFeatureTheme(localFeatureTheme)
+
+    const localToggleSwitch =
+      window.localStorage.getItem('toggle-theme') || 'toggle-dark'
+    setToggleSwitch(localToggleSwitch)
+  }, [])
+
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
-    setFeatureTheme(
+    const newTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(newTheme)
+    localStorage.setItem('theme', newTheme)
+
+    const newFeatureTheme =
       featureTheme === 'feature-light' ? 'feature-dark' : 'feature-light'
-    )
-    setToggleSwitch(
+    setFeatureTheme(newFeatureTheme)
+    localStorage.setItem('feature-theme', newFeatureTheme)
+
+    const newToggleSwitch =
       toggleSwitch === 'toggle-light' ? 'toggle-dark' : 'toggle-light'
-    )
+    setToggleSwitch(newToggleSwitch)
+    localStorage.setItem('toggle-theme', newToggleSwitch)
   }
 
-  const toggleFont = (e: ChangeEvent<HTMLSelectElement>) => {
+  /*const toggleFont = (e: ChangeEvent<HTMLSelectElement>) => {
     setFont(e.target.value)
-  }
+  }*/
 
   return (
-    <html lang='en' className={`${font} ${theme}`}>
+    <html lang='en' className={`${theme}`}>
       <head>
         <Meta />
         <Links />
@@ -98,13 +114,12 @@ export default function App() {
       <body>
         <Context.Provider
           value={{
-            font,
             theme,
             featureTheme,
             toggleTheme: toggleSwitch,
             user,
             setUser,
-            setFont: toggleFont,
+            //setFont: toggleFont,
             setTheme: toggleTheme,
           }}
         >

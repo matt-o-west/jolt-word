@@ -5,7 +5,7 @@ import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
 const Nav = () => {
-  const { font, theme, featureTheme, toggleTheme, user, setTheme } =
+  const { theme, featureTheme, toggleTheme, user, setTheme } =
     useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
@@ -101,6 +101,7 @@ const Nav = () => {
         value=''
         className={`sr-only peer`}
         onChange={setTheme}
+        {...(theme === 'dark' ? { checked: true } : {})}
       />
       <div
         className={`w-11 h-6 ${toggleTheme} peer-focus:outline-none peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600`}
@@ -143,7 +144,7 @@ const Nav = () => {
   return (
     <>
       <nav
-        className={`flex flex-row justify-between items-center font-${font} text-xs p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-row justify-between items-center text-xs p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <Link to='/'>
           <img src='/images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
