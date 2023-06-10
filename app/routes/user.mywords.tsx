@@ -177,13 +177,22 @@ const MyWords = () => {
     )
   }
 
-  const wordData = userWords.map((word) => {
+  let wordData = userWords.map((word) => {
     return {
       word: word.word.word,
       votes: word.word.votes,
       wordId: word.wordId,
     }
   })
+
+  if (alignment === 'alphabetical') {
+    wordData = wordData.sort((a, b) => a.word.localeCompare(b.word))
+  } else if (alignment === 'recency') {
+    // Here we need a date or timestamp on each word to sort on, currently I don't see that in your code.
+    // If you don't have a date or timestamp, then you would need to modify your API or database to include that.
+    // Once you have a date or timestamp, you could use this line to sort:
+    // wordData = wordData.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
 
   return (
     <>
