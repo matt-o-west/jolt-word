@@ -5,11 +5,14 @@ import { json } from '@remix-run/node'
 import { requireUserId, getUserId } from '~/utils/session.server'
 import { badRequest } from '~/utils/request.server'
 import { Context } from '~/root'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import BoardCard from '~/components/BoardCard'
 import { Form } from '@remix-run/react'
 import { styled } from '@mui/system'
 import ClearIcon from '@mui/icons-material/Clear'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import AbcIcon from '@mui/icons-material/Abc'
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
 
 import { db } from 'prisma/db.server'
@@ -150,6 +153,13 @@ export const action = async ({ request }: ActionArgs) => {
 const MyWords = () => {
   const { theme } = useContext(Context)
   const { loggedInUser, userWords } = useLoaderData<typeof loader>()
+  const [alignment, setAlignment] = useState('alphabetical')
+
+  const handleChange = (event, newAlignment) => {
+    if (newAlignment !== null) {
+      setAlignment(newAlignment)
+    }
+  }
 
   const deleteForm = ({ word }: LeaderBoardType) => {
     return (
@@ -182,10 +192,24 @@ const MyWords = () => {
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='text-2xl font-bold'>My Words</h1>
-
+        <ToggleButtonGroup
+          color='primary'
+          value={alignment}
+          exclusive
+          onChange={handleChange}
+          aria-label='Platform'
+          className='flex justify-end flex-row w-full mt-12'
+        >
+          <ToggleButton value='alphabetical'>
+            <AbcIcon fontSize='large' className='mx-1' />
+          </ToggleButton>
+          <ToggleButton value='recency'>
+            <AccessTimeFilledIcon className='mx-2' />
+          </ToggleButton>
+        </ToggleButtonGroup>
         {loggedInUser && userWords ? (
           <div
-            className={`gap-x-6 justify-center items-center ${theme} mt-12 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
+            className={`gap-x-6 justify-center items-center ${theme} mt-6 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
           >
             {wordData.map(({ word, wordId, votes }) => {
               return (
