@@ -5,8 +5,9 @@ import { Context } from '~/root'
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
-  const [wordsUpdated, setWordsUpdated] = useState(false)
+  //const [wordsUpdated, setWordsUpdated] = useState(false)
   const { theme } = useContext(Context)
+  const [uniqueWords, setUniqueWords] = useState([])
   const navigate = useNavigate()
 
   const cursorHoverLight = (i: number) =>
@@ -15,44 +16,52 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const cursorHoverDark = (i: number) =>
     theme === 'dark' && cursor === i ? 'bg-tertiary.black w-full pl-1' : ''
 
-  const wordsAsStrings = matchingWords
-    .map((word: unknown) => (typeof word === 'string' ? word : word?.hwi?.hw))
-    .filter((word: string) => !word.includes('*'))
+  useEffect(() => {
+    const wordsAsStrings = matchingWords
+      .map((word: unknown) => (typeof word === 'string' ? word : word?.hwi?.hw))
+      .filter((word: string) => !word.includes('*'))
 
-  const wordsAsStringsSorted = wordsAsStrings.sort((a, b) => {
-    // Special case for exact match
-    if (a.toLowerCase() === searchTerm.toLowerCase()) {
-      return -1
-    } else if (b.toLowerCase() === searchTerm.toLowerCase()) {
-      return 1
-    }
-    // Then, prioritize words that contain the search term as a subset
-    else if (a.includes(searchTerm) && !b.includes(searchTerm)) {
-      return -1
-    } else if (b.includes(searchTerm) && !a.includes(searchTerm)) {
-      return 1
-    }
-    // Then, words starting with the search term, shorter words first
-    else if (a.startsWith(searchTerm) && b.startsWith(searchTerm)) {
-      return a.length - b.length
-    } else if (a.startsWith(searchTerm)) {
-      return -1
-    } else if (b.startsWith(searchTerm)) {
-      return 1
-    }
-    // Finally, sort remaining words by length, then alphabetically
-    else {
-      return a.length - b.length || a.localeCompare(b)
-    }
-  })
+    const wordsAsStringsSorted = wordsAsStrings.sort((a, b) => {
+      // Special case for exact match
+      if (a.toLowerCase() === searchTerm.toLowerCase()) {
+        return -1
+      } else if (b.toLowerCase() === searchTerm.toLowerCase()) {
+        return 1
+      }
+      // Then, prioritize words that contain the search term as a subset
+      else if (a.includes(searchTerm) && !b.includes(searchTerm)) {
+        return -1
+      } else if (b.includes(searchTerm) && !a.includes(searchTerm)) {
+        return 1
+      }
+      // Then, words starting with the search term, shorter words first
+      else if (a.startsWith(searchTerm) && b.startsWith(searchTerm)) {
+        return a.length - b.length
+      } else if (a.startsWith(searchTerm)) {
+        return -1
+      } else if (b.startsWith(searchTerm)) {
+        return 1
+      }
+      // Finally, sort remaining words by length, then alphabetically
+      else {
+        return a.length - b.length || a.localeCompare(b)
+      }
+    })
 
-  const uniqueWordsAsStrings = Array.from(new Set(wordsAsStringsSorted))
+    const uniqueWordsAsStrings = Array.from(new Set(wordsAsStringsSorted))
 
-  const uniqueWords = uniqueWordsAsStrings.map((string) =>
-    typeof matchingWords[0] === 'string'
-      ? string
-      : matchingWords.find((word) => word?.hwi?.hw === string)
-  )
+    const uniqueWords = uniqueWordsAsStrings.map((string) =>
+      typeof matchingWords[0] === 'string'
+        ? string
+        : matchingWords.find((word) => word?.hwi?.hw === string)
+    )
+
+    setUniqueWords(uniqueWords)
+  }, [matchingWords, searchTerm])
+
+  useEffect(() => {
+    setCursor(0)
+  }, [uniqueWords])
 
   useEffect(() => {
     const handleKeyDown = (event) => {
