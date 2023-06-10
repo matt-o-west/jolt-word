@@ -5,9 +5,9 @@ import { Context } from '~/root'
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   const [cursor, setCursor] = useState(-1)
+  const [wordsUpdated, setWordsUpdated] = useState(false)
   const { theme } = useContext(Context)
   const navigate = useNavigate()
-  console.log('Search results:', matchingWords)
 
   const cursorHoverLight = (i: number) =>
     theme === 'light' && cursor === i ? 'bg-secondary.gray w-full pl-1' : ''
@@ -59,9 +59,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       if (event.key === 'ArrowDown') {
         // Move cursor down
         event.preventDefault()
-        setCursor((oldCursor) =>
-          Math.min(oldCursor + 1, uniqueWords.length - 1)
-        )
+        setCursor((oldCursor) => Math.min(oldCursor + 1, 4))
       } else if (event.key === 'ArrowUp') {
         // Move cursor up
         event.preventDefault()
