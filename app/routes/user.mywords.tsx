@@ -17,6 +17,12 @@ import type { LeaderBoardType } from '~/components/LeaderBoard'
 
 import { db } from 'prisma/db.server'
 
+interface WordDataItem {
+  word: string
+  votes: number
+  wordId: string
+}
+
 const ClearWord = styled(ClearIcon)({
   color: 'red',
   cursor: 'pointer',
@@ -42,7 +48,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   const userId = await getUserId(request)
 
   if (userId) {
-    const userWords = await db.userWord.findMany({
+    const alphaUserWords = await db.userWord.findMany({
       where: {
         userId,
       },
@@ -55,10 +61,22 @@ export const loader = async ({ request }: LoaderArgs) => {
         },
       },
     })
-    return json({ loggedInUser, userWords })
+    const recencyUserWords = await db.userWord.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        word: true,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    })
+
+    return json({ loggedInUser, alphaUserWords, recencyUserWords })
   }
 
-  return json({ loggedInUser, user, userWords: [] })
+  return json({ loggedInUser, user, alphaUserWords: [], recencyUserWords: [] })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -152,7 +170,8 @@ export const action = async ({ request }: ActionArgs) => {
 
 const MyWords = () => {
   const { theme } = useContext(Context)
-  const { loggedInUser, userWords } = useLoaderData<typeof loader>()
+  const { loggedInUser, alphaUserWords, recencyUserWords } =
+    useLoaderData<typeof loader>()
   const [alignment, setAlignment] = useState('alphabetical')
 
   const handleChange = (event, newAlignment) => {
@@ -177,7 +196,7 @@ const MyWords = () => {
     )
   }
 
-  let wordData = userWords.map((word) => {
+  let wordDataAlpha = alphaUserWords.map((word) => {
     return {
       word: word.word.word,
       votes: word.word.votes,
@@ -185,13 +204,20 @@ const MyWords = () => {
     }
   })
 
+  let wordDataRecency = recencyUserWords.map((word) => {
+    return {
+      word: word.word.word,
+      votes: word.word.votes,
+      wordId: word.wordId,
+    }
+  })
+
+  let wordData: WordDataItem[] = []
+
   if (alignment === 'alphabetical') {
-    wordData = wordData.sort((a, b) => a.word.localeCompare(b.word))
+    wordData = wordDataAlpha
   } else if (alignment === 'recency') {
-    // Here we need a date or timestamp on each word to sort on, currently I don't see that in your code.
-    // If you don't have a date or timestamp, then you would need to modify your API or database to include that.
-    // Once you have a date or timestamp, you could use this line to sort:
-    // wordData = wordData.sort((a, b) => new Date(b.date) - new Date(a.date));
+    wordData = wordDataRecency
   }
 
   return (
@@ -216,7 +242,7 @@ const MyWords = () => {
             <AccessTimeFilledIcon className='mx-2' />
           </ToggleButton>
         </ToggleButtonGroup>
-        {loggedInUser && userWords ? (
+        {loggedInUser && alignment ? (
           <div
             className={`gap-x-6 justify-center items-center ${theme} mt-6 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
           >
