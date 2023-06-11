@@ -5,9 +5,10 @@ import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
 const Nav = () => {
-  const { theme, featureTheme, toggleTheme, user, setTheme } =
+  const { theme, featureTheme, toggleTheme, user, setUser, setTheme } =
     useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
+  const [loggedInUser, setLoggedInUser] = useState(user)
   const [matchingWords, setMatchingWords] = useState<string[]>([])
   const searchRef = useRef<HTMLInputElement>()
 
