@@ -1,27 +1,17 @@
 import { useEffect, useContext, useState } from 'react'
-import { useLocalStorage } from '~/hooks/useLocalStorage'
-import { Link, Form } from '@remix-run/react'
+import { Link } from '@remix-run/react'
 import { useLoaderData, useActionData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
 import DescriptionPane from '~/components/DescriptionPane'
-import type { LeaderBoardType } from '~/components/LeaderBoard'
 import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
-import {
-  requireUserId,
-  getUserSession,
-  getUserVoteCount,
-  updateUserVote,
-  storage,
-} from '~/utils/session.server'
+import { requireUserId } from '~/utils/session.server'
 import generateRandomWord from '~/utils/generateRandomWord.server'
-import ClickableIcon from '~/components/BoltIcon'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 import ShowMoreChip from '~/components/ShowMoreChip'
-import ActionForm from '~/components/ActionForm'
 
 import { db } from 'prisma/db.server'
 import useMobileDetect from '~/hooks/useMobileDetect'
@@ -112,7 +102,7 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 export default function Index() {
-  const { font, theme, featureTheme, setUser } = useContext(Context)
+  const { theme, featureTheme, setUser } = useContext(Context)
   const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
@@ -127,7 +117,7 @@ export default function Index() {
     } else {
       setUser('')
     }
-  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user, loggedInUser]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const wordData = userWords.map((word) => {
     return {
@@ -140,7 +130,7 @@ export default function Index() {
     <>
       <Nav />
       <main
-        className={`flex flex-col justify-center items-center font-${font} text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <div className='flex items-start'>
           {(
