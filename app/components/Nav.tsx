@@ -95,7 +95,7 @@ const Nav = () => {
   }
 
   const userButton = user ? (
-    <DropdownMenu />
+    'Logged In'
   ) : (
     <button
       className={`bg-gray text-primary.black rounded-md px-2 py-1 ml-2 ${
