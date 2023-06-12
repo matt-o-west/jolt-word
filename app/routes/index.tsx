@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { Link } from '@remix-run/react'
-import { useLoaderData, useActionData } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
@@ -36,7 +36,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     : null
 
   const randomWord = await generateRandomWord()
-
+  console.log(user)
   if (user) {
     const userWords = await db.userWord.findMany({
       where: {
@@ -107,17 +107,21 @@ export default function Index() {
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
   const isMobile = useMobileDetect()
-  const data = useActionData<typeof action>()
 
-  console.log(typeof data)
+  console.log(user)
 
   useEffect(() => {
-    if (loggedInUser && (user?.username || user?.username === '')) {
-      setUser(user?.username)
-    } else {
-      setUser('')
+    //console.log(loggedInUser, user)
+    if (loggedInUser && user?.username) {
+      if (typeof window !== 'undefined') {
+        const storedUser = sessionStorage.setItem('username', user.username)
+        return storedUser
+      }
+      //window.localStorage.setItem('user', user?.username)
     }
-  }, [user, loggedInUser]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [user])
+
+  //console.log('useEffect ran')
 
   const wordData = userWords.map((word) => {
     return {
@@ -126,6 +130,7 @@ export default function Index() {
     }
   })
 
+  console.log(user)
   return (
     <>
       <Nav />

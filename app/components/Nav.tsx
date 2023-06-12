@@ -5,12 +5,19 @@ import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
 const Nav = () => {
-  const { theme, featureTheme, toggleTheme, user, setUser, setTheme } =
-    useContext(Context)
+  const { theme, featureTheme, toggleTheme, setTheme } = useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
-  const [loggedInUser, setLoggedInUser] = useState(user)
   const [matchingWords, setMatchingWords] = useState<string[]>([])
   const searchRef = useRef<HTMLInputElement>()
+
+  const [user, setUser] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = sessionStorage.getItem('username')
+      return storedUser
+    }
+    return null
+  })
+  console.log(user)
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -32,6 +39,10 @@ const Nav = () => {
     ) {
       searchRef.current.focus()
     }
+  }, [])
+
+  useEffect(() => {
+    console.log(typeof user)
   }, [])
 
   const handleInputChange = async (

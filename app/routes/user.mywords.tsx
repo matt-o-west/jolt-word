@@ -170,7 +170,7 @@ export const action = async ({ request }: ActionArgs) => {
 
 const MyWords = () => {
   const { theme } = useContext(Context)
-  const { loggedInUser, alphaUserWords, recencyUserWords } =
+  const { loggedInUser, user, alphaUserWords, recencyUserWords } =
     useLoaderData<typeof loader>()
   const [alignment, setAlignment] = useState('alphabetical')
 
@@ -219,7 +219,7 @@ const MyWords = () => {
   } else if (alignment === 'recency') {
     wordData = wordDataRecency
   }
-
+  console.log(user)
   return (
     <>
       <Nav />

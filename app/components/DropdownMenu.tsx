@@ -9,7 +9,7 @@ import Popper from '@mui/material/Popper'
 import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
 import Stack from '@mui/material/Stack'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import LogoutIcon from '@mui/icons-material/Logout'
 
 export default function DropdownMenu() {
@@ -75,7 +75,7 @@ export default function DropdownMenu() {
           }}
           onClick={handleToggle}
         >
-          <AccountCircleIcon name='user' radius='50%' />
+          <AccountBoxIcon name='account' />
         </Button>
         <Popper
           open={open}

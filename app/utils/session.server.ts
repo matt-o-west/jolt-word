@@ -3,10 +3,10 @@ import bcrypt from 'bcryptjs'
 import cron from 'node-cron'
 import { db } from 'prisma/db.server'
 
-// Run the task every day at 12:00 AM.
+// Decrement word votes every day at 12:00 AM.
 const schedule = '0 0 * * *'
 
-const task = async () => {
+const decrement = async () => {
   const dateLimit = new Date()
   dateLimit.setSeconds(dateLimit.getSeconds() - 10)
   const userWords = await db.userWord.findMany({
@@ -18,14 +18,14 @@ const task = async () => {
   })
 
   for (const userWord of userWords) {
-    console.log('Processing userWord', userWord)
+    //console.log('Processing userWord', userWord)
     const word = await db.word.findUnique({
       where: {
         id: userWord.wordId,
       },
     })
     if (word) {
-      console.log('Updating word', word)
+      //console.log('Decrementing word', word)
       await db.word.update({
         where: {
           id: userWord.wordId,
@@ -36,10 +36,10 @@ const task = async () => {
       })
     }
   }
-  console.log('Task completed')
+  //console.log('Decrement completed')
 }
 
-cron.schedule(schedule, task)
+cron.schedule(schedule, decrement)
 
 type LoginForm = {
   username: string

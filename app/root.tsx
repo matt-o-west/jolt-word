@@ -11,6 +11,7 @@ import {
 import type { LinksFunction } from '@remix-run/node'
 import stylesheet from '~/tailwind.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { useSessionStorage } from '@remix-run/react'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',

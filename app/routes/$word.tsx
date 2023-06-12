@@ -45,10 +45,19 @@ export interface Definition {
 
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
-export const loader = async ({ params }: LoaderArgs) => {
+export const loader = async ({ params, request }: LoaderArgs) => {
+  const redirectTo = `/word/${params.word}`
   if (!params.word) {
     return json({ error: 'Word parameter is missing.' }, { status: 404 })
   }
+  const loggedInUser = await requireUserId(request, redirectTo)
+  const user = loggedInUser
+    ? await db.user.findUnique({
+        where: {
+          id: loggedInUser,
+        },
+      })
+    : null
 
   const word: Definition = await getWord(params.word)
   const vote = await db.word.findUnique({

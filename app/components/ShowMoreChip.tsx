@@ -60,7 +60,6 @@ const ShowMoreChip = ({ isStatic = false, isDarkMode = false }) => {
   const [isVisible, setIsVisible] = useState(false)
   const isMobile = useMobileDetect()
   isStatic = isMobile
-  console.log(isMobile)
 
   const handleMouseEnter = () => {
     setIsVisible(true)

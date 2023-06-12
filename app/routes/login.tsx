@@ -90,6 +90,8 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
+  //createUserSession(loggedInUser.id, redirectTo)
+
   return createUserSession(loggedInUser.id, redirectTo)
 }
 
@@ -97,7 +99,8 @@ const Login = () => {
   const { theme } = useContext(Context)
   const [searchParams] = useSearchParams()
   const formRef = useRef<HTMLFormElement>(null)
-
+  const data = useActionData() ?? { fields: {} }
+  console.log(data.loggedInUser)
   //password change alert
   const passwordChange = searchParams.get('passwordChange') === 'true'
   const [showPasswordChangeMessage, setShowPasswordChangeMessage] =
