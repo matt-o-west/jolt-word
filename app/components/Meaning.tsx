@@ -144,11 +144,11 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
   return (
     <>
       {meaning.fl && (
-        <div className='mt-2'>
+        <div className='flex flex-col mt-2'>
           <span className={`italic font-sans-serif text-xl`}>
             {meaning?.fl}
           </span>
-          <div className='border border-b-2' />
+          <div className='border border-b-2 desktop:min-w-[600px]' />
           <ol className='mt-4 ml-8 text-lg'>
             <li>
               <p>{checkLinks(meaning?.shortdef?.[0])}</p>

@@ -222,7 +222,11 @@ const Word = () => {
               />
             </button>
           )}
-          <p className='flex justify-start text-2xl'>
+          <p
+            className={`flex justify-start text-2xl ${
+              !subDirectory && 'row-start-2'
+            }`}
+          >
             {data[0]?.hwi?.prs?.[0]?.mw && (
               <span className='text-purple'>
                 /{data[0]?.hwi?.prs?.[0]?.mw ?? ''}/
@@ -234,7 +238,7 @@ const Word = () => {
         <div className='flex flex-col mx-4 justify-start'>
           {data[0].et && !data[0].et[0][1].startsWith('see') && (
             <div
-              className={`place-self-end text-sm text-end ml-10 pr-4 pl-3 py-1 ${
+              className={`place-self-end text-sm text-end ml-10 mb-4 pr-4 pl-3 py-1 ${
                 theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
               } rounded-md`}
             >
