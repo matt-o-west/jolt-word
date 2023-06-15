@@ -46,10 +46,24 @@ export interface Definition {
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
 export const loader = async ({ params, request }: LoaderArgs) => {
+<<<<<<< HEAD
   const redirectTo = `/word/${params.word}`
+=======
+  const redirectTo = '/login'
+
+>>>>>>> loginUi-state
   if (!params.word) {
     return json({ error: 'Word parameter is missing.' }, { status: 404 })
   }
+  const loggedInUser = await requireUserId(request, redirectTo)
+  const user = loggedInUser
+    ? await db.user.findUnique({
+        where: {
+          id: loggedInUser,
+        },
+      })
+    : null
+
   const loggedInUser = await requireUserId(request, redirectTo)
   const user = loggedInUser
     ? await db.user.findUnique({
@@ -66,7 +80,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     },
   })
   const wordWithVote = { ...word, votes: vote?.votes }
-  return json(wordWithVote)
+  return json({ wordWithVote, loggedInUser, user })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -157,16 +171,16 @@ const Word = () => {
   const { word } = useParams()
   const { theme } = useContext(Context)
 
-  const data = useLoaderData<DefinitionType>()
-  console.log(data)
+  const { wordWithVote, user, loggedInUser } = useLoaderData<DefinitionType>()
+  console.log(wordWithVote)
   //replace with error boundary
-  if (!data) {
+  if (!wordWithVote) {
     return <div>Sorry, could not find data for {word}</div>
   }
 
-  const meaningOne: Definition = data[0]
-  const meaningTwo: Definition = data[1]
-  const meaningThree: Definition = data[2]
+  const meaningOne: Definition = wordWithVote[0]
+  const meaningTwo: Definition = wordWithVote[1]
+  const meaningThree: Definition = wordWithVote[2]
   const subDirectory = meaningOne?.hwi?.prs?.[0]?.sound?.audio // audio subdirectory
 
   const checkSubdirectory = (subDirectory: string) => {
@@ -198,7 +212,7 @@ const Word = () => {
 
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-10 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
@@ -207,7 +221,7 @@ const Word = () => {
             {word}
           </h1>
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2 mb-5'>
-            <ActionForm word={word} votes={data.votes} />
+            <ActionForm word={word} votes={wordWithVote.votes} />
           </div>
           {subDirectory && (
             <button
@@ -222,20 +236,26 @@ const Word = () => {
               />
             </button>
           )}
+<<<<<<< HEAD
           <p
             className={`flex justify-start text-2xl ${
               !subDirectory && 'row-start-2'
             }`}
           >
             {data[0]?.hwi?.prs?.[0]?.mw && (
+=======
+          <p className='flex justify-start text-2xl'>
+            {wordWithVote[0]?.hwi?.prs?.[0]?.mw && (
+>>>>>>> loginUi-state
               <span className='text-purple'>
-                /{data[0]?.hwi?.prs?.[0]?.mw ?? ''}/
+                /{wordWithVote[0]?.hwi?.prs?.[0]?.mw ?? ''}/
               </span>
             )}
           </p>
         </div>
 
         <div className='flex flex-col mx-4 justify-start'>
+<<<<<<< HEAD
           {data[0].et && !data[0].et[0][1].startsWith('see') && (
             <div
               className={`place-self-end text-sm text-end ml-10 mb-4 pr-4 pl-3 py-1 ${
@@ -247,6 +267,20 @@ const Word = () => {
                 : replaceTokens(data[1]?.et[0][1])}
             </div>
           )}
+=======
+          {wordWithVote[0].et &&
+            !wordWithVote[0].et[0][1].startsWith('see') && (
+              <div
+                className={`place-self-end text-sm text-end ml-10 pr-4 pl-3 py-1 ${
+                  theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
+                } rounded-md`}
+              >
+                {wordWithVote[0].et
+                  ? replaceTokens(wordWithVote[0]?.et[0][1])
+                  : replaceTokens(wordWithVote[1]?.et[0][1])}
+              </div>
+            )}
+>>>>>>> loginUi-state
           <Meaning meaning={meaningOne} />
           {meaningTwo && meaningTwo.shortdef[0] !== meaningOne.shortdef[0] && (
             <Meaning meaning={meaningTwo} previousMeaning={meaningOne} />

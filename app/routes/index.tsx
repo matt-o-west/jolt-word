@@ -110,6 +110,7 @@ export default function Index() {
 
   console.log(user)
 
+<<<<<<< HEAD
   useEffect(() => {
     //console.log(loggedInUser, user)
     if (loggedInUser && user?.username) {
@@ -122,6 +123,9 @@ export default function Index() {
   }, [user])
 
   //console.log('useEffect ran')
+=======
+  // eslint-disable-line react-hooks/exhaustive-deps
+>>>>>>> loginUi-state
 
   const wordData = userWords.map((word) => {
     return {
@@ -132,7 +136,7 @@ export default function Index() {
 
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >

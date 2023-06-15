@@ -73,7 +73,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       },
     })
 
-    return json({ loggedInUser, alphaUserWords, recencyUserWords })
+    return json({ loggedInUser, user, alphaUserWords, recencyUserWords })
   }
 
   return json({ loggedInUser, user, alphaUserWords: [], recencyUserWords: [] })
@@ -219,10 +219,15 @@ const MyWords = () => {
   } else if (alignment === 'recency') {
     wordData = wordDataRecency
   }
+<<<<<<< HEAD
   console.log(user)
+=======
+
+  console.log(loggedInUser)
+>>>>>>> loginUi-state
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
