@@ -111,13 +111,7 @@ export default function Index() {
 
   console.log(typeof data)
 
-  useEffect(() => {
-    if (loggedInUser && (user?.username || user?.username === '')) {
-      setUser(user?.username)
-    } else {
-      setUser('')
-    }
-  }, [user, loggedInUser]) // eslint-disable-line react-hooks/exhaustive-deps
+  // eslint-disable-line react-hooks/exhaustive-deps
 
   const wordData = userWords.map((word) => {
     return {
@@ -128,7 +122,7 @@ export default function Index() {
 
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >

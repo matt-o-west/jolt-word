@@ -73,7 +73,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       },
     })
 
-    return json({ loggedInUser, alphaUserWords, recencyUserWords })
+    return json({ loggedInUser, user, alphaUserWords, recencyUserWords })
   }
 
   return json({ loggedInUser, user, alphaUserWords: [], recencyUserWords: [] })
@@ -170,7 +170,7 @@ export const action = async ({ request }: ActionArgs) => {
 
 const MyWords = () => {
   const { theme } = useContext(Context)
-  const { loggedInUser, alphaUserWords, recencyUserWords } =
+  const { loggedInUser, user, alphaUserWords, recencyUserWords } =
     useLoaderData<typeof loader>()
   const [alignment, setAlignment] = useState('alphabetical')
 
@@ -220,9 +220,10 @@ const MyWords = () => {
     wordData = wordDataRecency
   }
 
+  console.log(loggedInUser)
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >

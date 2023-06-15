@@ -4,8 +4,8 @@ import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
-const Nav = () => {
-  const { theme, featureTheme, toggleTheme, user, setTheme } =
+const Nav = ({ user, loggedInUser }) => {
+  const { theme, featureTheme, toggleTheme, setUser, setTheme } =
     useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
@@ -32,6 +32,14 @@ const Nav = () => {
       searchRef.current.focus()
     }
   }, [])
+
+  useEffect(() => {
+    if (loggedInUser && (user?.username || user?.username === '')) {
+      setUser(user?.username)
+    } else {
+      setUser('')
+    }
+  }, [user, loggedInUser])
 
   const handleInputChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -82,6 +90,7 @@ const Nav = () => {
     }
   }
 
+  console.log(user)
   const userButton = user ? (
     <DropdownMenu />
   ) : (
