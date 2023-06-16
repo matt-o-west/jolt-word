@@ -233,11 +233,11 @@ const Word = () => {
           </p>
         </div>
 
-        <div className='flex flex-col mx-4 justify-start'>
+        <div className='flex flex-col mx-4 justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
           {wordWithVote[0].et &&
             !wordWithVote[0].et[0][1].startsWith('see') && (
               <div
-                className={`place-self-end text-sm text-end ml-10 pr-4 pl-3 py-1 ${
+                className={`place-self-end text-sm text-end mb-2 ml-10 pr-4 pl-3 py-1 ${
                   theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
                 } rounded-md`}
               >
