@@ -228,21 +228,28 @@ const MyWords = () => {
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='text-2xl font-bold'>My Words</h1>
-        <ToggleButtonGroup
-          color='primary'
-          value={alignment}
-          exclusive
-          onChange={handleChange}
-          aria-label='Platform'
-          className='flex justify-end flex-row w-full mt-12'
-        >
-          <ToggleButton value='alphabetical'>
-            <AbcIcon fontSize='large' className='mx-1' />
-          </ToggleButton>
-          <ToggleButton value='recency'>
-            <AccessTimeFilledIcon className='mx-2' />
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <div className='flex mt-12 flex-start items-center w-full px-8'>
+          <p className='text-sm w-full'>
+            {loggedInUser
+              ? 'Select a view to sort by alphabetical or most recent.'
+              : 'Log in to save words and see them here.'}
+          </p>
+          <ToggleButtonGroup
+            color='primary'
+            value={alignment}
+            exclusive
+            onChange={handleChange}
+            aria-label='Platform'
+            className='flex justify-end flex-row'
+          >
+            <ToggleButton value='alphabetical'>
+              <AbcIcon fontSize='large' className='mx-1' />
+            </ToggleButton>
+            <ToggleButton value='recency'>
+              <AccessTimeFilledIcon className='mx-2' />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
         {loggedInUser && alignment ? (
           <div
             className={`gap-x-6 justify-center items-center ${theme} mt-6 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}

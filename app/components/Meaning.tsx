@@ -170,10 +170,10 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
               </li>
             )}
           </ol>
-          <div className='mt-4 flex justify-end'>
+          <div className='mt-4 flex justify-end '>
             {exampleSentenceOne && (
               <div
-                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
+                className={`inline-flex flex-row rounded-md px-3 py-1 items-center text-right ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
               >
@@ -184,7 +184,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
           <div className='mt-2 mb-4 flex justify-end'>
             {exampleSentenceTwo && (
               <div
-                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
+                className={`inline-flex flex-row rounded-md px-3 py-1 items-center text-right ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
               >
