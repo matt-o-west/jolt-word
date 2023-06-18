@@ -80,7 +80,11 @@ const replaceTokens = (text: string) => {
       <>
         {' '}
         see
-        <Link to={`/${match}`} className='text-lowercase link' key={i}>
+        <Link
+          to={`/${match.replace(/:\d+$/, '')}`}
+          className='text-lowercase link'
+          key={i}
+        >
           {match.replace(/:\d+$/, '')}
         </Link>
       </>
