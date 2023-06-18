@@ -102,7 +102,7 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 export default function Index() {
-  const { theme, featureTheme, setUser } = useContext(Context)
+  const { theme, featureTheme } = useContext(Context)
   const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
