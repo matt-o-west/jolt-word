@@ -240,13 +240,24 @@ const MyWords = () => {
             exclusive
             onChange={handleChange}
             aria-label='Platform'
-            className='flex justify-end flex-row'
+            className={`flex justify-end flex-row ${
+              theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
+            }`}
           >
             <ToggleButton value='alphabetical'>
-              <AbcIcon fontSize='large' className='mx-1' />
+              <AbcIcon
+                fontSize='large'
+                className={`mx-1 ${
+                  alignment === 'alphabetical' ? '' : 'text-gray-500'
+                }`}
+              />
             </ToggleButton>
             <ToggleButton value='recency'>
-              <AccessTimeFilledIcon className='mx-2' />
+              <AccessTimeFilledIcon
+                className={`mx-2 ${
+                  alignment === 'recency' ? '' : 'text-gray-500'
+                }`}
+              />
             </ToggleButton>
           </ToggleButtonGroup>
         </div>
