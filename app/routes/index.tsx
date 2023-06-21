@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { Link } from '@remix-run/react'
-import { useLoaderData, useActionData } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
@@ -36,7 +36,7 @@ export const loader = async ({ request }: LoaderArgs) => {
     : null
 
   const randomWord = await generateRandomWord()
-
+  console.log(user)
   if (user) {
     const userWords = await db.userWord.findMany({
       where: {
@@ -107,9 +107,8 @@ export default function Index() {
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
   const isMobile = useMobileDetect()
-  const data = useActionData<typeof action>()
 
-  console.log(typeof data)
+  console.log(user)
 
   // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -153,7 +152,7 @@ export default function Index() {
                   onClick={() => setShowLeaderBoard(true)}
                   className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
-                  <span className='flex cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
+                  <span className='flex font-sans-serif cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
                     <span className='pr-2'>
                       <TrendingUpIcon />
                     </span>
@@ -166,7 +165,7 @@ export default function Index() {
                   className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
                   <span
-                    className={`${featureTheme} flex cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic phone:text-lg`}
+                    className={`${featureTheme} flex font-sans-serif cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic phone:text-lg`}
                   >
                     <SavedSearchIcon />
                     <span className='pl-2'>My Words</span>

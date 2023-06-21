@@ -109,8 +109,8 @@ const Nav = ({ user, loggedInUser }) => {
         type='checkbox'
         value=''
         className={`sr-only peer`}
-        onChange={setTheme}
-        {...(theme === 'dark' ? { checked: true } : {})}
+        onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        checked={theme === 'dark'}
       />
       <div
         className={`w-11 h-6 ${toggleTheme} peer-focus:outline-none peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600`}

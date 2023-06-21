@@ -24,7 +24,7 @@ module.exports = {
         background: '#F2F2F2',
       },
       fontFamily: {
-        'sans-serif': ['Inter', 'sans-serif'],
+        'sans-serif': ['Work Sans', 'sans-serif'],
         serif: ['Lora', 'serif'],
         mono: ['Inconsolata', 'monospace'],
         subhead: ['Caveat', 'cursive'],

@@ -130,7 +130,7 @@ const Profile = () => {
       <div
         className={`flex flex-col items-start text-md pl-10 py-1 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <h1 className='text-2xl font-bold'>Profile</h1>
+        <h1 className='font-sans-serif text-2xl'>Profile</h1>
         <Form
           method='post'
           action='/user/profile'

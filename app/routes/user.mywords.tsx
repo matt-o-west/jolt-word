@@ -227,11 +227,11 @@ const MyWords = () => {
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <h1 className='text-2xl font-bold'>My Words</h1>
+        <h1 className='text-2xl font-sans-serif'>My Words</h1>
         <div className='flex mt-12 flex-start items-center w-full px-8'>
-          <p className='text-sm w-full'>
+          <p className='font-sans-serif text-sm w-full'>
             {loggedInUser
-              ? 'Select a view to sort by alphabetical or most recent.'
+              ? 'Sort by alphabetical or most recent.'
               : 'Log in to save words and see them here.'}
           </p>
           <ToggleButtonGroup
