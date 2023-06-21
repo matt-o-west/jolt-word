@@ -224,7 +224,7 @@ const Word = () => {
               />
             </button>
           )}
-          <p className='flex justify-start text-2xl'>
+          <p className='flex justify-start text-2xl row-start-2'>
             {wordWithVote[0]?.hwi?.prs?.[0]?.mw && (
               <span className='text-purple'>
                 /{wordWithVote[0]?.hwi?.prs?.[0]?.mw ?? ''}/

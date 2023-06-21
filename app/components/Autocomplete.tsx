@@ -50,13 +50,13 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
 
     const uniqueWordsAsStrings = Array.from(new Set(wordsAsStringsSorted))
 
-    const uniqueWords = uniqueWordsAsStrings.map((string) =>
+    const localUniqueWords = uniqueWordsAsStrings.map((string) =>
       typeof matchingWords[0] === 'string'
         ? string
         : matchingWords.find((word) => word?.hwi?.hw === string)
     )
 
-    setUniqueWords(uniqueWords)
+    setUniqueWords(localUniqueWords)
   }, [matchingWords, searchTerm])
 
   useEffect(() => {
@@ -68,7 +68,10 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       if (event.key === 'ArrowDown') {
         // Move cursor down
         event.preventDefault()
-        setCursor((oldCursor) => Math.min(oldCursor + 1, 4))
+        console.log(uniqueWords.length - 1)
+        setCursor((oldCursor) =>
+          Math.min(oldCursor + 1, Math.min(uniqueWords.length, 4))
+        )
       } else if (event.key === 'ArrowUp') {
         // Move cursor up
         event.preventDefault()
