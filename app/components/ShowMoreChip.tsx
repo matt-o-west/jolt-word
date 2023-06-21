@@ -31,26 +31,14 @@ const Overlay = styled('div')(({ isDarkMode, isMobile }) => ({
   top: 0,
   left: 0,
   right: 0,
-  bottom: isMobile ? '44%' : '68%',
-  width: '85%',
+  bottom: '66.35%',
+  width: '335px',
   margin: '0 auto',
   background: isDarkMode
     ? 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(58, 58, 58, 1) 100%)'
     : 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%)',
   opacity: 0,
   transition: 'opacity 0.3s',
-  '@media (max-width: 1425px)': {
-    width: '60%',
-  },
-
-  '@media (max-width: 768px)': {
-    width: '60%',
-  },
-
-  '@media (max-width: 520px)': {
-    width: '70%',
-  },
-
   '&:hover': {
     opacity: 0.5,
   },

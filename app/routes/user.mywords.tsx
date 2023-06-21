@@ -217,10 +217,13 @@ const MyWords = () => {
   if (alignment === 'alphabetical') {
     wordData = wordDataAlpha
   } else if (alignment === 'recency') {
-    wordData = wordDataRecency
+    wordData = wordDataRecency.sort((a, b) => {
+      const localA = JSON.parse(localStorage.getItem(a.word) || '{}')
+      const localB = JSON.parse(localStorage.getItem(b.word) || '{}')
+      return localB.expiry - localA.expiry
+    })
   }
 
-  console.log(loggedInUser)
   return (
     <>
       <Nav loggedInUser={loggedInUser} user={user} />
