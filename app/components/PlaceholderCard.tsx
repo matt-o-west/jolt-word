@@ -9,11 +9,11 @@ const PlaceholderCard = ({ width = 'w-[335px]', index = 0 }) => {
   //console.log(`Passed down votes: ${votes}, word: ${word}`)
 
   return (
-    <div
+    <article
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${width} ${featureTheme} border-b-2 border-gray h-[62px]`}
     >
       {index % 2 === 0 ? <CrossOut1 /> : <CrossOut2 />}
-    </div>
+    </article>
   )
 }
 

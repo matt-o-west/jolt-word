@@ -70,7 +70,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         event.preventDefault()
         console.log(uniqueWords.length - 1)
         setCursor((oldCursor) =>
-          Math.min(oldCursor + 1, Math.min(uniqueWords.length, 4))
+          Math.min(oldCursor + 1, Math.min(uniqueWords.length + 1, 4))
         )
       } else if (event.key === 'ArrowUp') {
         // Move cursor up

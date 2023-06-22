@@ -2,7 +2,7 @@ import React from 'react'
 
 const Description = () => {
   return (
-    <div className='flex flex-col md:flex-row justify-between items-center'>
+    <section className='flex flex-col md:flex-row justify-between items-center'>
       <div className='md:w-1/2 mb-8 md:mb-0'>
         <h2 className='text-3xl font-bold mb-4'>How does this work?</h2>
         <img
@@ -22,7 +22,7 @@ const Description = () => {
           sed nunc.
         </p>
       </div>
-    </div>
+    </section>
   )
 }
 
