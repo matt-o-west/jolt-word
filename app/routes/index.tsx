@@ -102,7 +102,7 @@ export const action = async ({ request }: ActionArgs) => {
 }
 
 export default function Index() {
-  const { theme, featureTheme, setUser } = useContext(Context)
+  const { theme, featureTheme } = useContext(Context)
   const { leaderboard, loggedInUser, user, randomWord, userWords } =
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
@@ -167,7 +167,7 @@ export default function Index() {
                   onClick={() => setShowLeaderBoard(true)}
                   className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
-                  <span className='flex cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
+                  <span className='flex font-sans-serif cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
                     <span className='pr-2'>
                       <TrendingUpIcon />
                     </span>
@@ -180,7 +180,7 @@ export default function Index() {
                   className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
                   <span
-                    className={`${featureTheme} flex cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic phone:text-lg`}
+                    className={`${featureTheme} flex font-sans-serif cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic phone:text-lg`}
                   >
                     <SavedSearchIcon />
                     <span className='pl-2'>My Words</span>

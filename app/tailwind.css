@@ -35,12 +35,16 @@
   li::marker {
     color: #a445ed;
   }
+  body {
+    font-family: 'Work Sans';
+  }
   p {
+    font-family: 'Work Sans', sans-serif;
     font-size: 1.04rem;
   }
   h1 {
     font-size: 1.25rem;
-    font-family: 'WorkSans', sans-serif;
+    font-family: 'Work Sans', sans-serif;
   }
 }
 

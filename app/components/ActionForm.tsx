@@ -36,7 +36,7 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
         loading={loading}
       />
       <button type='submit' className='hidden'>
-        Submit
+        Select Word Result
       </button>
     </Form>
   )

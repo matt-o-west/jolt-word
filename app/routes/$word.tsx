@@ -217,7 +217,7 @@ const Word = () => {
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-10 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <div className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 justify-between'>
-          <h1 className='self-center tablet:text-5xl phone:text-3xl font-bold tracking-wide'>
+          <h1 className='self-center max-w-min tablet:text-5xl phone:text-3xl font-bold tracking-wide'>
             {word}
           </h1>
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2 mb-5'>
@@ -237,6 +237,7 @@ const Word = () => {
             </button>
           )}
 <<<<<<< HEAD
+<<<<<<< HEAD
           <p
             className={`flex justify-start text-2xl ${
               !subDirectory && 'row-start-2'
@@ -245,6 +246,9 @@ const Word = () => {
             {data[0]?.hwi?.prs?.[0]?.mw && (
 =======
           <p className='flex justify-start text-2xl'>
+=======
+          <p className='flex justify-start text-2xl row-start-2'>
+>>>>>>> 46f7583f48187c573693e0fb75b5dd1d640a61d1
             {wordWithVote[0]?.hwi?.prs?.[0]?.mw && (
 >>>>>>> loginUi-state
               <span className='text-purple'>
