@@ -90,7 +90,6 @@ const Nav = ({ user, loggedInUser }) => {
     }
   }
 
-  console.log(user)
   const userButton = user ? (
     <DropdownMenu />
   ) : (

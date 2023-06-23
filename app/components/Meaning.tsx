@@ -107,13 +107,6 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
     return <>{parsedWords}</>
   }
 
-  const definitionOne =
-    meaning?.def?.[0]?.sseq?.[0]?.[0]?.[1]?.dt?.[0]?.[1]?.[0]?.t
-  const definitionTwo =
-    meaning?.def?.[0]?.sseq?.[0]?.[1]?.[1]?.dt?.[0]?.[1]?.[0]?.t
-  const definitionThree =
-    meaning?.def?.[0]?.sseq?.[0]?.[2]?.[1]?.dt?.[0]?.[1]?.[0]?.t
-
   let exampleSentenceOne = _.get(
     meaning,
     'def[0].sseq[0][0][1].dt[1][1][0].t',
@@ -144,11 +137,11 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
   return (
     <>
       {meaning.fl && (
-        <div className='mt-2'>
+        <section className='flex flex-col mt-2'>
           <span className={`italic font-sans-serif text-xl`}>
             {meaning?.fl}
           </span>
-          <div className='border border-b-2' />
+          <div className='border border-b-2 desktop:min-w-[600px]' />
           <ol className='mt-4 ml-8 text-lg'>
             <li>
               <p>{checkLinks(meaning?.shortdef?.[0])}</p>
@@ -170,37 +163,37 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
               </li>
             )}
           </ol>
-          <div className='mt-4 flex justify-end '>
+          <article className='mt-4 flex justify-end'>
             {exampleSentenceOne && (
               <div
-                className={`inline-flex flex-row rounded-md px-3 py-1 items-center text-right ${
+                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
               >
                 <p className='text-base'>{replaceTokens(exampleSentenceOne)}</p>
               </div>
             )}
-          </div>
-          <div className='mt-2 mb-4 flex justify-end'>
+          </article>
+          <article className='mt-2 mb-4 flex justify-end'>
             {exampleSentenceTwo && (
               <div
-                className={`inline-flex flex-row rounded-md px-3 py-1 items-center text-right ${
+                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
               >
                 <p className='text-base'>{replaceTokens(exampleSentenceTwo)}</p>
               </div>
             )}
-          </div>
+          </article>
           {synonyms && (
             <div className={`synonyms ${featureTheme} font-light`}>
               {checkSynonyms()}
             </div>
           )}
-        </div>
+        </section>
       )}
       {meaning.cxs && !previousMeaning?.fl && (
-        <div className='mt-10'>
+        <section className='mt-10'>
           <span className='italic text-xl font-light '>
             {meaning.cxs[0].cxl}{' '}
           </span>
@@ -214,7 +207,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
               </Fragment>
             ))}
           </span>
-        </div>
+        </section>
       )}
     </>
   )
