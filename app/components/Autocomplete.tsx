@@ -68,10 +68,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       if (event.key === 'ArrowDown') {
         // Move cursor down
         event.preventDefault()
-        console.log(uniqueWords.length - 1)
-        setCursor((oldCursor) =>
-          Math.min(oldCursor + 1, Math.min(uniqueWords.length + 1, 4))
-        )
+        console.log('unique word' + uniqueWords[cursor])
+        setCursor((oldCursor) => Math.min(oldCursor + 1, 4))
       } else if (event.key === 'ArrowUp') {
         // Move cursor up
         event.preventDefault()
@@ -98,7 +96,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
 
   if (typeof matchingWords === 'string') {
     // Handle case where matchingWords is a string
-    console.log(`Found matching words in ${matchingWords}`)
+    //console.log(`Found matching words in ${matchingWords}`)
     return (
       <Link
         to={`/words/${matchingWords}`}
@@ -108,7 +106,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       </Link>
     )
   } else if (Array.isArray(matchingWords)) {
-    //console.log(`Found matching words in ${uniqueWords}`)
+    console.log(`Found matching words in ${uniqueWords}`)
     return (
       <div
         className={`flex flex-col justify-start text-md p-2 m-2 rounded-sm ${

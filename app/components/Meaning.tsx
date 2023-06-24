@@ -142,7 +142,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
             {meaning?.fl}
           </span>
           <div className='border border-b-2 desktop:min-w-[600px]' />
-          <ol className='mt-4 ml-8 text-lg'>
+          <ol className='mt-4 ml-8 tablet:text-lg phone:text-md'>
             <li>
               <p>{checkLinks(meaning?.shortdef?.[0])}</p>
             </li>
@@ -163,14 +163,14 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
               </li>
             )}
           </ol>
-          <article className='mt-4 flex justify-end'>
+          <article className='mt-4 flex justify-end text-right'>
             {exampleSentenceOne && (
               <div
-                className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
+                className={`inline-flex flex-row rounded-md ml-20 px-2 py-1 items-center ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
               >
-                <p className='text-base'>{replaceTokens(exampleSentenceOne)}</p>
+                <p className='text-sm'>{replaceTokens(exampleSentenceOne)}</p>
               </div>
             )}
           </article>
@@ -181,7 +181,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
               >
-                <p className='text-base'>{replaceTokens(exampleSentenceTwo)}</p>
+                <p className='text-sm'>{replaceTokens(exampleSentenceTwo)}</p>
               </div>
             )}
           </article>

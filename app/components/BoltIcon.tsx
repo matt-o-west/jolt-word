@@ -33,11 +33,11 @@ function ClickableIcon({
 
   const singleDigitStyling = (votes: number) => {
     if (votes < 10) {
-      return 'top-[-2px] right-[0px]'
+      return 'top-[-2px] right-[2px]'
     } else if (votes < 100) {
-      return 'top-[-2px] right-[-5px]'
+      return 'top-[-1px] right-[-5px]'
     }
-    return 'top-[-2px] right-[-10px]'
+    return 'top-[-1px] right-[-10px]'
   }
 
   return (
@@ -49,7 +49,7 @@ function ClickableIcon({
       )}
       {!loading && (
         <button
-          className={`icon cursor-pointer ml-1 relative tablet:mb-1 phone:mb-3 ${
+          className={`icon cursor-pointer ml-1 relative tablet:mb-1 ${
             isMobile ? 'w-6 h-6' : 'w-10 h-10'
           }`}
           onClick={handleClick}
@@ -63,7 +63,9 @@ function ClickableIcon({
           <span
             className={`absolute ${singleDigitStyling(
               votes
-            )} bg-transparent rounded-full px-1 py-0.5 text-xs`}
+            )} bg-transparent rounded-full px-1 py-0.5 text-xs ${
+              isMobile && 'text-[0.65rem] px-0'
+            }`}
           >
             {parseVotes(votes)}
           </span>
