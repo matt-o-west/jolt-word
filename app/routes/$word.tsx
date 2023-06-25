@@ -160,7 +160,7 @@ const Word = () => {
   const { theme } = useContext(Context)
 
   const { wordWithVote, user, loggedInUser } = useLoaderData<DefinitionType>()
-  console.log(wordWithVote)
+
   //replace with error boundary
   if (!wordWithVote) {
     return <div>Sorry, could not find data for {word}</div>

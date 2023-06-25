@@ -55,10 +55,10 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         ? string
         : matchingWords.find((word) => word?.hwi?.hw === string)
     )
-
+    console.log(localUniqueWords)
     setUniqueWords(localUniqueWords)
-  }, [matchingWords, searchTerm])
-
+  }, [matchingWords])
+  console.log(uniqueWords)
   useEffect(() => {
     setCursor(0)
   }, [uniqueWords])
