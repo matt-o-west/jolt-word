@@ -59,10 +59,12 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
     setUniqueWords(localUniqueWords)
   }, [matchingWords])
   console.log(uniqueWords)
+
   useEffect(() => {
     setCursor(0)
   }, [uniqueWords])
 
+  // when this effect runs, the first result, if selected/submitted with the form will navigate to the first result of the last (last render) array of uniqueWords - if the user navigates away and back to the first result before pressing enter, the correct first result is navigated to
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowDown') {
@@ -78,6 +80,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         // Navigate to selected item
         event.preventDefault()
         if (cursor >= 0 && cursor < uniqueWords.length) {
+          console.log(uniqueWords[cursor]) // this logs first result of the previous render of the uniqueWords array
           const word = uniqueWords[cursor]
           const path =
             typeof word === 'string'
@@ -92,7 +95,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [cursor, matchingWords])
+  }, [cursor, matchingWords, uniqueWords, navigate])
 
   if (typeof matchingWords === 'string') {
     // Handle case where matchingWords is a string

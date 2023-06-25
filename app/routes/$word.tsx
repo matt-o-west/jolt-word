@@ -253,7 +253,7 @@ const Word = () => {
                   theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
                 } rounded-md`}
               >
-                {wordWithVote[0].et
+                {wordWithVote[0].et && wordWithVote[0].et !== ''
                   ? replaceTokens(wordWithVote[0]?.et[0][1])
                   : replaceTokens(wordWithVote[1]?.et[0][1])}
               </div>
