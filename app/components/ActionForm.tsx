@@ -10,7 +10,6 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
     useLocalStorage<number>(word, 0, 120)
 
   useEffect(() => {
-    console.log(word, storedWord, storedValue)
     if (word !== storedWord) {
       setStoredValue(0)
     }
