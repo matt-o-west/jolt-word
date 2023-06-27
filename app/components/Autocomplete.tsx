@@ -55,7 +55,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         ? string
         : matchingWords.find((word) => word?.hwi?.hw === string)
     )
-    console.log(localUniqueWords)
+
     setUniqueWords(localUniqueWords)
   }, [matchingWords])
 
@@ -68,7 +68,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       if (event.key === 'ArrowDown') {
         // Move cursor down
         event.preventDefault()
-        console.log('unique word' + uniqueWords[cursor])
+
         setCursor((oldCursor) => Math.min(oldCursor + 1, 4))
       } else if (event.key === 'ArrowUp') {
         // Move cursor up
@@ -78,7 +78,6 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         // Navigate to selected item
         event.preventDefault()
         if (cursor >= 0 && cursor < uniqueWords.length) {
-          console.log(uniqueWords[cursor]) // this logs first result of the previous render of the uniqueWords array
           const word = uniqueWords[cursor]
           const path =
             typeof word === 'string'
@@ -107,7 +106,6 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       </Link>
     )
   } else if (Array.isArray(matchingWords)) {
-    console.log(`Found matching words in ${uniqueWords}`)
     return (
       <div
         className={`flex flex-col justify-start text-md p-2 m-2 rounded-sm ${

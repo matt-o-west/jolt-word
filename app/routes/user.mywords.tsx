@@ -220,9 +220,15 @@ const MyWords = () => {
     wordData = wordDataRecency.sort((a, b) => {
       const localA = JSON.parse(localStorage.getItem(a.word) || '{}')
       const localB = JSON.parse(localStorage.getItem(b.word) || '{}')
-      return localB.expiry - localA.expiry
+
+      const expiryA = localA.expiry || 0
+      const expiryB = localB.expiry || 0
+
+      return expiryB - expiryA
     })
   }
+
+  //console.log(wordDataRecency)
 
   return (
     <>
