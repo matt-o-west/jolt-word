@@ -12,7 +12,6 @@ type ClickableIconProps = {
 }
 
 function ClickableIcon({
-  word,
   votes,
   handleClick,
   storedValue,

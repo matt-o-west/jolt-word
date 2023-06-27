@@ -189,13 +189,8 @@ const Login = () => {
             nodeRef={passwordChangeRef}
             unmountOnExit
           >
-            <div
-              ref={passwordChangeRef}
-              className={`mb-3 ${
-                theme === 'light' ? 'bg-inherit' : 'bg-quaternary.black'
-              }`}
-            >
-              <Alert variant='outlined' severity='info' className='mb-3'>
+            <div ref={passwordChangeRef} className='mb-3'>
+              <Alert variant='filled' severity='info' className='mb-3'>
                 You changed your password successfully! Please login.
               </Alert>
             </div>
@@ -210,7 +205,7 @@ const Login = () => {
             unmountOnExit
           >
             <div ref={successRef} className='mb-3'>
-              <Alert variant='outlined' severity='success' className='mb-3'>
+              <Alert variant='filled' severity='success' className='mb-3'>
                 You registered successfully! Please login.
               </Alert>
             </div>
@@ -225,7 +220,7 @@ const Login = () => {
             unmountOnExit
           >
             <div ref={errorRef} className='mb-3'>
-              <Alert variant='outlined' severity='error' className='mb-3'>
+              <Alert variant='filled' severity='error' className='mb-3'>
                 {actionData.formError?.message}
               </Alert>
             </div>
