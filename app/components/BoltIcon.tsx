@@ -1,7 +1,6 @@
 import BoltIcon from '@mui/icons-material/Bolt'
 import Skeleton from '@mui/material/Skeleton'
 import useMobileDetect from '~/hooks/useMobileDetect'
-//import zap from 'public/sound/zap.wav' // Import your sound effect file
 
 type ClickableIconProps = {
   word: string
