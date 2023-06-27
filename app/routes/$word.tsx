@@ -221,7 +221,7 @@ const Word = () => {
             {word}
           </h1>
           <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2 mb-5'>
-            <ActionForm word={word} votes={wordWithVote.votes} />
+            <ActionForm word={word as string} votes={wordWithVote.votes} />
           </div>
           {subDirectory && (
             <button
@@ -253,7 +253,7 @@ const Word = () => {
                   theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
                 } rounded-md`}
               >
-                {wordWithVote[0].et && wordWithVote[0].et !== ''
+                {wordWithVote[0].et
                   ? replaceTokens(wordWithVote[0]?.et[0][1])
                   : replaceTokens(wordWithVote[1]?.et[0][1])}
               </div>

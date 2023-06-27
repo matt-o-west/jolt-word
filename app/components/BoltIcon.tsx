@@ -1,12 +1,11 @@
 import BoltIcon from '@mui/icons-material/Bolt'
 import Skeleton from '@mui/material/Skeleton'
 import useMobileDetect from '~/hooks/useMobileDetect'
-import { useEffect, useState } from 'react'
 //import zap from 'public/sound/zap.wav' // Import your sound effect file
 
 type ClickableIconProps = {
   word: string
-  votes: number
+  votes: number | undefined
   handleClick: () => void
   storedValue: number | ((value: Function) => void)
   maxClicks: number
@@ -24,32 +23,24 @@ function ClickableIcon({
   const isMobile = useMobileDetect()
   let fontSize: 'medium' | 'large' = isMobile ? 'medium' : 'large'
 
-  const parseVotes = (votes: number) => {
-    if (votes > 1000) {
-      return `${(votes / 1000).toFixed(1)}k`
+  // I fixed this piece in multiple ways, and then came back later to a commit to find the code was broken again. Hence solution below.
+  const parsedVotes = () => {
+    if (storedValue === maxClicks) {
+      return (votes as number) + 1
     }
-    return votes
-  }
-
-  const singleDigitStyling = (votes: number) => {
-    if (votes < 10) {
-      return 'top-[-2px] right-[2px]'
-    } else if (votes < 100) {
-      return 'top-[-1px] right-[-5px]'
-    }
-    return 'top-[-1px] right-[-10px]'
+    return votes as number
   }
 
   return (
     <>
       {loading && (
-        <Skeleton variant='rectangular' animation='wave' className='mt-2 ml-2'>
+        <Skeleton variant='rectangular' animation='wave'>
           <BoltIcon fontSize={fontSize} />
         </Skeleton>
       )}
       {!loading && (
         <button
-          className={`icon cursor-pointer ml-1 relative tablet:mb-1 ${
+          className={`icon cursor-pointer ml-auto relative tablet:mb-1 phone:mb-3 ${
             isMobile ? 'w-6 h-6' : 'w-10 h-10'
           }`}
           onClick={handleClick}
@@ -60,15 +51,7 @@ function ClickableIcon({
             fontSize={fontSize}
             color={storedValue === 3 ? 'primary' : 'inherit'}
           />
-          <span
-            className={`absolute ${singleDigitStyling(
-              votes
-            )} bg-transparent rounded-full px-1 py-0.5 text-xs ${
-              isMobile && 'text-[0.65rem] px-0'
-            }`}
-          >
-            {parseVotes(votes)}
-          </span>
+          <span className='vote-count'>{parsedVotes()}</span>
         </button>
       )}
     </>

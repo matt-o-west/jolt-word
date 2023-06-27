@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from 'react'
 import { Context } from '~/root'
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
-  const [cursor, setCursor] = useState(-1)
+  const [cursor, setCursor] = useState(0)
   //const [wordsUpdated, setWordsUpdated] = useState(false)
   const { theme } = useContext(Context)
   const [uniqueWords, setUniqueWords] = useState([])
@@ -58,13 +58,11 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
     console.log(localUniqueWords)
     setUniqueWords(localUniqueWords)
   }, [matchingWords])
-  console.log(uniqueWords)
 
   useEffect(() => {
     setCursor(0)
   }, [uniqueWords])
 
-  // when this effect runs, the first result, if selected/submitted with the form will navigate to the first result of the last (last render) array of uniqueWords - if the user navigates away and back to the first result before pressing enter, the correct first result is navigated to
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'ArrowDown') {
