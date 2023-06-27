@@ -40,22 +40,36 @@ const BoardCard = ({
   const rankColor = getRankColor(rank)
   //console.log(`Passed down votes: ${votes}, word: ${word}`)
   const notRanked = `${featureTheme} border-b-2 border-gray`
+  const shortenedWord = (word: string) => {
+    const length = word.length
+    if (length > 11 && width === 'w-[300px]') {
+      return word.slice(0, 11) + '...'
+    } else if (length > 16 && width === 'w-[335px]') {
+      return word.slice(0, 16) + '...'
+    }
+    return word
+  }
 
   return (
-    <div
+    <article
       className={`flex py-2 px-4 items-center rounded-sm text-2xl ${
         rankColor || notRanked
       } ${width} h-[62px]`}
+      title={word}
     >
       <span className='font-subhead text-3xl mx-2 mr-6' hidden={!rankColor}>
         {rank}
       </span>
       {myWords && deleteForm && deleteForm({ word })}
       <span className='mx-2'>
-        <Link to={`/${word}`}>{word}</Link>
+        <Link to={`/${word}`} aria-label={word}>
+          {shortenedWord(word)}
+        </Link>
       </span>
-      <div className='ml-auto tablet:mb-2'>{ActionForm({ word, votes })}</div>
-    </div>
+      <div className='ml-auto tablet:mb-2' aria-label='Upvote'>
+        {ActionForm({ word, votes })}
+      </div>
+    </article>
   )
 }
 

@@ -90,8 +90,6 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
-  //createUserSession(loggedInUser.id, redirectTo)
-
   return createUserSession(loggedInUser.id, redirectTo)
 }
 
@@ -191,7 +189,12 @@ const Login = () => {
             nodeRef={passwordChangeRef}
             unmountOnExit
           >
-            <div ref={passwordChangeRef} className='mb-3'>
+            <div
+              ref={passwordChangeRef}
+              className={`mb-3 ${
+                theme === 'light' ? 'bg-inherit' : 'bg-quaternary.black'
+              }`}
+            >
               <Alert variant='outlined' severity='info' className='mb-3'>
                 You changed your password successfully! Please login.
               </Alert>

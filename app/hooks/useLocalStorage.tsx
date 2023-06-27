@@ -6,23 +6,27 @@ export const useLocalStorage = <T,>(
   expiryInMinutes: number
 ): [T, (value: T | ((val: T) => T)) => void, String, Boolean] => {
   const [loading, setLoading] = useState(true)
-  const [storedValue, setStoredValue] = useState<T>(initialValue)
+  const [storedValue, setStoredValue] = useState<T>(initialValue) // initial value passed from ActionForm to useLocalStorage
 
   useEffect(() => {
-    let storedItem = initialValue
     try {
       const item = window.localStorage.getItem(word)
       if (item) {
         const data = JSON.parse(item)
         const now = new Date()
         if (now.getTime() < data.expiry) {
-          storedItem = data.value
+          setStoredValue(data.value)
+        } else {
+          // If the item has expired, set it to the initial value
+          setStoredValue(initialValue)
         }
+      } else {
+        // If the item doesn't exist, set it to the initial value
+        setStoredValue(initialValue)
       }
     } catch (error) {
       console.error(error)
     }
-    setStoredValue(storedItem)
     setLoading(false)
   }, [word, initialValue])
 

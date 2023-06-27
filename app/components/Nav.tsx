@@ -11,15 +11,6 @@ const Nav = ({ user, loggedInUser }) => {
   const [matchingWords, setMatchingWords] = useState<string[]>([])
   const searchRef = useRef<HTMLInputElement>()
 
-  const [user, setUser] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const storedUser = sessionStorage.getItem('username')
-      return storedUser
-    }
-    return null
-  })
-  console.log(user)
-
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -99,9 +90,8 @@ const Nav = ({ user, loggedInUser }) => {
     }
   }
 
-  console.log(user)
   const userButton = user ? (
-    'Logged In'
+    <DropdownMenu />
   ) : (
     <button
       className={`bg-gray text-primary.black rounded-md px-2 py-1 ml-2 ${

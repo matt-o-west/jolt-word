@@ -4,7 +4,7 @@ import { useEffect, useState, useContext } from 'react'
 import { Context } from '~/root'
 
 const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
-  const [cursor, setCursor] = useState(-1)
+  const [cursor, setCursor] = useState(0)
   //const [wordsUpdated, setWordsUpdated] = useState(false)
   const { theme } = useContext(Context)
   const [uniqueWords, setUniqueWords] = useState([])
@@ -55,9 +55,9 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         ? string
         : matchingWords.find((word) => word?.hwi?.hw === string)
     )
-
+    console.log(localUniqueWords)
     setUniqueWords(localUniqueWords)
-  }, [matchingWords, searchTerm])
+  }, [matchingWords])
 
   useEffect(() => {
     setCursor(0)
@@ -68,10 +68,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       if (event.key === 'ArrowDown') {
         // Move cursor down
         event.preventDefault()
-        console.log(uniqueWords.length - 1)
-        setCursor((oldCursor) =>
-          Math.min(oldCursor + 1, Math.min(uniqueWords.length + 1, 4))
-        )
+        console.log('unique word' + uniqueWords[cursor])
+        setCursor((oldCursor) => Math.min(oldCursor + 1, 4))
       } else if (event.key === 'ArrowUp') {
         // Move cursor up
         event.preventDefault()
@@ -80,6 +78,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
         // Navigate to selected item
         event.preventDefault()
         if (cursor >= 0 && cursor < uniqueWords.length) {
+          console.log(uniqueWords[cursor]) // this logs first result of the previous render of the uniqueWords array
           const word = uniqueWords[cursor]
           const path =
             typeof word === 'string'
@@ -94,11 +93,11 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [cursor, matchingWords])
+  }, [cursor, matchingWords, uniqueWords, navigate])
 
   if (typeof matchingWords === 'string') {
     // Handle case where matchingWords is a string
-    console.log(`Found matching words in ${matchingWords}`)
+    //console.log(`Found matching words in ${matchingWords}`)
     return (
       <Link
         to={`/words/${matchingWords}`}
@@ -108,7 +107,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       </Link>
     )
   } else if (Array.isArray(matchingWords)) {
-    //console.log(`Found matching words in ${uniqueWords}`)
+    console.log(`Found matching words in ${uniqueWords}`)
     return (
       <div
         className={`flex flex-col justify-start text-md p-2 m-2 rounded-sm ${

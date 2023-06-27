@@ -8,19 +8,22 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
   const maxClicks = 3
   const [storedValue, setStoredValue, storedWord, loading] =
     useLocalStorage<number>(word, 0, 120)
-  const [clicks, setClicks] = useState(storedValue as number)
 
   useEffect(() => {
-    if (clicks === maxClicks) {
-      setStoredValue(clicks)
+    console.log(word, storedWord, storedValue)
+    if (word !== storedWord) {
+      setStoredValue(0)
     }
-  }, [clicks, setStoredValue])
+  }, [word, storedWord, storedValue])
 
   const handleClick = () => {
-    console.log(storedValue === maxClicks)
-    if (clicks < maxClicks) {
-      setClicks(clicks + 1)
-    }
+    setStoredValue((prevStoredValue) => {
+      if (prevStoredValue < maxClicks) {
+        return prevStoredValue + 1
+      } else {
+        return prevStoredValue
+      }
+    })
   }
 
   return (
@@ -36,7 +39,7 @@ const ActionForm = ({ word, votes }: LeaderBoardType) => {
         loading={loading}
       />
       <button type='submit' className='hidden'>
-        Select Word Result
+        Submit
       </button>
     </Form>
   )

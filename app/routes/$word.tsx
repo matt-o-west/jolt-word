@@ -12,6 +12,7 @@ import type { LoaderArgs, ActionArgs } from '@remix-run/node'
 import { db } from 'prisma/db.server'
 import { requireUserId } from '~/utils/session.server'
 import ActionForm from '~/components/ActionForm'
+import useMobileDetect from '~/hooks/useMobileDetect'
 export interface Definition {
   date: string
   fl: string
@@ -46,23 +47,11 @@ export interface Definition {
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
 export const loader = async ({ params, request }: LoaderArgs) => {
-<<<<<<< HEAD
-  const redirectTo = `/word/${params.word}`
-=======
   const redirectTo = '/login'
 
->>>>>>> loginUi-state
   if (!params.word) {
     return json({ error: 'Word parameter is missing.' }, { status: 404 })
   }
-  const loggedInUser = await requireUserId(request, redirectTo)
-  const user = loggedInUser
-    ? await db.user.findUnique({
-        where: {
-          id: loggedInUser,
-        },
-      })
-    : null
 
   const loggedInUser = await requireUserId(request, redirectTo)
   const user = loggedInUser
@@ -170,9 +159,10 @@ export const action = async ({ request }: ActionArgs) => {
 const Word = () => {
   const { word } = useParams()
   const { theme } = useContext(Context)
+  const isMobile = useMobileDetect()
 
   const { wordWithVote, user, loggedInUser } = useLoaderData<DefinitionType>()
-  console.log(wordWithVote)
+
   //replace with error boundary
   if (!wordWithVote) {
     return <div>Sorry, could not find data for {word}</div>
@@ -210,18 +200,30 @@ const Word = () => {
     }
   }
 
+  const wordFontSize = () => {
+    if (typeof word !== 'undefined' && word.length >= 14) {
+      return 'tablet:text-4xl phone:text-3xl'
+    }
+
+    return null
+  }
+
   return (
     <>
       <Nav loggedInUser={loggedInUser} user={user} />
       <main
-        className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-10 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <div className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 justify-between'>
-          <h1 className='self-center max-w-min tablet:text-5xl phone:text-3xl font-bold tracking-wide'>
+          <h1
+            className={`self-center max-w-full font-bold tracking-wide ${
+              wordFontSize() || 'tablet:text-5xl phone:text-3xl'
+            }`}
+          >
             {word}
           </h1>
-          <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-3 ml-2 mb-5'>
-            <ActionForm word={word} votes={wordWithVote.votes} />
+          <div className='self-start desktop:mt-4 tablet:mt-4 phone:mt-6 ml-2 mb-5'>
+            <ActionForm word={word as string} votes={wordWithVote.votes} />
           </div>
           {subDirectory && (
             <button
@@ -236,21 +238,8 @@ const Word = () => {
               />
             </button>
           )}
-<<<<<<< HEAD
-<<<<<<< HEAD
-          <p
-            className={`flex justify-start text-2xl ${
-              !subDirectory && 'row-start-2'
-            }`}
-          >
-            {data[0]?.hwi?.prs?.[0]?.mw && (
-=======
-          <p className='flex justify-start text-2xl'>
-=======
-          <p className='flex justify-start text-2xl row-start-2'>
->>>>>>> 46f7583f48187c573693e0fb75b5dd1d640a61d1
+          <p className='flex justify-start desktop:text-2xl phone:text-xl row-start-2'>
             {wordWithVote[0]?.hwi?.prs?.[0]?.mw && (
->>>>>>> loginUi-state
               <span className='text-purple'>
                 /{wordWithVote[0]?.hwi?.prs?.[0]?.mw ?? ''}/
               </span>
@@ -258,24 +247,11 @@ const Word = () => {
           </p>
         </div>
 
-        <div className='flex flex-col mx-4 justify-start'>
-<<<<<<< HEAD
-          {data[0].et && !data[0].et[0][1].startsWith('see') && (
-            <div
-              className={`place-self-end text-sm text-end ml-10 mb-4 pr-4 pl-3 py-1 ${
-                theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
-              } rounded-md`}
-            >
-              {data[0].et
-                ? replaceTokens(data[0]?.et[0][1])
-                : replaceTokens(data[1]?.et[0][1])}
-            </div>
-          )}
-=======
+        <div className='flex flex-col mx-4 justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
           {wordWithVote[0].et &&
             !wordWithVote[0].et[0][1].startsWith('see') && (
               <div
-                className={`place-self-end text-sm text-end ml-10 pr-4 pl-3 py-1 ${
+                className={`place-self-end text-sm text-end mb-2 ml-10 pr-4 pl-3 py-1 ${
                   theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
                 } rounded-md`}
               >
@@ -284,7 +260,6 @@ const Word = () => {
                   : replaceTokens(wordWithVote[1]?.et[0][1])}
               </div>
             )}
->>>>>>> loginUi-state
           <Meaning meaning={meaningOne} />
           {meaningTwo && meaningTwo.shortdef[0] !== meaningOne.shortdef[0] && (
             <Meaning meaning={meaningTwo} previousMeaning={meaningOne} />

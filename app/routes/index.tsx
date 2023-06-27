@@ -110,22 +110,7 @@ export default function Index() {
 
   console.log(user)
 
-<<<<<<< HEAD
-  useEffect(() => {
-    //console.log(loggedInUser, user)
-    if (loggedInUser && user?.username) {
-      if (typeof window !== 'undefined') {
-        const storedUser = sessionStorage.setItem('username', user.username)
-        return storedUser
-      }
-      //window.localStorage.setItem('user', user?.username)
-    }
-  }, [user])
-
-  //console.log('useEffect ran')
-=======
   // eslint-disable-line react-hooks/exhaustive-deps
->>>>>>> loginUi-state
 
   const wordData = userWords.map((word) => {
     return {
@@ -133,6 +118,14 @@ export default function Index() {
       votes: word.word.votes,
     }
   })
+
+  const wordFontSize = (word: string) => {
+    if (typeof word !== 'undefined' && word.length > 14) {
+      return 'tablet:text-3xl phone:text-2xl ml-4'
+    }
+
+    return null
+  }
 
   return (
     <>
@@ -144,13 +137,15 @@ export default function Index() {
           {(
             <Link
               to={`/${randomWord}`}
-              className='text-4xl font-bold text-purple transition-all duration-250 hover:scale-110'
+              className={`text-4xl font-bold text-purple transition-all duration-250 hover:scale-110 ${wordFontSize(
+                randomWord
+              )}`}
             >
               {randomWord}
             </Link>
           ) || 'sorry, we ran out of words'}
           <span
-            className={`${featureTheme} text-sm text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-6 -ml-4 mr-10`}
+            className={`${featureTheme} text-sm phone:text-xs phone:w-26 text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-4 -ml-4`}
           >
             Word of the Day
           </span>

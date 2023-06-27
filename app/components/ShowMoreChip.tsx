@@ -26,12 +26,12 @@ const StyledChip = styled(Chip)(({ theme, isDarkMode, isVisible }) => ({
   },
 }))
 
-const Overlay = styled('div')(({ isDarkMode, isMobile }) => ({
+const Overlay = styled('div')(({ isDarkMode }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
-  bottom: '66.35%',
+  bottom: '68%',
   width: '335px',
   margin: '0 auto',
   background: isDarkMode
