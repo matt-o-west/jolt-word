@@ -22,7 +22,7 @@ export const loader = async ({ request }: LoaderArgs) => {
       })
     : null
 
-  return json({ user })
+  return json({ user, loggedInUser })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -120,13 +120,13 @@ export const action = async ({ request }: ActionArgs) => {
 const Profile = () => {
   const { theme } = useContext(Context)
   const actionData = useActionData()
-  const data = useLoaderData()
+  const { user, loggedInUser } = useLoaderData()
 
   console.log(actionData)
 
   return (
     <>
-      <Nav />
+      <Nav loggedInUser={loggedInUser} user={user} />
       <div
         className={`flex flex-col items-start text-md pl-10 py-1 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
@@ -148,7 +148,7 @@ const Profile = () => {
             <input
               type='text'
               id='username'
-              value={data.user.username}
+              value={user.username}
               name='username'
               readOnly
               className={`w-48 px-3 py-2 border-2  rounded-md focus:outline-none focus:border-purple ${

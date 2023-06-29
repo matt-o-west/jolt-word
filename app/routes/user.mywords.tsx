@@ -218,8 +218,26 @@ const MyWords = () => {
     wordData = wordDataAlpha
   } else if (alignment === 'recency') {
     wordData = wordDataRecency.sort((a, b) => {
-      const localA = JSON.parse(localStorage.getItem(a.word) || '{}')
-      const localB = JSON.parse(localStorage.getItem(b.word) || '{}')
+      let localA = {}
+      let localB = {}
+
+      if (a.word !== 'theme' && a.word !== 'feature-theme') {
+        const aItem = localStorage.getItem(a.word)
+        try {
+          localA = JSON.parse(aItem || '{}')
+        } catch (e) {
+          console.log(`Error parsing aItem: ${aItem}`, e)
+        }
+      }
+
+      if (b.word !== 'theme' && b.word !== 'feature-theme') {
+        const bItem = localStorage.getItem(b.word)
+        try {
+          localB = JSON.parse(bItem || '{}')
+        } catch (e) {
+          console.log(`Error parsing bItem: ${bItem}`, e)
+        }
+      }
 
       const expiryA = localA.expiry || 0
       const expiryB = localB.expiry || 0
@@ -243,32 +261,34 @@ const MyWords = () => {
               ? 'Sort by alphabetical or most recent.'
               : 'Log in to save words and see them here.'}
           </p>
-          <ToggleButtonGroup
-            color='primary'
-            value={alignment}
-            exclusive
-            onChange={handleChange}
-            aria-label='Platform'
-            className={`flex justify-end flex-row ${
-              theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
-            }`}
-          >
-            <ToggleButton value='alphabetical'>
-              <AbcIcon
-                fontSize='large'
-                className={`mx-1 ${
-                  alignment === 'alphabetical' ? '' : 'text-gray-500'
-                }`}
-              />
-            </ToggleButton>
-            <ToggleButton value='recency'>
-              <AccessTimeFilledIcon
-                className={`mx-2 ${
-                  alignment === 'recency' ? '' : 'text-gray-500'
-                }`}
-              />
-            </ToggleButton>
-          </ToggleButtonGroup>
+          {loggedInUser && (
+            <ToggleButtonGroup
+              color='primary'
+              value={alignment}
+              exclusive
+              onChange={handleChange}
+              aria-label='Platform'
+              className={`flex justify-end flex-row ${
+                theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
+              }`}
+            >
+              <ToggleButton value='alphabetical'>
+                <AbcIcon
+                  fontSize='large'
+                  className={`mx-1 ${
+                    alignment === 'alphabetical' ? '' : 'text-gray-500'
+                  }`}
+                />
+              </ToggleButton>
+              <ToggleButton value='recency'>
+                <AccessTimeFilledIcon
+                  className={`mx-2 ${
+                    alignment === 'recency' ? '' : 'text-gray-500'
+                  }`}
+                />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          )}
         </div>
         {loggedInUser && alignment ? (
           <div

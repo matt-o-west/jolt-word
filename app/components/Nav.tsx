@@ -165,7 +165,7 @@ const Nav = ({ user, loggedInUser }) => {
       </nav>
       <form className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
         <div
-          className={`${featureTheme} flex justify-center rounded-lg bg-tertiary.gray mx-4`}
+          className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-8`}
         >
           <input
             className={`${featureTheme} flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple`}
