@@ -35,6 +35,24 @@
   li::marker {
     color: #a445ed;
   }
+  dl {
+    padding: 0;
+    margin: 0;
+  }
+
+  dd {
+    position: relative;
+    margin: 6px 0;
+    padding: 0 0 0 25px; /* 20px is the space for the custom "bullet point" */
+  }
+
+  dd::before {
+    content: '•'; /* The bullet point */
+    position: absolute;
+    left: 0;
+    color: #a445ed;
+  }
+
   body {
     font-family: 'Work Sans';
   }

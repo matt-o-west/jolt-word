@@ -159,7 +159,6 @@ export const action = async ({ request }: ActionArgs) => {
 const Word = () => {
   const { word } = useParams()
   const { theme } = useContext(Context)
-  const isMobile = useMobileDetect()
 
   const { wordWithVote, user, loggedInUser } = useLoaderData<DefinitionType>()
 
@@ -214,7 +213,7 @@ const Word = () => {
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <div className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 justify-between'>
+        <section className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 justify-between'>
           <h1
             className={`self-center max-w-full font-bold tracking-wide ${
               wordFontSize() || 'tablet:text-5xl phone:text-3xl'
@@ -228,12 +227,12 @@ const Word = () => {
           {subDirectory && (
             <button
               className='justify-self-end'
-              aria-label='play button'
               onClick={handleAudioClick}
+              type='button'
             >
               <img
                 src='./images/icon-play.svg'
-                alt='play icon'
+                alt='Play Button'
                 className='tablet:w-10/12 phone:w-8/12 phone:ml-2'
               />
             </button>
@@ -245,12 +244,12 @@ const Word = () => {
               </span>
             )}
           </p>
-        </div>
+        </section>
 
-        <div className='flex flex-col mx-4 justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
+        <section className='flex flex-col mx-4 justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
           {wordWithVote[0].et &&
             !wordWithVote[0].et[0][1].startsWith('see') && (
-              <div
+              <article
                 className={`place-self-end text-sm text-end mb-2 ml-10 pr-4 pl-3 py-1 ${
                   theme === 'light' ? 'bg-light.purple' : 'bg-dark.purple'
                 } rounded-md`}
@@ -258,7 +257,7 @@ const Word = () => {
                 {wordWithVote[0].et
                   ? replaceTokens(wordWithVote[0]?.et[0][1])
                   : replaceTokens(wordWithVote[1]?.et[0][1])}
-              </div>
+              </article>
             )}
           <Meaning meaning={meaningOne} />
           {meaningTwo && meaningTwo.shortdef[0] !== meaningOne.shortdef[0] && (
@@ -268,7 +267,7 @@ const Word = () => {
             meaningTwo.shortdef[0] !== meaningThree.shortdef[0] && (
               <Meaning meaning={meaningThree} previousMeaning={meaningTwo} />
             )}
-        </div>
+        </section>
       </main>
     </>
   )

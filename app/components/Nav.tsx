@@ -103,11 +103,15 @@ const Nav = ({ user, loggedInUser }) => {
   )
 
   const themeButton = (
-    <label className='relative inline-flex items-center cursor-pointer ml-4'>
+    <label
+      htmlFor='themeToggle'
+      className='relative inline-flex items-center cursor-pointer ml-4'
+    >
       <input
+        id='themeToggle'
         type='checkbox'
         value=''
-        className={`sr-only peer`}
+        className='sr-only peer'
         onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         checked={theme === 'dark'}
       />
@@ -116,6 +120,7 @@ const Nav = ({ user, loggedInUser }) => {
       />
       <span className='ml-3'>
         <svg
+          aria-label='Toggle theme'
           className={`h-4 w-4`}
           xmlns='http://www.w3.org/2000/svg'
           width='22'
@@ -167,7 +172,11 @@ const Nav = ({ user, loggedInUser }) => {
         <div
           className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-8`}
         >
+          <label htmlFor='search-input' className='sr-only'>
+            Search Dictionary
+          </label>
           <input
+            id='search-input'
             className={`${featureTheme} flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple`}
             placeholder='Search Dictionary'
             value={searchTerm}

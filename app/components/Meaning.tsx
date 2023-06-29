@@ -138,37 +138,39 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
     <>
       {meaning.fl && (
         <section className='flex flex-col mt-2'>
-          <span className={`italic font-sans-serif text-xl`}>
-            {meaning?.fl}
-          </span>
+          <h2 className='italic font-sans-serif text-2xl'>{meaning?.fl}</h2>
           <div className='border border-b-2 desktop:min-w-[600px]' />
-          <ol className='mt-4 ml-8 tablet:text-lg phone:text-md'>
-            <li>
+          <dl
+            className='mt-4 ml-8 tablet:text-xl phone:text-md'
+            aria-label='Word Definitions'
+          >
+            <dd>
               <p>{checkLinks(meaning?.shortdef?.[0])}</p>
-            </li>
+            </dd>
 
             {meaning?.shortdef?.[1] && (
-              <li>
+              <dd>
                 <p>{checkLinks(meaning?.shortdef?.[1])}</p>
-              </li>
+              </dd>
             )}
             {meaning?.shortdef?.[2] && (
-              <li>
+              <dd>
                 <p>{checkLinks(meaning?.shortdef?.[2])}</p>
-              </li>
+              </dd>
             )}
             {meaning?.shortdef?.[3] && (
-              <li>
+              <dd>
                 <p>{checkLinks(meaning?.shortdef?.[3])}</p>
-              </li>
+              </dd>
             )}
-          </ol>
+          </dl>
           <article className='mt-4 flex justify-end text-right'>
             {exampleSentenceOne && (
               <div
                 className={`inline-flex flex-row rounded-md ml-20 px-2 py-1 items-center ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
+                aria-label='Example Sentence'
               >
                 <p className='text-sm'>{replaceTokens(exampleSentenceOne)}</p>
               </div>
@@ -180,13 +182,17 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
                 className={`inline-flex flex-row rounded-md px-3 py-1 items-center ${
                   theme === 'light' ? 'bg-purple.200' : 'bg-dark.feature.purple'
                 }`}
+                aria-label='Example Sentence'
               >
                 <p className='text-sm'>{replaceTokens(exampleSentenceTwo)}</p>
               </div>
             )}
           </article>
           {synonyms && (
-            <div className={`synonyms ${featureTheme} font-light`}>
+            <div
+              className={`synonyms ${featureTheme} font-light`}
+              aria-label='Synonyms'
+            >
               {checkSynonyms()}
             </div>
           )}
@@ -197,7 +203,7 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
           <span className='italic text-xl font-light '>
             {meaning.cxs[0].cxl}{' '}
           </span>
-          <span className='text-xl font-base '>
+          <span className='text-xl font-base'>
             {meaning.cxs[0].cxtis.map((cxti, index, array) => (
               <Fragment key={cxti.cxt}>
                 <Link to={`/${cxti.cxt}`} className='link'>

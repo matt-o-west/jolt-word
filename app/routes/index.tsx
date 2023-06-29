@@ -133,7 +133,7 @@ export default function Index() {
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <div className='flex items-start'>
+        <section className='flex items-start'>
           {(
             <Link
               to={`/${randomWord}`}
@@ -149,8 +149,8 @@ export default function Index() {
           >
             Word of the Day
           </span>
-        </div>
-        <div
+        </section>
+        <section
           className={`w-full desktop:grid desktop:grid-cols-5 ${
             loggedInUser ? 'desktop:grid-rows-2' : 'desktop:grid-rows-1'
           } phone:flex phone:flex-col`}
@@ -158,7 +158,7 @@ export default function Index() {
           {loggedInUser && (
             <div className='col-span-3 row-span-2'>
               <div className='flex justify-between phone:justify-around w-full gap-4 mt-12'>
-                <h1
+                <h2
                   onClick={() => setShowLeaderBoard(true)}
                   className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
@@ -168,9 +168,9 @@ export default function Index() {
                     </span>
                     Trending
                   </span>
-                </h1>
+                </h2>
 
-                <h1
+                <h2
                   onClick={() => setShowLeaderBoard(false)}
                   className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
                 >
@@ -180,7 +180,7 @@ export default function Index() {
                     <SavedSearchIcon />
                     <span className='pl-2'>My Words</span>
                   </span>
-                </h1>
+                </h2>
               </div>
             </div>
           )}
@@ -245,7 +245,7 @@ export default function Index() {
               </span>
             </div>
           </div>
-        </div>
+        </section>
         <DescriptionPane />
       </main>
     </>
