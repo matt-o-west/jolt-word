@@ -140,30 +140,30 @@ const Meaning = ({ meaning, previousMeaning }: Props) => {
         <section className='flex flex-col mt-2'>
           <h2 className='italic font-sans-serif text-2xl'>{meaning?.fl}</h2>
           <div className='border border-b-2 desktop:min-w-[600px]' />
-          <dl
+          <ol
             className='mt-4 ml-8 tablet:text-xl phone:text-md'
             aria-label='Word Definitions'
           >
-            <dd>
+            <li>
               <p>{checkLinks(meaning?.shortdef?.[0])}</p>
-            </dd>
+            </li>
 
             {meaning?.shortdef?.[1] && (
-              <dd>
+              <li>
                 <p>{checkLinks(meaning?.shortdef?.[1])}</p>
-              </dd>
+              </li>
             )}
             {meaning?.shortdef?.[2] && (
-              <dd>
+              <li>
                 <p>{checkLinks(meaning?.shortdef?.[2])}</p>
-              </dd>
+              </li>
             )}
             {meaning?.shortdef?.[3] && (
-              <dd>
+              <li>
                 <p>{checkLinks(meaning?.shortdef?.[3])}</p>
-              </dd>
+              </li>
             )}
-          </dl>
+          </ol>
           <article className='mt-4 flex justify-end text-right'>
             {exampleSentenceOne && (
               <div

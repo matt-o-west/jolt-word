@@ -61,7 +61,7 @@ export default function DropdownMenu() {
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup='true'
           sx={{
-            color: theme === 'light' ? 'gray' : 'white',
+            color: theme === 'light' ? 'gray' : '#E9E9E9',
             marginX: '0.5rem',
             '&:hover': {
               background:
