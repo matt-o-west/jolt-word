@@ -11,7 +11,8 @@ import {
 import type { LinksFunction } from '@remix-run/node'
 import stylesheet from '~/tailwind.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { useSessionStorage } from '@remix-run/react'
+import { json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -60,12 +61,21 @@ const muiTheme = createTheme({
   },
 })
 
+export async function loader() {
+  return json({
+    ENV: {
+      API_KEY_DICTIONARY: process.env.API_KEY_DICTIONARY,
+    },
+  })
+}
+
 export default function App() {
   //const [font, setFont] = useState('sans-serif')
   const [theme, setTheme] = useState('light')
   const [featureTheme, setFeatureTheme] = useState('feature-light')
   const [toggleSwitch, setToggleSwitch] = useState('toggle-light')
   const [user, setUser] = useState('')
+  const data = useLoaderData<typeof loader>()
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem('theme') || 'dark'
@@ -129,6 +139,11 @@ export default function App() {
           </ThemeProvider>
         </Context.Provider>
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+          }}
+        />
         <Scripts />
         <LiveReload />
       </body>

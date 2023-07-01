@@ -49,7 +49,7 @@ const Nav = ({ user, loggedInUser }) => {
 
     if (searchTerm.length > 2) {
       // not sure why, but getWord from dictionary.server.ts doesn't work here, says it is not a function even though the import looks correct
-      const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=42bce219-5d4d-4186-8ab7-f8389ef2e3d0`
+      const url = `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${window.ENV.API_KEY_DICTIONARY}`
       const response = await fetch(url)
       const data = await response.json()
       //console.log(data)
