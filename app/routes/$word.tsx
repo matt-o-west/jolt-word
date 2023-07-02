@@ -1,6 +1,6 @@
 //import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Context } from '~/root'
 import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
@@ -9,10 +9,12 @@ import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
 import type { LoaderArgs, ActionArgs } from '@remix-run/node'
+import { Error, isDefinitelyAnError } from '~/components/Error'
+import { useRouteError } from '@remix-run/react'
 import { db } from 'prisma/db.server'
 import { requireUserId } from '~/utils/session.server'
 import ActionForm from '~/components/ActionForm'
-import useMobileDetect from '~/hooks/useMobileDetect'
+
 export interface Definition {
   date: string
   fl: string
@@ -63,6 +65,13 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     : null
 
   const word: Definition = await getWord(params.word)
+
+  if (!word) {
+    throw new Response('Sorry, we could not find that word.', {
+      status: 404,
+    })
+  }
+
   const vote = await db.word.findUnique({
     where: {
       word: params.word,
@@ -159,7 +168,6 @@ export const action = async ({ request }: ActionArgs) => {
 const Word = () => {
   const { word } = useParams()
   const { theme } = useContext(Context)
-
   const { wordWithVote, user, loggedInUser } = useLoaderData<DefinitionType>()
 
   //replace with error boundary
@@ -245,7 +253,6 @@ const Word = () => {
             )}
           </p>
         </section>
-
         <section className='flex flex-col mx-4 justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
           {wordWithVote[0].et &&
             !wordWithVote[0].et[0][1].startsWith('see') && (
@@ -271,6 +278,17 @@ const Word = () => {
       </main>
     </>
   )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  let errorMessage = 'Unknown error'
+  if (isDefinitelyAnError(error)) {
+    errorMessage = error.message
+  }
+
+  return <Error errorMessage={errorMessage} />
 }
 
 export default Word
