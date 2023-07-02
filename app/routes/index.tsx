@@ -108,10 +108,6 @@ export default function Index() {
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
   const isMobile = useMobileDetect()
 
-  console.log(user)
-
-  // eslint-disable-line react-hooks/exhaustive-deps
-
   const wordData = userWords.map((word) => {
     return {
       word: word.word.word,
@@ -129,7 +125,6 @@ export default function Index() {
 
   return (
     <>
-      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >

@@ -120,13 +120,12 @@ export const action = async ({ request }: ActionArgs) => {
 const Profile = () => {
   const { theme } = useContext(Context)
   const actionData = useActionData()
-  const { user, loggedInUser } = useLoaderData()
+  const { user } = useLoaderData()
 
   console.log(actionData)
 
   return (
     <>
-      <Nav loggedInUser={loggedInUser} user={user} />
       <div
         className={`flex flex-col items-start text-md pl-10 py-1 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >

@@ -12,7 +12,12 @@ import type { LinksFunction } from '@remix-run/node'
 import stylesheet from '~/tailwind.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { json } from '@remix-run/node'
+import type { LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { requireUserId } from '~/utils/session.server'
+import Nav from '~/components/Nav'
+
+import { db } from 'prisma/db.server'
 
 export const meta: MetaFunction = () => ({
   charset: 'utf-8',
@@ -61,8 +66,20 @@ const muiTheme = createTheme({
   },
 })
 
-export async function loader() {
+export async function loader({ request }: LoaderArgs) {
+  const redirectTo = '/login'
+  const loggedInUser = await requireUserId(request, redirectTo)
+  const user = loggedInUser
+    ? await db.user.findUnique({
+        where: {
+          id: loggedInUser,
+        },
+      })
+    : null
+
   return json({
+    loggedInUser,
+    user,
     ENV: {
       API_KEY_DICTIONARY: process.env.API_KEY_DICTIONARY,
     },
@@ -135,6 +152,7 @@ export default function App() {
           }}
         >
           <ThemeProvider theme={muiTheme}>
+            <Nav loggedInUser={data.loggedInUser} user={data.user} />
             <Outlet />
           </ThemeProvider>
         </Context.Provider>

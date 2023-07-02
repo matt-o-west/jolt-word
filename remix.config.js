@@ -8,6 +8,7 @@ module.exports = {
   serverBuildPath: 'api/index.js',
   future: {
     unstable_tailwind: true,
+    v2_errorBoundary: true,
   },
 
   // appDirectory: "app",

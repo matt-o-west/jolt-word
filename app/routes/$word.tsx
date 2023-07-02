@@ -49,20 +49,9 @@ export interface Definition {
 export type DefinitionType = [Definition, Definition?, Definition?] | undefined
 
 export const loader = async ({ params, request }: LoaderArgs) => {
-  const redirectTo = '/login'
-
   if (!params.word) {
     return json({ error: 'Word parameter is missing.' }, { status: 404 })
   }
-
-  const loggedInUser = await requireUserId(request, redirectTo)
-  const user = loggedInUser
-    ? await db.user.findUnique({
-        where: {
-          id: loggedInUser,
-        },
-      })
-    : null
 
   const word: Definition = await getWord(params.word)
 
@@ -78,7 +67,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
     },
   })
   const wordWithVote = { ...word, votes: vote?.votes }
-  return json({ wordWithVote, loggedInUser, user })
+  return json({ wordWithVote })
 }
 
 export const action = async ({ request }: ActionArgs) => {
@@ -168,7 +157,7 @@ export const action = async ({ request }: ActionArgs) => {
 const Word = () => {
   const { word } = useParams()
   const { theme } = useContext(Context)
-  const { wordWithVote, user, loggedInUser } = useLoaderData<DefinitionType>()
+  const { wordWithVote } = useLoaderData<DefinitionType>()
 
   //replace with error boundary
   if (!wordWithVote) {
@@ -217,7 +206,6 @@ const Word = () => {
 
   return (
     <>
-      <Nav loggedInUser={loggedInUser} user={user} />
       <main
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
