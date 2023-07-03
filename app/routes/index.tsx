@@ -1,11 +1,10 @@
-import { useEffect, useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from '@remix-run/react'
 import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
 import DescriptionPane from '~/components/DescriptionPane'
-import Nav from '~/components/Nav'
 import LeaderBoard from '~/components/LeaderBoard'
 import { requireUserId } from '~/utils/session.server'
 import generateRandomWord from '~/utils/generateRandomWord.server'
@@ -103,7 +102,7 @@ export const action = async ({ request }: ActionArgs) => {
 
 export default function Index() {
   const { theme, featureTheme } = useContext(Context)
-  const { leaderboard, loggedInUser, user, randomWord, userWords } =
+  const { leaderboard, loggedInUser, randomWord, userWords } =
     useLoaderData<typeof loader>()
   const [showLeaderBoard, setShowLeaderBoard] = useState(true)
   const isMobile = useMobileDetect()

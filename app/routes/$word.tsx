@@ -1,8 +1,7 @@
 //import { Link } from '@remix-run/react'
 import { useParams } from 'react-router-dom'
-import { useContext, useState } from 'react'
+import { useContext, Fragment } from 'react'
 import { Context } from '~/root'
-import Nav from '~/components/Nav'
 import Meaning from '~/components/Meaning'
 import { useLoaderData } from '@remix-run/react'
 import { getWord } from '~/models/dictionary.server'
@@ -276,7 +275,11 @@ export function ErrorBoundary() {
     errorMessage = error.message
   }
 
-  return <Error errorMessage={errorMessage} />
+  return (
+    <Fragment className='flex justify-center'>
+      <Error errorMessage={errorMessage} />
+    </Fragment>
+  )
 }
 
 export default Word

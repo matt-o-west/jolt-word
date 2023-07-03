@@ -15,7 +15,7 @@ export function Error({ errorMessage }) {
     <Box
       display='flex'
       alignItems='center'
-      justifyContent='flex-end'
+      justifyContent='center'
       sx={{ minWidth: 275 }}
     >
       <Card variant='outlined' sx={{ bgcolor: red[50] }}>
@@ -31,7 +31,7 @@ export function Error({ errorMessage }) {
             </Typography>
           </Box>
           <Typography variant='body2' sx={{ color: red[700] }}>
-            Something went wrong.
+            Something went wrong. You may need to refresh the page.
           </Typography>
           <Typography variant='body2' sx={{ color: red[700] }}>
             {errorMessage}
