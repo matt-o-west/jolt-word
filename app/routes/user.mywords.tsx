@@ -292,7 +292,7 @@ const MyWords = () => {
         </div>
         {loggedInUser && alignment ? (
           <div
-            className={`gap-x-6 justify-center items-center ${theme} mt-6 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
+            className={`gap-x-6 justify-center items-center min-h-[525px] ${theme} mt-6 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
           >
             {wordData.map(({ word, wordId, votes }) => {
               return (

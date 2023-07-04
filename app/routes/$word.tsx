@@ -241,7 +241,7 @@ const Word = () => {
             )}
           </p>
         </section>
-        <section className='flex flex-col mx-4 justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
+        <section className='flex flex-col mx-4 min-h-[525px]  justify-start desktop:min-w-[600px] tablet:min-w-[515px]'>
           {wordWithVote[0].et &&
             !wordWithVote[0].et[0][1].startsWith('see') && (
               <article

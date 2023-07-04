@@ -129,7 +129,7 @@ const Profile = () => {
   return (
     <>
       <div
-        className={`flex flex-col items-start text-md pl-10 py-1 mt-12 h-screen ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col items-start text-md pl-10 py-1 mt-12 min-h-[600px] ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='font-sans-serif text-2xl'>Profile</h1>
         <Form

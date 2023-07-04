@@ -11,6 +11,22 @@ import { useRouteError } from '@remix-run/react'
 
 import { db } from 'prisma/db.server'
 
+function updateSigninStatus(isSignedIn) {
+  console.log(`User sign-in status changed: ${isSignedIn}`)
+}
+
+// This function will be called when the user successfully signs in.
+function onSuccess(googleUser) {
+  console.log('Logged in as: ' + googleUser.getBasicProfile().getName())
+  var id_token = googleUser.getAuthResponse().id_token
+  console.log('ID Token: ' + id_token)
+}
+
+// This function will be called if the sign-in fails.
+function onFailure(error) {
+  console.log(error)
+}
+
 export const validateUser = (user: unknown) => {
   if (typeof user !== 'string' || user.length < 3) {
     return 'Username must be at least 3 characters long.'
@@ -124,6 +140,33 @@ const Login = () => {
   const errorRef = useRef(null)
 
   useEffect(() => {
+    if (!window.gapi) {
+      console.log('Google API library is not loaded')
+      return
+    }
+
+    window.gapi.load('auth2', () => {
+      window.gapi.auth2
+        .init({ client_id: window.ENV.GOOGLE_CLIENT_ID })
+        .then((auth2) => {
+          // Listen for sign-in state changes.
+          auth2.isSignedIn.listen(updateSigninStatus)
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(auth2.isSignedIn.get())
+
+          // Attach the onSuccess and onFailure handlers
+          auth2.attachClickHandler(
+            document.getElementById('google-signin-button'),
+            {},
+            onSuccess,
+            onFailure
+          )
+        })
+    })
+  }, [])
+
+  useEffect(() => {
     setHasPasswordChange(passwordChange)
   }, [passwordChange])
 
@@ -174,6 +217,15 @@ const Login = () => {
       }
     }
   }, [hasError, actionData.formError])
+
+  const handleLogin = () => {
+    if (!window.gapi) {
+      console.log('Google API library is not loaded')
+      return
+    }
+
+    gapi.auth2.getAuthInstance().signIn()
+  }
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
@@ -309,10 +361,11 @@ const Login = () => {
           </button>
         </Form>
         <button
+          onClick={handleLogin}
           type='button'
           className='bg-red hover:bg-opacity-80 text-white font-bold py-2 px-4 w-full rounded-md mb-4'
         >
-          <i className='fab fa-google'></i> Sign in with Google (placeholder)
+          <i className='fab fa-google'></i> Sign in with Google
         </button>
         <div className='text-center'>
           <Link

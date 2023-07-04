@@ -84,6 +84,7 @@ export async function loader({ request }: LoaderArgs) {
     user,
     ENV: {
       API_KEY_DICTIONARY: process.env.API_KEY_DICTIONARY,
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     },
   })
 }
@@ -110,6 +111,8 @@ export default function App() {
       window.localStorage.getItem('toggle-theme') || 'toggle-dark'
     setToggleSwitch(localToggleSwitch)
   }, [])
+
+  useEffect(() => {}, [])
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -166,9 +169,15 @@ export default function App() {
         <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+            __html: `
+      window.ENV = ${JSON.stringify({
+        ...data.ENV,
+        GOOGLE_CLIENT_ID: data.ENV.GOOGLE_CLIENT_ID,
+      })};
+    `,
           }}
         />
+
         <script
           src='https://accounts.google.com/gsi/client'
           async
