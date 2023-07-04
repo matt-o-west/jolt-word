@@ -7,6 +7,8 @@ import { Alert } from '@mui/material'
 import { CSSTransition } from 'react-transition-group'
 import bcrypt from 'bcryptjs'
 import { Context } from '~/root'
+import { Error, isDefinitelyAnError } from '~/components/Error'
+import { useRouteError } from '@remix-run/react'
 
 import { db } from 'prisma/db.server'
 
@@ -209,6 +211,17 @@ const Register = () => {
       </div>
     </div>
   )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  let errorMessage = 'Unknown error'
+  if (isDefinitelyAnError(error)) {
+    errorMessage = error.message
+  }
+
+  return <Error errorMessage={errorMessage} />
 }
 
 export default Register

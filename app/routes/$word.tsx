@@ -8,11 +8,12 @@ import { getWord } from '~/models/dictionary.server'
 import replaceTokens from '~/utils/replaceTokens'
 import { json } from '@remix-run/node'
 import type { LoaderArgs, ActionArgs } from '@remix-run/node'
-import { Error, isDefinitelyAnError } from '~/components/Error'
-import { useRouteError } from '@remix-run/react'
-import { db } from 'prisma/db.server'
 import { requireUserId } from '~/utils/session.server'
 import ActionForm from '~/components/ActionForm'
+import { Error, isDefinitelyAnError } from '~/components/Error'
+import { useRouteError } from '@remix-run/react'
+
+import { db } from 'prisma/db.server'
 
 export interface Definition {
   date: string
@@ -275,11 +276,7 @@ export function ErrorBoundary() {
     errorMessage = error.message
   }
 
-  return (
-    <Fragment className='flex justify-center'>
-      <Error errorMessage={errorMessage} />
-    </Fragment>
-  )
+  return <Error errorMessage={errorMessage} />
 }
 
 export default Word

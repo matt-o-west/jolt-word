@@ -8,6 +8,8 @@ import { validateUser, validatePassword } from '~/routes/login'
 import { Context } from '~/root'
 import { getUser, getUserPassword, requireUserId } from '~/utils/session.server'
 import bcrypt from 'bcryptjs'
+import { Error, isDefinitelyAnError } from '~/components/Error'
+import { useRouteError } from '@remix-run/react'
 
 import { db } from 'prisma/db.server'
 
@@ -127,7 +129,7 @@ const Profile = () => {
   return (
     <>
       <div
-        className={`flex flex-col items-start text-md pl-10 py-1 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col items-start text-md pl-10 py-1 mt-12 h-screen ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='font-sans-serif text-2xl'>Profile</h1>
         <Form
@@ -248,6 +250,17 @@ const Profile = () => {
       </div>
     </>
   )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  let errorMessage = 'Unknown error'
+  if (isDefinitelyAnError(error)) {
+    errorMessage = error.message
+  }
+
+  return <Error errorMessage={errorMessage} />
 }
 
 export default Profile

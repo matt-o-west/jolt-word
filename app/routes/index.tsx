@@ -11,6 +11,8 @@ import generateRandomWord from '~/utils/generateRandomWord.server'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import SavedSearchIcon from '@mui/icons-material/SavedSearch'
 import ShowMoreChip from '~/components/ShowMoreChip'
+import { Error, isDefinitelyAnError } from '~/components/Error'
+import { useRouteError } from '@remix-run/react'
 
 import { db } from 'prisma/db.server'
 import useMobileDetect from '~/hooks/useMobileDetect'
@@ -125,7 +127,7 @@ export default function Index() {
   return (
     <>
       <main
-        className={`flex flex-col justify-center items-center text-md p-2 py-8 mt-6 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center text-md p-2 mt-6 mb-32 m-2 h-screen ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <section className='flex items-start'>
           {(
@@ -244,4 +246,15 @@ export default function Index() {
       </main>
     </>
   )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  let errorMessage = 'Unknown error'
+  if (isDefinitelyAnError(error)) {
+    errorMessage = error.message
+  }
+
+  return <Error errorMessage={errorMessage} />
 }

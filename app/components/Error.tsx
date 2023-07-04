@@ -25,7 +25,7 @@ export function Error({ errorMessage }) {
             <Typography
               variant='h5'
               component='div'
-              sx={{ color: red[500], marginLeft: 1, textAlign: 'right' }}
+              sx={{ color: red[500], marginLeft: 1 }}
             >
               Uh oh...
             </Typography>

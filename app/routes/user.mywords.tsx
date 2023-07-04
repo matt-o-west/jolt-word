@@ -1,4 +1,3 @@
-import Nav from '~/components/Nav'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
@@ -14,6 +13,8 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import AbcIcon from '@mui/icons-material/Abc'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
+import { Error, isDefinitelyAnError } from '~/components/Error'
+import { useRouteError } from '@remix-run/react'
 
 import { db } from 'prisma/db.server'
 
@@ -170,7 +171,7 @@ export const action = async ({ request }: ActionArgs) => {
 
 const MyWords = () => {
   const { theme } = useContext(Context)
-  const { loggedInUser, user, alphaUserWords, recencyUserWords } =
+  const { loggedInUser, alphaUserWords, recencyUserWords } =
     useLoaderData<typeof loader>()
   const [alignment, setAlignment] = useState('alphabetical')
 
@@ -310,6 +311,17 @@ const MyWords = () => {
       </main>
     </>
   )
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError()
+
+  let errorMessage = 'Unknown error'
+  if (isDefinitelyAnError(error)) {
+    errorMessage = error.message
+  }
+
+  return <Error errorMessage={errorMessage} />
 }
 
 export default MyWords

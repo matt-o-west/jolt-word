@@ -7,6 +7,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
 } from '@remix-run/react'
 import type { LinksFunction } from '@remix-run/node'
 import stylesheet from '~/tailwind.css'
@@ -16,6 +17,7 @@ import type { LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { requireUserId } from '~/utils/session.server'
 import Nav from '~/components/Nav'
+import Footer from '~/components/Footer'
 
 import { db } from 'prisma/db.server'
 
@@ -93,6 +95,8 @@ export default function App() {
   const [toggleSwitch, setToggleSwitch] = useState('toggle-light')
   const [user, setUser] = useState('')
   const data = useLoaderData<typeof loader>()
+  const location = useLocation()
+  const showNav = !['/login', '/register'].includes(location.pathname)
 
   useEffect(() => {
     const localTheme = window.localStorage.getItem('theme') || 'dark'
@@ -152,8 +156,11 @@ export default function App() {
           }}
         >
           <ThemeProvider theme={muiTheme}>
-            <Nav loggedInUser={data.loggedInUser} user={data.user} />
+            {showNav && (
+              <Nav loggedInUser={data.loggedInUser} user={data.user} />
+            )}
             <Outlet />
+            <Footer />
           </ThemeProvider>
         </Context.Provider>
         <ScrollRestoration />
@@ -162,6 +169,12 @@ export default function App() {
             __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
           }}
         />
+        <script
+          src='https://accounts.google.com/gsi/client'
+          async
+          defer
+        ></script>
+
         <Scripts />
         <LiveReload />
       </body>
