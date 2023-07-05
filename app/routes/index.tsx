@@ -127,9 +127,9 @@ export default function Index() {
   return (
     <>
       <main
-        className={`flex flex-col justify-center items-center text-md p-2 mt-6 mb-32 m-2 h-screen ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center text-md p-2 mt-6 mb-32 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <section className='flex items-start desktop:mt-0 tablet:mt-32'>
+        <section className='flex items-start desktop:mt-4 tablet:mt-2'>
           {(
             <Link
               to={`/${randomWord}`}

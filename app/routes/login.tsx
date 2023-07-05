@@ -8,11 +8,8 @@ import { CSSTransition } from 'react-transition-group'
 import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
-import { GoogleLogin } from '@react-oauth/google'
-import jwt_decode from 'jwt-decode'
 
 import { db } from 'prisma/db.server'
-import { GoogleOAuthProvider } from '@react-oauth/google'
 
 function updateSigninStatus(isSignedIn) {
   console.log(`User sign-in status changed: ${isSignedIn}`)
@@ -143,33 +140,6 @@ const Login = () => {
   const errorRef = useRef(null)
 
   useEffect(() => {
-    if (!window.gapi) {
-      console.log('Google API library is not loaded')
-      return
-    }
-
-    window.gapi.load('auth2', () => {
-      window.gapi.auth2
-        .init({ client_id: window.ENV.GOOGLE_CLIENT_ID })
-        .then((auth2) => {
-          // Listen for sign-in state changes.
-          auth2.isSignedIn.listen(updateSigninStatus)
-
-          // Handle the initial sign-in state.
-          updateSigninStatus(auth2.isSignedIn.get())
-
-          // Attach the onSuccess and onFailure handlers
-          auth2.attachClickHandler(
-            document.getElementById('google-signin-button'),
-            {},
-            onSuccess,
-            onFailure
-          )
-        })
-    })
-  }, [])
-
-  useEffect(() => {
     setHasPasswordChange(passwordChange)
   }, [passwordChange])
 
@@ -223,25 +193,15 @@ const Login = () => {
 
   useEffect(() => {
     console.log('window', window.ENV)
+    console.log('text')
   }, [])
-
-  function handleCredentialResponse(response) {
-    const details = jwt_decode(response.credential)
-    console.log(details)
-    console.log(response)
-  }
-
-  function handleCredentialFail() {
-    console.log('handleCredentialFail')
-    return null
-  }
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
       <div
         className={`${
           theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
-        } rounded-lg shadow-md md:w-96 p-6`}
+        } rounded-lg shadow-md w-96 p-6`}
       >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
         {hasPasswordChange && (
@@ -368,13 +328,25 @@ const Login = () => {
           >
             Login
           </button>
-          <button className='w-full mb-4'>
-            <GoogleOAuthProvider clientId='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'>
-              <GoogleLogin
-                onSuccess={handleCredentialResponse}
-                onError={handleCredentialFail}
-              />
-            </GoogleOAuthProvider>
+          <button className='w-full mb-4' type='submit'>
+            <div
+              id='g_id_onload'
+              data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
+              data-context='signin'
+              data-ux_mode='popup'
+              data-login_uri='http://localhost'
+            ></div>
+
+            <div
+              className='g_id_signin'
+              data-type='standard'
+              data-shape='rectangular'
+              data-theme='outline'
+              data-text='signin_with'
+              data-size='large'
+              data-logo_alignment='left'
+              data-width='335'
+            ></div>
           </button>
         </Form>
 
