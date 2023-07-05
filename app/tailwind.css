@@ -193,3 +193,11 @@
   transform: translateY(-20px);
   transition: opacity 300ms, transform 300ms;
 }
+
+.g_id_signin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}

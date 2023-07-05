@@ -112,7 +112,20 @@ export default function App() {
     setToggleSwitch(localToggleSwitch)
   }, [])
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    // create a new script element
+    const script = document.createElement('script')
+    script.src = 'https://accounts.google.com/gsi/client'
+    script.async = true
+    script.defer = true
+
+    // add the script to the page
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
@@ -167,22 +180,15 @@ export default function App() {
           </ThemeProvider>
         </Context.Provider>
         <ScrollRestoration />
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
-      window.ENV = ${JSON.stringify({
-        ...data.ENV,
-        GOOGLE_CLIENT_ID: data.ENV.GOOGLE_CLIENT_ID,
-      })};
+      window.ENV = ${JSON.stringify(data.ENV)},
+      window.GOOGLE_CLIENT_ID = ${JSON.stringify(data.ENV.GOOGLE_CLIENT_ID)},
     `,
           }}
         />
-
-        <script
-          src='https://accounts.google.com/gsi/client'
-          async
-          defer
-        ></script>
 
         <Scripts />
         <LiveReload />
