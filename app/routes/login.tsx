@@ -140,6 +140,33 @@ const Login = () => {
   const errorRef = useRef(null)
 
   useEffect(() => {
+    if (!window.gapi) {
+      console.log('Google API library is not loaded')
+      return
+    }
+
+    window.gapi.load('auth2', () => {
+      window.gapi.auth2
+        .init({ client_id: window.ENV.GOOGLE_CLIENT_ID })
+        .then((auth2) => {
+          // Listen for sign-in state changes.
+          auth2.isSignedIn.listen(updateSigninStatus)
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(auth2.isSignedIn.get())
+
+          // Attach the onSuccess and onFailure handlers
+          auth2.attachClickHandler(
+            document.getElementById('google-signin-button'),
+            {},
+            onSuccess,
+            onFailure
+          )
+        })
+    })
+  }, [])
+
+  useEffect(() => {
     setHasPasswordChange(passwordChange)
   }, [passwordChange])
 
@@ -193,15 +220,31 @@ const Login = () => {
 
   useEffect(() => {
     console.log('window', window.ENV)
-    console.log('text')
   }, [])
+
+  useEffect(() => {
+    function handleCredentialResponse(response) {
+      console.log('Encoded JWT ID token: ' + response.credential)
+    }
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: window.ENV.GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+      })
+      google.accounts.id.renderButton(
+        document.getElementById('buttonDiv'),
+        { theme: 'outline', size: 'large' } // customization attributes
+      )
+      google.accounts.id.prompt() // also display the One Tap dialog
+    }
+  })
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
       <div
         className={`${
           theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
-        } rounded-lg shadow-md w-96 p-6`}
+        } rounded-lg shadow-md md:w-96 p-6`}
       >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
         {hasPasswordChange && (
@@ -328,7 +371,7 @@ const Login = () => {
           >
             Login
           </button>
-          <button className='w-full mb-4' type='submit'>
+          <button className='w-full mb-4'>
             <div
               id='g_id_onload'
               data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
