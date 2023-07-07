@@ -8,8 +8,11 @@ import { CSSTransition } from 'react-transition-group'
 import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
+import { GoogleLogin } from '@react-oauth/google'
+import jwt_decode from 'jwt-decode'
 
 import { db } from 'prisma/db.server'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 function updateSigninStatus(isSignedIn) {
   console.log(`User sign-in status changed: ${isSignedIn}`)
@@ -222,22 +225,16 @@ const Login = () => {
     console.log('window', window.ENV)
   }, [])
 
-  useEffect(() => {
-    function handleCredentialResponse(response) {
-      console.log('Encoded JWT ID token: ' + response.credential)
-    }
-    window.onload = function () {
-      google.accounts.id.initialize({
-        client_id: window.ENV.GOOGLE_CLIENT_ID,
-        callback: handleCredentialResponse,
-      })
-      google.accounts.id.renderButton(
-        document.getElementById('buttonDiv'),
-        { theme: 'outline', size: 'large' } // customization attributes
-      )
-      google.accounts.id.prompt() // also display the One Tap dialog
-    }
-  })
+  function handleCredentialResponse(response) {
+    const details = jwt_decode(response.credential)
+    console.log(details)
+    console.log(response)
+  }
+
+  function handleCredentialFail() {
+    console.log('handleCredentialFail')
+    return null
+  }
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
@@ -372,24 +369,12 @@ const Login = () => {
             Login
           </button>
           <button className='w-full mb-4'>
-            <div
-              id='g_id_onload'
-              data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
-              data-context='signin'
-              data-ux_mode='popup'
-              data-login_uri='http://localhost'
-            ></div>
-
-            <div
-              className='g_id_signin'
-              data-type='standard'
-              data-shape='rectangular'
-              data-theme='outline'
-              data-text='signin_with'
-              data-size='large'
-              data-logo_alignment='left'
-              data-width='335'
-            ></div>
+            <GoogleOAuthProvider clientId='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'>
+              <GoogleLogin
+                onSuccess={handleCredentialResponse}
+                onError={handleCredentialFail}
+              />
+            </GoogleOAuthProvider>
           </button>
         </Form>
 
