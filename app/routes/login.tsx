@@ -8,6 +8,7 @@ import { CSSTransition } from 'react-transition-group'
 import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
+import { decode } from 'jsonwebtoken'
 
 import { db } from 'prisma/db.server'
 
@@ -49,9 +50,13 @@ export const validateUrl = (url: string) => {
 
 export const action = async ({ request }: ActionArgs) => {
   const form = await request.formData()
+  const requestBody = await request.json()
+  const token = requestBody.idtoken
   const user = form.get('username')
   const password = form.get('password')
   const redirectTo = validateUrl('/')
+
+  let decodedToken = decode(token)
 
   if (
     typeof user !== 'string' ||
@@ -76,6 +81,28 @@ export const action = async ({ request }: ActionArgs) => {
 
   if (fieldErrors.user || fieldErrors.password) {
     return badRequest({ fieldErrors, fields, formError: null })
+  }
+
+  if (decodedToken) {
+    console.log(decodedToken)
+    const googleUser = await db.user.findUnique({
+      where: {
+        username: user,
+      },
+    })
+
+    if (!googleUser) {
+      return badRequest({
+        fieldErrors: null,
+        fields: null,
+        formError: {
+          message: 'This user does not exist.',
+          timestamp: Date.now().toString(),
+        },
+      })
+    }
+
+    return createUserSession(googleUser.id, redirectTo)
   }
 
   const loggedInUser = await login({ username: user, password })
@@ -191,10 +218,18 @@ const Login = () => {
     }
   }, [hasError, actionData.formError])
 
-  useEffect(() => {
-    console.log('window', window.ENV)
-    console.log('text')
-  }, [])
+  function handleSignInCallback(response) {
+    console.log('credential', response.credential)
+    const id_token = response.credential
+    // Send this token to your server via a POST request
+    fetch('/gogole-', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ idtoken: id_token }),
+    })
+  }
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
@@ -335,6 +370,7 @@ const Login = () => {
               data-context='signin'
               data-ux_mode='popup'
               data-login_uri='http://localhost'
+              data-callback={handleSignInCallback}
             ></div>
 
             <div
