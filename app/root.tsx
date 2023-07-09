@@ -84,7 +84,6 @@ export async function loader({ request }: LoaderArgs) {
     user,
     ENV: {
       API_KEY_DICTIONARY: process.env.API_KEY_DICTIONARY,
-      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     },
   })
 }
@@ -183,10 +182,7 @@ export default function App() {
 
         <script
           dangerouslySetInnerHTML={{
-            __html: `
-      window.ENV = ${JSON.stringify(data.ENV)},
-      window.GOOGLE_CLIENT_ID = ${JSON.stringify(data.ENV.GOOGLE_CLIENT_ID)},
-    `,
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
           }}
         />
         <script

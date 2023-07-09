@@ -8,7 +8,6 @@ import { CSSTransition } from 'react-transition-group'
 import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
-import { decode } from 'jsonwebtoken'
 
 import { db } from 'prisma/db.server'
 
@@ -55,9 +54,7 @@ export const action = async ({ request }: ActionArgs) => {
   const user = form.get('username')
   const password = form.get('password')
   const redirectTo = validateUrl('/')
-
-  let decodedToken = decode(token)
-
+  console.log(token)
   if (
     typeof user !== 'string' ||
     typeof password !== 'string' ||
@@ -218,19 +215,6 @@ const Login = () => {
     }
   }, [hasError, actionData.formError])
 
-  function handleSignInCallback(response) {
-    console.log('credential', response.credential)
-    const id_token = response.credential
-    // Send this token to your server via a POST request
-    fetch('/gogole-', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ idtoken: id_token }),
-    })
-  }
-
   return (
     <div className=' min-h-screen flex items-center justify-center'>
       <div
@@ -369,8 +353,9 @@ const Login = () => {
               data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
               data-context='signin'
               data-ux_mode='popup'
-              data-login_uri='http://localhost'
-              data-callback={handleSignInCallback}
+              data-login_uri='http://localhost:3000/auth'
+              data-nonce=''
+              data-auto_prompt='false'
             ></div>
 
             <div
