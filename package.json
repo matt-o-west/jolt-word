@@ -24,6 +24,7 @@
     "@vercel/node": "^2.6.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
+    "google-auth-library": "^8.9.0",
     "isbot": "latest",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",

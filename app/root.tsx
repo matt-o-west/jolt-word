@@ -84,6 +84,8 @@ export async function loader({ request }: LoaderArgs) {
     user,
     ENV: {
       API_KEY_DICTIONARY: process.env.API_KEY_DICTIONARY,
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+      GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     },
   })
 }
@@ -175,7 +177,7 @@ export default function App() {
               <Nav loggedInUser={data.loggedInUser} user={data.user} />
             )}
             <Outlet />
-            <Footer />
+            {showNav && <Footer />}
           </ThemeProvider>
         </Context.Provider>
         <ScrollRestoration />

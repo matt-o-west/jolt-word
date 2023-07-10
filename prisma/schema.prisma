@@ -45,7 +45,7 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   username     String   @unique
-  passwordHash String
+  passwordHash String?
   words        UserWord[]    
   scores       Score[]
 }

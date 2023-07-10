@@ -334,7 +334,7 @@ const Login = () => {
               data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
               data-context='signin'
               data-ux_mode='popup'
-              data-login_uri='http://localhost'
+              data-login_uri='http://localhost:3000/auth'
             ></div>
 
             <div
