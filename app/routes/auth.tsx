@@ -1,5 +1,6 @@
 import { OAuth2Client } from 'google-auth-library'
 import type { ActionArgs } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { createUserSession } from '~/utils/session.server'
 import { db } from 'prisma/db.server'
 
@@ -74,6 +75,8 @@ export const action = async ({ request }: ActionArgs) => {
 
     return createUserSession(user.id, redirectTo)
   }
+
+  return redirect('/login?googleFailure=true')
 }
 
 const Auth = () => {

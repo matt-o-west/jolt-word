@@ -139,6 +139,13 @@ const Login = () => {
   const [showErrorMessage, setShowErrorMessage] = useState(Boolean(hasError))
   const errorRef = useRef(null)
 
+  //google error alert
+  const googleFailure = searchParams.get('googleFailure') === 'true'
+  const [showGoogleErrorAlert, setShowGoogleErrorAlert] =
+    useState(googleFailure)
+  const [hasGoogleError, setHasGoogleError] = useState(Boolean(googleFailure))
+  const googleErrorRef = useRef(null)
+
   useEffect(() => {
     setHasPasswordChange(passwordChange)
   }, [passwordChange])
@@ -192,9 +199,21 @@ const Login = () => {
   }, [hasError, actionData.formError])
 
   useEffect(() => {
-    console.log('window', window.ENV)
-    console.log('text')
-  }, [])
+    setHasGoogleError(googleFailure)
+  }, [googleFailure])
+
+  useEffect(() => {
+    if (hasGoogleError) {
+      setShowGoogleErrorAlert(true)
+      const timer = setTimeout(() => {
+        setShowGoogleErrorAlert(false)
+      }, 3000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [hasGoogleError])
 
   return (
     <div className=' min-h-screen flex items-center justify-center'>
@@ -245,6 +264,22 @@ const Login = () => {
             <div ref={errorRef} className='mb-3'>
               <Alert variant='filled' severity='error' className='mb-3'>
                 {actionData.formError?.message}
+              </Alert>
+            </div>
+          </CSSTransition>
+        )}
+        {hasGoogleError && (
+          <CSSTransition
+            in={showGoogleErrorAlert}
+            timeout={300}
+            classNames='alert'
+            nodeRef={googleErrorRef}
+            unmountOnExit
+          >
+            <div ref={googleErrorRef} className='mb-3'>
+              <Alert variant='filled' severity='error' className='mb-3'>
+                We couldn't log you in with Google. Please try again or register
+                a new account.
               </Alert>
             </div>
           </CSSTransition>
