@@ -19,26 +19,40 @@ const client = new OAuth2Client(id, secret)
 
 export const hasGoogleCookie = (request: Request) => {
   const cookie = request.headers.get('Cookie')?.split(';') ?? []
+  console.log(cookie)
   return cookie.some(
     (c: string) => c.startsWith('g_csrf_token') || c.startsWith('g_state')
   )
 }
 
 export const verify = async (request: Request): Promise<GoogleUser> => {
+  console.log('Verify function called')
   const form = await request.formData()
   const token = form.get('credential')?.toString() ?? undefined
+  console.log(token)
   if (!token) {
     throw new Error('Credential does not exist, login failed.')
   }
-  const ticket = await client.verifyIdToken({
-    idToken: token,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  })
+
+  let ticket
+  try {
+    ticket = await client.verifyIdToken({
+      idToken: token,
+      audience:
+        '422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com',
+    })
+    console.log(ticket)
+  } catch (err) {
+    console.error('Error verifying token:', err)
+    throw err
+  }
+
   const payload = ticket.getPayload()
   if (!payload) {
     throw new Error('Payload does not exist.')
   }
 
+  console.log(payload)
   return {
     id: `g#${payload.sub}`,
     email: payload.email ?? '',
@@ -50,13 +64,14 @@ export const verify = async (request: Request): Promise<GoogleUser> => {
 }
 
 export const action = async ({ request }: ActionArgs) => {
+  console.log('Action function called')
   const redirectTo = '/'
 
   let user: GoogleUser | undefined = undefined
   if (hasGoogleCookie(request)) {
-    console.log(user)
+    console.log('Cookie exists, calling verify')
     user = await verify(request)
-
+    console.log(user)
     const existingUser = await db.user.findUnique({
       where: {
         id: user.id,
