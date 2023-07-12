@@ -113,21 +113,6 @@ export default function App() {
     setToggleSwitch(localToggleSwitch)
   }, [])
 
-  useEffect(() => {
-    // create a new script element
-    const script = document.createElement('script')
-    script.src = 'https://accounts.google.com/gsi/client'
-    script.async = true
-    script.defer = true
-
-    // add the script to the page
-    document.body.appendChild(script)
-
-    return () => {
-      document.body.removeChild(script)
-    }
-  }, [])
-
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
