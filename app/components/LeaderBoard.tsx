@@ -62,7 +62,6 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
       )}
       {data.length < 5 &&
         data.map(
-          // Can we make a hack to make the leaderboard look full when there are less than 5 words? I have a couple SVGs to place in a BoardCard that could work, they are basically handdrawn crossed out lines.
           ({ word, votes, id, wordData }: LeaderBoardType, index: number) => {
             const actualWord = wordData ? wordData.word : word
             return (
@@ -76,9 +75,11 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
             )
           }
         )}
-      {Array.from({ length: 5 - data.length }).map((_, index) => (
-        <PlaceholderCard key={`placeholder-${index}`} index={index} />
-      ))}
+      {data.length < 5 &&
+        data.length > 0 &&
+        Array.from({ length: 5 - data.length }).map((_, index) => (
+          <PlaceholderCard key={`placeholder-${index}`} index={index} />
+        ))}
     </div>
   )
 }
