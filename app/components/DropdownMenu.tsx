@@ -116,14 +116,16 @@ export default function DropdownMenu() {
                       </MenuItem>
                       <MenuItem onClick={handleClose}>
                         <Form action='/logout' method='post'>
-                          <button type='submit' className='mr-4'>
-                            Logout
+                          <button type='submit' className='flex items-center'>
+                            <span>Logout</span>
+                            <span className='ml-3'>
+                              <LogoutIcon
+                                sx={{
+                                  fontSize: 'medium',
+                                }}
+                              />
+                            </span>
                           </button>
-                          <LogoutIcon
-                            sx={{
-                              fontSize: 'medium',
-                            }}
-                          />
                         </Form>
                       </MenuItem>
                     </MenuList>

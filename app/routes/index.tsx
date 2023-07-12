@@ -154,29 +154,35 @@ export default function Index() {
           {loggedInUser && (
             <div className='col-span-3 row-span-2'>
               <div className='flex justify-between phone:justify-around w-full gap-4 mt-12'>
-                <h2
+                <button
                   onClick={() => setShowLeaderBoard(true)}
-                  className={showLeaderBoard ? 'font-bold' : 'text-gray-500'}
+                  className={`z-20 ${
+                    showLeaderBoard ? 'font-bold' : 'text-gray-500'
+                  }`}
                 >
-                  <span className='flex font-sans-serif cursor-pointer bg-purple.100 text-black px-4 py-1 rounded-md italic phone:text-lg'>
-                    <span className='pr-2'>
+                  <span className='flex font-sans-serif cursor-pointer bg-purple.100 text-black px-3 py-1 rounded-sm italic phone:text-lg'>
+                    <span className='mr-1'>
                       <TrendingUpIcon />
                     </span>
                     Trending
                   </span>
-                </h2>
+                </button>
 
-                <h2
+                <button
                   onClick={() => setShowLeaderBoard(false)}
-                  className={!showLeaderBoard ? 'font-bold' : 'text-gray-500'}
+                  className={`z-20 ${
+                    !showLeaderBoard ? 'font-bold' : 'text-gray-500'
+                  }`}
                 >
                   <span
-                    className={`${featureTheme} flex font-sans-serif cursor-pointer bg-tertiary.gray px-4 py-1 rounded-md italic phone:text-lg`}
+                    className={`${featureTheme} flex font-sans-serif cursor-pointer bg-tertiary.gray px-3 py-1 rounded-sm italic phone:text-lg`}
                   >
-                    <SavedSearchIcon />
-                    <span className='pl-2'>My Words</span>
+                    <span className='mt-0.25 mr-0.5'>
+                      <SavedSearchIcon />
+                    </span>
+                    <span className='pl-1'>My Words</span>
                   </span>
-                </h2>
+                </button>
               </div>
             </div>
           )}
