@@ -147,13 +147,11 @@ const Login = () => {
   const googleErrorRef = useRef(null)
 
   useEffect(() => {
-    // create a new script element
     const script = document.createElement('script')
     script.src = 'https://accounts.google.com/gsi/client'
     script.async = true
     script.defer = true
 
-    // add the script to the page
     document.body.appendChild(script)
 
     return () => {
@@ -238,6 +236,7 @@ const Login = () => {
         } rounded-lg shadow-md w-96 p-6`}
       >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
+        {/*replace CSSTransition with Collapse mui transition component*/}
         {hasPasswordChange && (
           <CSSTransition
             in={showPasswordChangeMessage}

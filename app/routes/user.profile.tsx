@@ -9,7 +9,9 @@ import { Context } from '~/root'
 import { getUser, getUserPassword, requireUserId } from '~/utils/session.server'
 import bcrypt from 'bcryptjs'
 import { Error, isDefinitelyAnError } from '~/components/Error'
+import useMobileDetect from '~/hooks/useMobileDetect'
 import { useRouteError } from '@remix-run/react'
+import { Alert, AlertTitle } from '@mui/material'
 
 import { db } from 'prisma/db.server'
 
@@ -114,8 +116,6 @@ export const action = async ({ request }: ActionArgs) => {
     })
   }
 
-  console.log(`Comparing ${userPassword} to ${hashedPassword}`)
-
   return redirect('/login?passwordChange=true')
 }
 
@@ -123,19 +123,22 @@ const Profile = () => {
   const { theme } = useContext(Context)
   const actionData = useActionData()
   const { user } = useLoaderData()
+  const isMobile = useMobileDetect()
 
-  console.log(actionData)
+  const googleId = user?.id.startsWith('g#') ? user.id : null
+  const demoAccount = user?.username.startsWith('iheartcoding')
+  const disabled = googleId || demoAccount
 
   return (
     <>
       <div
-        className={`flex flex-col items-start text-md pl-10 py-1 mt-12 min-h-[600px] ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col items-start text-md py-1 mt-12 min-h-[600px] ${theme} desktop:max-w-2xl desktop:pl-10 tablet:max-w-xl phone:mx-auto phone:max-w-md phone:px-4`}
       >
         <h1 className='font-sans-serif text-2xl'>Profile</h1>
         <Form
           method='post'
           action='/user/profile'
-          className='flex flex-col justify-between w-80'
+          className='flex flex-col justify-between tablet:w-80 phone:w-full'
         >
           <div className='w-64 mb-8 mt-10'>
             <label
@@ -157,7 +160,7 @@ const Profile = () => {
               } ${
                 theme === 'light'
                   ? 'bg-purple.100 border-secondary.gray'
-                  : 'bg-primary.gray border-primary.gray'
+                  : 'bg-primary.gray border-secondary.gray'
               }`}
               required
               defaultValue={actionData?.fields?.username}
@@ -190,14 +193,19 @@ const Profile = () => {
               } ${
                 theme === 'light'
                   ? 'bg-white border-secondary.gray'
-                  : 'bg-tertiary.black border-primary.gray'
-              }`}
+                  : `${
+                      disabled
+                        ? 'bg-primary.gray border-secondary.gray'
+                        : 'bg-tertiary.black'
+                    } `
+              } ${disabled ? 'bg-primary.gray' : 'bg-tertiary.black'}`}
               required
               defaultValue={actionData?.fields?.password}
               aria-invalid={Boolean(actionData?.fieldErrors?.password)}
               aria-errormessage={
                 actionData?.fieldErrors?.password ? 'password-error' : undefined
               }
+              disabled={disabled}
             />
             {actionData?.fieldErrors?.password && (
               <p className='form-validation-error'>
@@ -223,14 +231,19 @@ const Profile = () => {
               } ${
                 theme === 'light'
                   ? 'bg-white border-secondary.gray'
-                  : 'bg-tertiary.black border-primary.gray'
-              }`}
+                  : `${
+                      disabled
+                        ? 'bg-primary.gray border-secondary.gray'
+                        : 'bg-tertiary.black'
+                    } `
+              } ${disabled ? 'bg-primary.gray' : 'bg-tertiary.black'}`}
               required
               defaultValue={actionData?.fields?.password}
               aria-invalid={Boolean(actionData?.fieldErrors?.password)}
               aria-errormessage={
                 actionData?.fieldErrors?.password ? 'password-error' : undefined
               }
+              disabled={disabled}
             />
             {actionData?.fieldErrors?.password && (
               <p className='form-validation-error'>
@@ -238,6 +251,7 @@ const Profile = () => {
               </p>
             )}
           </div>
+
           <button
             type='submit'
             className={`bg-purple hover:bg-light.purple text-white font-bold py-2 px-4 w-44 rounded-md mb-4 self-end ${
@@ -247,6 +261,38 @@ const Profile = () => {
             Update
           </button>
         </Form>
+        {/*can be refactored into a Warning component later for DRY*/}
+        {googleId && (
+          <Alert
+            severity='warning'
+            style={{
+              width: isMobile ? 285 : 340,
+
+              margin: 'auto',
+              padding: '1rem',
+              marginTop: '1rem',
+            }}
+          >
+            <AlertTitle>Warning</AlertTitle>
+            You can't change the password here, because you're logged in with
+            Google.
+          </Alert>
+        )}
+        {demoAccount && (
+          <Alert
+            severity='warning'
+            style={{
+              width: isMobile ? 285 : 340,
+
+              margin: 'auto',
+              padding: '1rem',
+              marginTop: '1rem',
+            }}
+          >
+            <AlertTitle>Warning</AlertTitle>
+            You can't change the password here, because this is a demo account!
+          </Alert>
+        )}
       </div>
     </>
   )
