@@ -56,7 +56,7 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
               theme === 'light' ? 'text-quaternary.black' : 'text-tertiary.gray'
             }`}
           >
-            When you vote on words, they'll appear here.
+            When you jolt words, they'll appear here.
           </span>
         </div>
       )}

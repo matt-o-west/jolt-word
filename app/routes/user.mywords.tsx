@@ -13,6 +13,7 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import AbcIcon from '@mui/icons-material/Abc'
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled'
 import type { LeaderBoardType } from '~/components/LeaderBoard'
+import PaperPlane from '~/components/icon/PaperPlane'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
 
@@ -255,11 +256,11 @@ const MyWords = () => {
         className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-12 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='text-2xl font-sans-serif'>My Words</h1>
-        <div className='flex mt-12 flex-start items-center w-full px-8'>
-          <p className='font-sans-serif text-sm w-full'>
+        <div className='flex mt-12 flex-start items-center w-full px-8 phone:flex-col phone:space-y-2 phone:px-4'>
+          <p className='font-sans-serif text-sm w-full phone:mb-3'>
             {loggedInUser
               ? 'Sort by alphabetical or most recent.'
-              : 'Log in to save words and see them here.'}
+              : 'Log in to jolt words and save them.'}
           </p>
           {loggedInUser && (
             <ToggleButtonGroup
@@ -268,7 +269,7 @@ const MyWords = () => {
               exclusive
               onChange={handleChange}
               aria-label='Platform'
-              className={`flex justify-end flex-row ${
+              className={`flex justify-end phone:place-self-end flex-row ${
                 theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
               }`}
             >
@@ -290,6 +291,24 @@ const MyWords = () => {
             </ToggleButtonGroup>
           )}
         </div>
+        {wordData.length === 0 && (
+          <div
+            className={`flex flex-col items-center text-center justify-center rounded-sm w-[335px] h-[315px] mt-10 ${
+              theme === 'light' ? 'bg-white' : 'bg-primary.black'
+            }`}
+          >
+            <PaperPlane />
+            <span
+              className={`text-xl ${
+                theme === 'light'
+                  ? 'text-quaternary.black'
+                  : 'text-tertiary.gray'
+              }`}
+            >
+              When you jolt words, they'll appear here.
+            </span>
+          </div>
+        )}
         {loggedInUser && alignment ? (
           <div
             className={`gap-x-6 justify-center items-center min-h-[525px] ${theme} mt-6 desktop:grid desktop:grid-cols-2 phone:flex phone:flex-col phone:overflow-y-auto`}
