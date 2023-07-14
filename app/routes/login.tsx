@@ -9,6 +9,7 @@ import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
 import useMobileDetect from '~/hooks/useMobileDetect'
+import { Collapse } from '@mui/material'
 
 import { db } from 'prisma/db.server'
 
@@ -148,6 +149,12 @@ const Login = () => {
   const [hasGoogleError, setHasGoogleError] = useState(Boolean(googleFailure))
   const googleErrorRef = useRef(null)
 
+  //demo message alert
+  const demoMode = searchParams.get('demo') === 'true'
+  const [showDemoMessage, setShowDemoMessage] = useState(demoMode)
+  const [hasDemo, setHasDemo] = useState(Boolean(demoMode))
+  const demoRef = useRef(null)
+
   useEffect(() => {
     const script = document.createElement('script')
     script.src = 'https://accounts.google.com/gsi/client'
@@ -230,6 +237,23 @@ const Login = () => {
     }
   }, [hasGoogleError])
 
+  useEffect(() => {
+    setHasDemo(demoMode)
+  }, [demoMode])
+
+  useEffect(() => {
+    if (hasDemo) {
+      setShowDemoMessage(true)
+      const timer = setTimeout(() => {
+        setShowDemoMessage(false)
+      }, 3000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [hasDemo])
+
   return (
     <div className=' min-h-screen flex items-center justify-center'>
       <div
@@ -242,6 +266,7 @@ const Login = () => {
         {hasPasswordChange && (
           <CSSTransition
             in={showPasswordChangeMessage}
+            transitionAppear={true}
             timeout={300}
             classNames='alert'
             nodeRef={passwordChangeRef}
@@ -300,6 +325,22 @@ const Login = () => {
             </div>
           </CSSTransition>
         )}
+        {showDemoMessage && (
+          <CSSTransition
+            in={showDemoMessage}
+            timeout={300}
+            classNames='alert'
+            nodeRef={demoRef}
+            unmountOnExit
+          >
+            <div ref={demoRef} className='mb-3'>
+              <Alert variant='filled' severity='info' className='mb-3'>
+                A demo account is prepared for you. You can login with it,
+                create your own account or login with Google.
+              </Alert>
+            </div>
+          </CSSTransition>
+        )}
         <Form method='post' action='/login' ref={formRef}>
           <input
             type='hidden'
@@ -328,7 +369,7 @@ const Login = () => {
                   : 'bg-tertiary.black border-primary.gray'
               }`}
               required
-              defaultValue={actionData?.fields?.username}
+              defaultValue={actionData?.fields?.username || 'iheartcoding'}
               aria-invalid={Boolean(actionData?.fieldErrors?.user)}
               aria-errormessage={
                 actionData?.fieldErrors?.user ? 'username-error' : undefined
@@ -361,7 +402,7 @@ const Login = () => {
                   : 'bg-tertiary.black border-primary.gray'
               }`}
               required
-              defaultValue={actionData?.fields?.password}
+              defaultValue={actionData?.fields?.password || 'helloworld'}
               aria-invalid={Boolean(actionData?.fieldErrors?.password)}
               aria-errormessage={
                 actionData?.fieldErrors?.password ? 'password-error' : undefined
@@ -379,6 +420,7 @@ const Login = () => {
           >
             Login
           </button>
+
           <button className='w-full mb-4' type='submit'>
             <div
               id='g_id_onload'
@@ -387,7 +429,7 @@ const Login = () => {
               data-ux_mode='popup'
               data-login_uri='http://localhost:3000/auth'
             ></div>
-
+            {/*google button with correct width first render, but will not retain on window resize*/}
             <div
               className='g_id_signin'
               data-type='standard'

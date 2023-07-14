@@ -92,7 +92,7 @@ const Nav = ({ user, loggedInUser }) => {
         theme === 'light' ? 'hover:bg-background' : 'hover:bg-secondary.black'
       } `}
     >
-      <Link to='/login'>Log In</Link>
+      <Link to='/login?demo=true'>Log In</Link>
     </button>
   )
 
