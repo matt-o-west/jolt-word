@@ -8,6 +8,7 @@ import { CSSTransition } from 'react-transition-group'
 import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
+import useMobileDetect from '~/hooks/useMobileDetect'
 
 import { db } from 'prisma/db.server'
 
@@ -125,6 +126,7 @@ const Login = () => {
     Boolean(passwordChange)
   )
   const passwordChangeRef = useRef(null)
+  const isMobile = useMobileDetect()
 
   //success alert
   const registrationSuccess = searchParams.get('registrationSuccess') === 'true'
@@ -233,7 +235,7 @@ const Login = () => {
       <div
         className={`${
           theme === 'light' ? 'bg-white' : 'bg-quaternary.black'
-        } rounded-lg shadow-md w-96 p-6`}
+        } rounded-lg shadow-md tablet:w-96 phone:w-80 p-6`}
       >
         <h1 className='text-3xl font-bold mb-4 text-secondary-black'>Login</h1>
         {/*replace CSSTransition with Collapse mui transition component*/}
@@ -394,7 +396,7 @@ const Login = () => {
               data-text='signin_with'
               data-size='large'
               data-logo_alignment='left'
-              data-width='335'
+              data-width={isMobile ? '275' : '335'}
             ></div>
           </button>
         </Form>

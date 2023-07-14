@@ -125,6 +125,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                   className={`text-lg font-bold text-purple transition-all duration-250 ml-2 ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
+                  onMouseEnter={() => setCursor(i)} // Add this
                 >
                   {word}
                 </Link>
@@ -137,6 +138,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                   className={`text-lg font-bold text-purple transition-all duration-250 ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
+                  onMouseEnter={() => setCursor(i)} // And this
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
                 </Link>

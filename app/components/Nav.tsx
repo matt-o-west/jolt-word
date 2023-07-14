@@ -13,7 +13,10 @@ const Nav = ({ user, loggedInUser }) => {
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setSearchTerm('')
+        // Delay closing the pane to allow for navigation
+        setTimeout(() => {
+          setSearchTerm('')
+        }, 100)
       }
     }
 
@@ -161,7 +164,7 @@ const Nav = ({ user, loggedInUser }) => {
       </nav>
       <form className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
         <div
-          className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-8`}
+          className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-4`}
         >
           <label htmlFor='search-input' className='sr-only'>
             Search Dictionary
