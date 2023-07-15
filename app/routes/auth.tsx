@@ -21,7 +21,8 @@ export const hasGoogleCookie = (request: Request) => {
   const cookie = request.headers.get('Cookie')?.split(';') ?? []
   console.log(cookie)
   return cookie.some(
-    (c: string) => c.startsWith('g_csrf_token') || c.startsWith('g_state')
+    (c: string) =>
+      c.trim().startsWith('g_csrf_token') || c.trim().startsWith('g_state')
   )
 }
 
@@ -29,7 +30,6 @@ export const verify = async (request: Request): Promise<GoogleUser> => {
   console.log('Verify function called')
   const form = await request.formData()
   const token = form.get('credential')?.toString() ?? undefined
-  console.log(token)
   if (!token) {
     throw new Error('Credential does not exist, login failed.')
   }
@@ -65,6 +65,7 @@ export const verify = async (request: Request): Promise<GoogleUser> => {
 
 export const action = async ({ request }: ActionArgs) => {
   console.log('Action function called')
+  console.log('Google cookie:', hasGoogleCookie(request))
   const redirectTo = '/'
 
   let user: GoogleUser | undefined = undefined

@@ -9,25 +9,8 @@ import { Context } from '~/root'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
 import useMobileDetect from '~/hooks/useMobileDetect'
-import { Collapse } from '@mui/material'
 
 import { db } from 'prisma/db.server'
-
-function updateSigninStatus(isSignedIn) {
-  console.log(`User sign-in status changed: ${isSignedIn}`)
-}
-
-// This function will be called when the user successfully signs in.
-function onSuccess(googleUser) {
-  console.log('Logged in as: ' + googleUser.getBasicProfile().getName())
-  var id_token = googleUser.getAuthResponse().id_token
-  console.log('ID Token: ' + id_token)
-}
-
-// This function will be called if the sign-in fails.
-function onFailure(error) {
-  console.log(error)
-}
 
 export const validateUser = (user: unknown) => {
   if (typeof user !== 'string' || user.length < 3) {
@@ -246,7 +229,7 @@ const Login = () => {
       setShowDemoMessage(true)
       const timer = setTimeout(() => {
         setShowDemoMessage(false)
-      }, 3000)
+      }, 4200)
 
       return () => {
         clearTimeout(timer)
@@ -325,7 +308,7 @@ const Login = () => {
             </div>
           </CSSTransition>
         )}
-        {showDemoMessage && (
+        {hasDemo && (
           <CSSTransition
             in={showDemoMessage}
             timeout={300}
@@ -421,7 +404,7 @@ const Login = () => {
             Login
           </button>
 
-          <button className='w-full mb-4' type='submit'>
+          <button className='w-full mb-4'>
             <div
               id='g_id_onload'
               data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
