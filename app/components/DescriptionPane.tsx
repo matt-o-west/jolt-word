@@ -4,7 +4,9 @@ const Description = () => {
   return (
     <section className='flex flex-col md:flex-row justify-between items-center'>
       <div className='md:w-1/2 mb-8 md:mb-0'>
-        <h2 className='text-3xl font-bold mb-4'>How does this work?</h2>
+        <h2 className='text-3xl font-bold mb-4'>
+          Welcome to JoltWord, the Social Dictionary!
+        </h2>
         <img
           className='w-full h-56 object-cover'
           src='https://via.placeholder.com/500'
@@ -13,13 +15,11 @@ const Description = () => {
       </div>
       <div className='md:w-1/2 md:ml-8'>
         <p className='text-lg'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-          tincidunt magna non enim feugiat, vel sollicitudin odio eleifend.
-          Suspendisse auctor, est nec fermentum ultricies, justo sapien interdum
-          libero, quis volutpat diam lacus et tortor. Proin fermentum auctor
-          imperdiet. Aenean faucibus nibh in tempor fringilla. Duis consequat,
-          odio vel vehicula tempor, ipsum ante volutpat nisi, id cursus urna dui
-          sed nunc.
+          <span className='text-bold text-purple'>JoltWord</span> is a unique
+          dictionary app where your vote helps shape the world of words. Ever
+          found a word that particularly resonated with you? Or discovered a
+          phrase that needs more recognition? Here, you can give those words the
+          attention they deserve by giving them a Jolt!
         </p>
       </div>
     </section>

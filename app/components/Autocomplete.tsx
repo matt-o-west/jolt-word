@@ -108,7 +108,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
   } else if (Array.isArray(matchingWords)) {
     return (
       <div
-        className={`flex flex-col justify-start text-md p-2 m-2 rounded-sm ${
+        className={`flex flex-col justify-start text-md p-2 m-2 mr-4 rounded-sm ${
           theme === 'light' ? 'bg-tertiary.gray' : 'bg-secondary.black'
         } ${
           !searchTerm ? 'hidden' : ''
@@ -119,29 +119,31 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
           .map((word, i) => {
             if (typeof word === 'string') {
               return (
-                <Link
+                <div
                   key={word}
-                  to={`/${word}`}
-                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 ${cursorHoverLight(
+                  onClick={() => navigate(`/${word}`)}
+                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 cursor-pointer ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
-                  onMouseEnter={() => setCursor(i)} // Add this
+                  onMouseEnter={() => setCursor(i)}
                 >
                   {word}
-                </Link>
+                </div>
               )
             } else if (typeof word === 'object' && word.hwi?.hw) {
               return (
-                <Link
+                <div
                   key={word.meta?.uuid}
-                  to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
-                  className={`text-lg font-bold text-purple transition-all duration-250 ${cursorHoverLight(
+                  onClick={() =>
+                    navigate(`/${word.meta?.id?.replace(/:[^:]*$/, '')}`)
+                  }
+                  className={`text-lg font-bold text-purple transition-all duration-250 cursor-pointer ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
-                  onMouseEnter={() => setCursor(i)} // And this
+                  onMouseEnter={() => setCursor(i)}
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
-                </Link>
+                </div>
               )
             } else {
               return null // Don't render duplicate word

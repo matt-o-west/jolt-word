@@ -121,9 +121,9 @@ export const action = async ({ request }: ActionArgs) => {
 
 const Profile = () => {
   const { theme } = useContext(Context)
+  const isMobile = useMobileDetect()
   const actionData = useActionData()
   const { user } = useLoaderData()
-  const isMobile = useMobileDetect()
 
   const googleId = user?.id.startsWith('g#') ? user.id : null
   const demoAccount = user?.username.startsWith('iheartcoding')
@@ -254,9 +254,12 @@ const Profile = () => {
 
           <button
             type='submit'
-            className={`bg-purple hover:bg-light.purple text-white font-bold py-2 px-4 w-44 rounded-md mb-4 self-end ${
+            className={`bg-purple ${
+              !disabled ? 'hover:bg-light.purple' : ''
+            } text-white font-bold py-2 px-4 w-44 rounded-md mb-4 self-end ${
               theme === 'light' ? 'btn-light' : 'btn-dark'
             }`}
+            disabled={disabled}
           >
             Update
           </button>

@@ -10,6 +10,7 @@ import { requireUserId } from '~/utils/session.server'
 import generateRandomWord from '~/utils/generateRandomWord.server'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import SavedSearchIcon from '@mui/icons-material/SavedSearch'
+import ElectricMeterIcon from '@mui/icons-material/ElectricMeter'
 import ShowMoreChip from '~/components/ShowMoreChip'
 import { Error, isDefinitelyAnError } from '~/components/Error'
 import { useRouteError } from '@remix-run/react'
@@ -127,7 +128,7 @@ export default function Index() {
   return (
     <>
       <main
-        className={`flex flex-col justify-center items-center text-md p-2 mt-6 mb-32 m-2 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-center items-center text-md p-2 mt-6 mb-32 m-2 ${theme} desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <section className='flex items-start desktop:mt-4 tablet:mt-2'>
           {(
@@ -226,7 +227,14 @@ export default function Index() {
           <div className='flex desktop:flex-col desktop:space-x-6 tablet:flex-row tablet:space-x-10 phone:flex-row phone:space-x-10 items-center justify-center  mb-10'>
             <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold desktop:ml-6 desktop:my-6'>
               <div className='flex items-center flex-row'>
-                <img src='/images/icons-meter.png' alt='voltmeter' />
+                <ElectricMeterIcon
+                  sx={{
+                    width: '6rem',
+                    height: '6rem',
+                    marginLeft: '1.5rem',
+                    fill: theme === 'dark' ? '#B88BEF' : '#523B63',
+                  }}
+                />
                 <span className='text-5xl font-bold text-green-500 ml-2 flex-grow min-w-full'>
                   +3
                 </span>
@@ -237,7 +245,13 @@ export default function Index() {
             </div>
             <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold'>
               <div className='flex items-center flex-row'>
-                <img src='/images/icons-meter.png' alt='voltmeter' />
+                <ElectricMeterIcon
+                  sx={{
+                    width: '6rem',
+                    height: '6rem',
+                    fill: theme === 'dark' ? '#B88BEF' : '#523B63',
+                  }}
+                />
                 <span className='text-5xl font-bold text-red ml-2 flex-grow min-w-full'>
                   –1
                 </span>

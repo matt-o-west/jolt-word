@@ -38,8 +38,7 @@ export const verify = async (request: Request): Promise<GoogleUser> => {
   try {
     ticket = await client.verifyIdToken({
       idToken: token,
-      audience:
-        '422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com',
+      audience: id,
     })
     console.log(ticket)
   } catch (err) {

@@ -11,7 +11,7 @@ const Nav = ({ user, loggedInUser }) => {
   const searchRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         // Delay closing the pane to allow for navigation
         setTimeout(() => {
@@ -151,7 +151,7 @@ const Nav = ({ user, loggedInUser }) => {
   return (
     <>
       <nav
-        className={`flex flex-row justify-between items-center text-xs p-2 py-8 m-2 desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-row justify-between items-center text-xs p-2 py-4 m-2 mt-4 desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <Link to='/'>
           <img src='/images/logo.svg' alt='logo' className='h-8 w-8 ml-1' />
@@ -162,7 +162,7 @@ const Nav = ({ user, loggedInUser }) => {
           {userButton}
         </div>
       </nav>
-      <form className='desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
+      <form className='desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
         <div
           className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-4`}
         >
