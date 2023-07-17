@@ -158,11 +158,11 @@ export default function App() {
           }}
         >
           <ThemeProvider theme={muiTheme}>
-            {showNav && (
-              <Nav loggedInUser={data.loggedInUser} user={data.user} />
-            )}
-            <Outlet />
-            {showNav && <Footer />}
+            {showNav && <Nav user={data.user} />}
+            <div className='flex flex-col min-h-screen'>
+              <Outlet />
+              {showNav && <Footer />}
+            </div>
           </ThemeProvider>
         </Context.Provider>
         <ScrollRestoration />

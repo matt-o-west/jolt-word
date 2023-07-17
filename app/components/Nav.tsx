@@ -4,14 +4,14 @@ import { Context } from '~/root'
 import Autocomplete from '~/components/Autocomplete'
 import DropdownMenu from './DropdownMenu'
 
-const Nav = ({ user, loggedInUser }) => {
+const Nav = ({ user }) => {
   const { theme, featureTheme, toggleTheme, setTheme } = useContext(Context)
   const [searchTerm, setSearchTerm] = useState('')
   const [matchingWords, setMatchingWords] = useState<string[]>([])
   const searchRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: any) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         // Delay closing the pane to allow for navigation
         setTimeout(() => {

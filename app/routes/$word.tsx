@@ -207,9 +207,9 @@ const Word = () => {
   return (
     <>
       <main
-        className={`flex flex-col justify-center items-center text-md p-2 py-1 m-2 mt-8 ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`justify-center items-center text-md p-2 py-1 m-2 mt-8 flex-grow ${theme} desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
-        <section className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 justify-between'>
+        <section className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 ml-6 justify-between'>
           <h1
             className={`self-center max-w-full font-bold tracking-wide ${
               wordFontSize() || 'tablet:text-5xl phone:text-3xl'

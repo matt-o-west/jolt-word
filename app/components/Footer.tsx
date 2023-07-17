@@ -7,8 +7,8 @@ const Footer = () => {
 
   return (
     <footer
-      className={`flex items-center justify-between w-full text-md p-2 py-8 mt-6 m-2 ${theme} 
-  desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto 
+      className={`flex items-center justify-between w-full text-md p-2 pt-12 mt-6 m-2 ${theme} 
+  desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto 
   flex-col sm:flex-row phone:space-y-2`}
     >
       <span>

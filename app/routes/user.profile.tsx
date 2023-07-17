@@ -132,7 +132,7 @@ const Profile = () => {
   return (
     <>
       <div
-        className={`flex flex-col items-start text-md py-1 mt-12 min-h-[600px] ${theme} desktop:max-w-2xl desktop:pl-10 tablet:max-w-xl phone:mx-auto phone:max-w-md phone:px-4`}
+        className={`justify-start items-center text-md py-1 w-full mt-12 flex-grow ${theme} desktop:max-w-2xl desktop:pl-10 tablet:max-w-xl phone:mx-auto phone:max-w-md phone:px-4`}
       >
         <h1 className='font-sans-serif text-2xl'>Profile</h1>
         <Form
@@ -277,7 +277,7 @@ const Profile = () => {
             }}
           >
             <AlertTitle>Warning</AlertTitle>
-            You can't change the password here, because you're logged in with
+            You can't change your password here, because you're logged in with
             Google.
           </Alert>
         )}
