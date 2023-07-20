@@ -225,7 +225,11 @@ export default function Index() {
             )}
           </div>
           <div className='flex desktop:flex-col desktop:space-x-6 tablet:flex-row tablet:space-x-10 phone:flex-row phone:space-x-10 items-center justify-center  mb-10'>
-            <div className='relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold desktop:ml-6 desktop:my-6'>
+            <div
+              className={`relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold desktop:ml-6 ${
+                loggedInUser ? 'desktop:my-10' : 'desktop:mt-12'
+              }`}
+            >
               <div className='flex items-center flex-row'>
                 <ElectricMeterIcon
                   sx={{
