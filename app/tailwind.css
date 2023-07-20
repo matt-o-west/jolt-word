@@ -128,8 +128,18 @@
 
 .vote-count {
   position: absolute;
-  top: -2px;
-  right: -5px;
+  top: -1px;
+  right: -6px;
+  background: transparent;
+  border-radius: 50%;
+  padding: 2px 4px;
+  font-size: 0.7rem;
+}
+
+.vote-count-double {
+  position: absolute;
+  top: -1px;
+  right: -2px;
   background: transparent;
   border-radius: 50%;
   padding: 2px 4px;

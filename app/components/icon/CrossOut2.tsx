@@ -14,7 +14,7 @@ const CrossOut2 = () => {
         x='0px'
         y='0px'
         viewBox='0 0 720 720'
-        enable-background='new 0 0 720 720'
+        enableBackground='new 0 0 720 720'
         xmlSpace='preserve'
         className='mb-5'
       >

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useLocalStorage } from '~/hooks/useLocalStorage'
 import { Form } from '@remix-run/react'
 import type { LeaderBoardType } from './LeaderBoard'

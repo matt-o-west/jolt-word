@@ -39,7 +39,7 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
                 word={actualWord}
                 myWords={false}
                 rank={ranked ? index + 1 : 0}
-                key={id}
+                key={id + word}
               />
             )
           }
@@ -70,7 +70,7 @@ const LeaderBoard = ({ data, ranked }: DataProps) => {
                 word={actualWord}
                 myWords={false}
                 rank={ranked ? index + 1 : 0}
-                key={id}
+                key={id + word}
               />
             )
           }

@@ -49,7 +49,11 @@ function ClickableIcon({
             fontSize={fontSize}
             color={storedValue === 3 ? 'primary' : 'inherit'}
           />
-          <span className='vote-count'>{parsedVotes()}</span>
+          <span
+            className={parsedVotes() > 99 ? 'vote-count' : 'vote-count-double'}
+          >
+            {parsedVotes()}
+          </span>
         </button>
       )}
     </>
