@@ -187,7 +187,7 @@ const MyWords = () => {
       <Form method='post' action=''>
         <input type='hidden' name='action' value='delete' />
         <input type='hidden' name='word' value={word} />
-        <div className='relative'>
+        <div className='relative mb-1'>
           <ClearWord />
           <button
             type='submit'
