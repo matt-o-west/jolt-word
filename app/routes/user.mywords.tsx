@@ -253,7 +253,7 @@ const MyWords = () => {
   return (
     <>
       <main
-        className={`flex flex-col justify-start items-center text-md p-2 py-1 m-2 mt-12 flex-grow ${theme} desktop:max-w-2xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`flex flex-col justify-start items-center text-md p-2 py-1 m-2 mt-12 flex-grow w-full ${theme} desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
       >
         <h1 className='text-2xl font-sans-serif'>My Words</h1>
         <div className='flex mt-12 flex-start items-center w-full px-8 tablet:flex-row phone:flex-col phone:space-y-2 phone:px-4'>
