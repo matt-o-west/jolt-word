@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from '@remix-run/react'
 import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'

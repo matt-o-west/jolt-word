@@ -6,46 +6,6 @@ JoltWord is a community-driven dictionary application built with Remix, Tailwind
 
 ## Features
 
-### Word Search and Detailed View
-
-Users can search for any word and view its detailed information on a dedicated page. API data is parsed using regex to format the tokens into a more readable format. The word details are server-side rendered for performance and SEO benefits.
-
-```js
-const replaceTokens = (text: string) => {
-  // ... code
-  // Section of function that parses the API data and format tokens
-  const crossRefTokens = reactStringReplace(
-    linkTokens,
-    /\{dx_ety\}see\s+\{dxt\|([^|]+)\|\|\}\{\/dx_ety\}/g,
-    (match, i) => (
-      <>
-        {' '}
-        see
-        <Link
-          to={`/${match.replace(/:\d+$/, '')}`}
-          className='text-lowercase link'
-          key={i}
-        >
-          {match.replace(/:\d+$/, '')}
-        </Link>
-      </>
-    )
-  )
-
-  const wiTokens = reactStringReplace(
-    crossRefTokens,
-    /\{wi\}(.*?)\{\/wi\}/g,
-    (match, i) => (
-      <span className='italic font-lg' key={i}>
-        {match}
-      </span>
-    )
-  )
-
-  // ... code
-}
-```
-
 ### Autocomplete Search Bar
 
 An autocomplete search bar displays parsed data fetched in real-time client-side. Users can navigate the autocomplete results using both arrow keys and their mouse which will route them to the selected word's page. Here is one of the functions that parses the API data:
@@ -182,6 +142,46 @@ export const action = async ({ request }: ActionArgs) => {
     // createUserSession is a function that creates a session cookie, exported from the session.server.ts file
     return createUserSession(loggedInUser.id, redirectTo)
   }
+}
+```
+
+### Word Search and Detailed View
+
+Users can search for any word and view its definitions on a dynamically-routed, dedicated page. Returned API data is parsed using regex to format the tokens into a more readable format. The word details are server-side rendered for performance and SEO benefits.
+
+```js
+const replaceTokens = (text: string) => {
+  // ... code
+  // Section of function that parses the API data and format tokens
+  const crossRefTokens = reactStringReplace(
+    linkTokens,
+    /\{dx_ety\}see\s+\{dxt\|([^|]+)\|\|\}\{\/dx_ety\}/g,
+    (match, i) => (
+      <>
+        {' '}
+        see
+        <Link
+          to={`/${match.replace(/:\d+$/, '')}`}
+          className='text-lowercase link'
+          key={i}
+        >
+          {match.replace(/:\d+$/, '')}
+        </Link>
+      </>
+    )
+  )
+
+  const wiTokens = reactStringReplace(
+    crossRefTokens,
+    /\{wi\}(.*?)\{\/wi\}/g,
+    (match, i) => (
+      <span className='italic font-lg' key={i}>
+        {match}
+      </span>
+    )
+  )
+
+  // ... code
 }
 ```
 

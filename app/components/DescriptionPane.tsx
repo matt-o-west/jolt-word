@@ -53,15 +53,65 @@ const Description = () => {
           />
         </div>
         <div className='md:w-1/2 md:ml-8'>
-          <h2 className='text-3xl font-bold mb-4'>
-            The Leech: A Natural Balance
-          </h2>
+          <h2 className='text-3xl font-bold mb-4'>Leech: Striking A Balance</h2>
           <p className='text-lg'>
-            In JoltWord, we believe in balance. That's where the Leech value
-            comes in. Over the course of 12 hours, a word's votes will leech or
-            decay by a certain amount. This ensures that no single word
-            maintains dominance for too long and allows newer or less popular
-            words a chance to shine.
+            Over the course of 12 hours, a word's votes will leech or decay by a
+            certain amount. This ensures that no single word maintains dominance
+            for too long and allows newer or less popular words a chance to
+            shine.
+          </p>
+        </div>
+      </section>
+      <section className='flex-col w-full'>
+        <h2 className='text-3xl font-bold mb-4'>Next Features</h2>
+        <div className='mb-8 md:mb-0'>
+          <p className='text-lg'>
+            This is a demo app currently, but we have a lot of ideas for future
+            features! You'll find some below:
+          </p>
+          <ul className='list-disc list-inside py-4 ml-6'>
+            <li>
+              <strong>Occasional Bugs in Parsing of API Tokens:</strong> There
+              are edge cases still where certain structures of the API tokens
+              means they are not parsed correctly, although this is more seldom
+              than not it can lead to strange interactions once and awhile.
+            </li>
+            <li>
+              <strong>AI Suggestions:</strong> We would like to add a feature
+              where users can interact with OpenAI or another API to prompt
+              example sentences with the word of the day, matching a selected
+              mood, tone, genre or in the style of famous writers.
+            </li>
+            <li>
+              <strong>Mood Words or Phrases for Users:</strong> Add a selection
+              of mood words for users to choose from to describe them on the
+              given day, via their profile, or compose a sentence.
+            </li>
+            <li>
+              <strong>Social Feed and Friend Connections:</strong> The previous
+              feature could tie into larger social features and a social feed,
+              where users can see what other users/friends are feeling and how
+              they are using the word of the day.
+            </li>
+            <li>
+              <strong>Word of the Day Archive:</strong> We would like to create
+              an archive of past words of the day.
+            </li>
+            <li>
+              <strong>Word of the Day Email:</strong> We would like to send
+              users an email with the word of the day.
+            </li>
+            <li>
+              <strong>Rate-Limiting and Spam Prevention:</strong> Add
+              rate-limiting and spam prevention to the word voting system. This
+              is a demo app so did not implement this feature prior to gathering
+              feedback, but it would be necessary for a production app.
+            </li>
+          </ul>
+          <p className='text-lg'>
+            If you come back later, you may find some of these features
+            implemented, or a poll on the landing page allowing users to vote on
+            future roadmap initiatives. In the mean time, happy Jolting!
           </p>
         </div>
       </section>
