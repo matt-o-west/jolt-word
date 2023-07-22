@@ -2,13 +2,49 @@
 
 ## Description
 
-JoltWord is a community-driven dictionary application built with Remix, Tailwind, Material UI, and SQLite. It allows users to search for their favorite words, view detailed word information, vote for words, and even discover a new word every day!
+JoltWord is a community-driven dictionary application built with Remix, Tailwind, Material UI, and SQLite. It allows users to search for their favorite words, view detailed word information, vote for words, and discover new words everyday! The ultimate vision for JoltWord is to be a social platform for word lovers to share their favorite words and learn new ones.
 
 ## Features
 
 ### Word Search and Detailed View
 
-Users can search for any word and view its detailed information on a dedicated page. We parse the API data using regex to format the tokens into a more readable format. The word details are server-side rendered for performance and SEO benefits.
+Users can search for any word and view its detailed information on a dedicated page. API data is parsed using regex to format the tokens into a more readable format. The word details are server-side rendered for performance and SEO benefits.
+
+```js
+const replaceTokens = (text: string) => {
+  // ... code
+  // Section of function that parses the API data and format tokens
+  const crossRefTokens = reactStringReplace(
+    linkTokens,
+    /\{dx_ety\}see\s+\{dxt\|([^|]+)\|\|\}\{\/dx_ety\}/g,
+    (match, i) => (
+      <>
+        {' '}
+        see
+        <Link
+          to={`/${match.replace(/:\d+$/, '')}`}
+          className='text-lowercase link'
+          key={i}
+        >
+          {match.replace(/:\d+$/, '')}
+        </Link>
+      </>
+    )
+  )
+
+  const wiTokens = reactStringReplace(
+    crossRefTokens,
+    /\{wi\}(.*?)\{\/wi\}/g,
+    (match, i) => (
+      <span className='italic font-lg' key={i}>
+        {match}
+      </span>
+    )
+  )
+
+  // ... code
+}
+```
 
 ### Autocomplete Search Bar
 
@@ -97,23 +133,107 @@ async function generateRandomWord(): Promise<string> {
 
 ### Word Voting System
 
-Users can vote for their favorite words. The votes are tracked and saved in the user's profile. We also implemented a local storage hook to limit the number of votes a word can receive in a session.
+Users can vote for their favorite words. The votes are tracked and saved in the user's profile. A local storage hook limits the number of votes a word can receive in a session from a user.
 
 ### Authentication and User Management
 
 Our hand-rolled authentication system allows users to create accounts, log in, and manage their profiles. We used Remix's loader and action models to handle requests and server-side operations.
 
+```js
+// Login route
+export const action = async ({ request }: ActionArgs) => {
+  // ... code
+  if (
+    typeof user !== 'string' ||
+    typeof password !== 'string' ||
+    typeof redirectTo !== 'string'
+  ) {
+    // ... error handling
+
+    const loggedInUser = await login({ username: user, password })
+
+    if (!loggedInUser) {
+      return badRequest({
+        fieldErrors: null,
+        fields: null,
+        formError: {
+          message: 'Incorrect username or password.',
+          timestamp: Date.now().toString(),
+        },
+      })
+    }
+
+    const userExists = await db.user.findUnique({
+      where: {
+        username: user,
+      },
+    })
+
+    if (!userExists) {
+      return badRequest({
+        fieldErrors: null,
+        fields: null,
+        formError: {
+          message: 'This user does not exist.',
+          timestamp: Date.now().toString(),
+        },
+      })
+    }
+    // createUserSession is a function that creates a session cookie, exported from the session.server.ts file
+    return createUserSession(loggedInUser.id, redirectTo)
+  }
+}
+```
+
 ### Google Sign-in
 
-Users can sign in using their Google accounts. This feature utilizes a login-uri approach that verifies the Google token at an `/auth` route. If the token is valid, the user gets authorized to use their Google account on JoltWord.
+Users can sign in using their Google accounts. This feature utilizes a login-uri approach that verifies the Google token at an `/auth` route. If the token is valid, the user is authorized to use their Google account. Here is what the action looks like at the route:
+
+```js
+// Auth route
+export const action = async ({ request }: ActionArgs) => {
+  // ... code
+  let user: GoogleUser | undefined = undefined
+  if (hasGoogleCookie(request)) {
+    console.log('Cookie exists, calling verify')
+    user = await verify(request)
+    console.log(user)
+    const existingUser = await db.user.findUnique({
+      where: {
+        id: user.id,
+      },
+    })
+
+    if (!existingUser) {
+      const newUser = await db.user.create({
+        data: {
+          id: user.id,
+          username: user.given_name ?? user.email,
+        },
+      })
+      return createUserSession(newUser.id, redirectTo)
+    }
+
+    return createUserSession(user.id, redirectTo)
+  }
+
+  return redirect('/login?googleFailure=true')
+}
+```
 
 ## Additional Features
 
 While these aren't the main functionalities, they still contribute to the user experience:
 
-1. **Dark/Light Mode:** Users can switch between dark and light themes based on their preferences.
+1. **Dark/Light Mode:** Users can switch between dark and light themes based on their preferences. Utilized via context and local storage to store user preference.
 2. **Dropdown Menus and UI Interactions:** We have designed the UI to be interactive and easy-to-use.
 
 ## Future Improvements
 
-We are always working to improve JoltWord and add new features. If you have any suggestions or feedback, feel free to open an issue or a pull request.
+1. **Occasional Bugs in Parsing of API Tokens:** There are edge cases still where certain structures of the API tokens means they are not parsed correctly, although this is more seldom than not it can lead to strange interactions once and awhile.
+2. **AI Suggestions:** We would like to add a feature where users can interact with OpenAI or another API to prompt example sentences with the word of the day, matching a selected mood, tone, genre or in the style of famous writers.
+3. **Mood Words or Phrases for Users:** Add a selection of mood words for users to choose from to describe them on the given day, via their profile, or compose a sentence.
+4. **Social Feed and Friend Connections:** The previous feature could tie into larger social features and a social feed, where users can see what other users/friends are feeling and how they are using the word of the day.
+5. **Word of the Day Archive:** We would like to create an archive of past words of the day.
+6. **Word of the Day Email:** We would like to send users an email with the word of the day.
+7. **Rate-Limiting and Spam Prevention:** Add rate-limiting and spam prevention to the word voting system. This is a demo app so did not implement this feature prior to gathering feedback, but it would be necessary for a production app.
