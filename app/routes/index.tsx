@@ -192,7 +192,7 @@ export default function Index() {
             </Link>
           ) || 'sorry, we ran out of words'}
           <span
-            className={`${featureTheme} text-sm phone:text-xs phone:w-26 text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-4 -ml-4`}
+            className={`${featureTheme} desktop:text-sm phone:text-xs phone:min-w-fit text-gray-500 bg-tertiary.gray rounded-sm px-2 py-1 tracking-wide -mt-4 -ml-4`}
           >
             Word of the Day
           </span>

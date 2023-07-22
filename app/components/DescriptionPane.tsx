@@ -14,7 +14,7 @@ const Description = () => {
             alt='Placeholder'
           />
         </div>
-        <div className='md:w-1/2 md:ml-8'>
+        <div className='md:w-1/2 md:ml-8 mb-8'>
           <p className='text-lg'>
             <span className='text-bold text-purple'>JoltWord</span> is a unique
             dictionary app where your vote helps shape the world of words. Ever
@@ -24,8 +24,8 @@ const Description = () => {
           </p>
         </div>
       </section>
-      <section className='flex flex-col md:flex-row justify-between items-center my-8'>
-        <div className='md:w-1/2 mb-8 md:mb-0'>
+      <section className='flex flex-col md:flex-row justify-between items-center my-8 md:my-12'>
+        <div className='md:w-1/2 mb-8 md:mb-0 order-2 md:order-1'>
           <h2 className='text-3xl font-bold mb-4'>Let's Give Words a Jolt!</h2>
           <p className='text-lg'>
             When you Jolt a word, you're giving it a vote and propelling it up
@@ -36,7 +36,7 @@ const Description = () => {
             and all your Jolted words are saved to your account!
           </p>
         </div>
-        <div className='md:w-1/2 md:ml-8'>
+        <div className='md:w-1/2 md:ml-8 order-1 md:order-2 mb-8'>
           <img
             className='w-full h-56 object-cover'
             src='https://via.placeholder.com/500'
@@ -44,15 +44,8 @@ const Description = () => {
           />
         </div>
       </section>
-      <section className='flex flex-col md:flex-row justify-between items-center my-8'>
-        <div className='md:w-1/2 mb-8 md:mb-0'>
-          <img
-            className='w-full h-56 object-cover'
-            src='https://via.placeholder.com/500'
-            alt='Placeholder'
-          />
-        </div>
-        <div className='md:w-1/2 md:ml-8'>
+      <section className='flex flex-col md:flex-row-reverse space-between items-center my-8 md:my-12'>
+        <div className='md:w-1/2 mb-8 md:mb-0 order-2 md:order-1'>
           <h2 className='text-3xl font-bold mb-4'>Leech: Striking A Balance</h2>
           <p className='text-lg'>
             Over the course of 12 hours, a word's votes will leech or decay by a
@@ -61,7 +54,15 @@ const Description = () => {
             shine.
           </p>
         </div>
+        <div className='md:w-1/2 md:mr-8 order-1 md:order-2 mb-8'>
+          <img
+            className='w-full h-56 object-cover'
+            src='https://via.placeholder.com/500'
+            alt='Placeholder'
+          />
+        </div>
       </section>
+
       <section className='flex-col w-full'>
         <h2 className='text-3xl font-bold mb-4'>Next Features</h2>
         <div className='mb-8 md:mb-0'>
