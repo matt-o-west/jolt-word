@@ -78,9 +78,12 @@ export const action = async ({ request }: ActionArgs) => {
     },
   })
 
+  let wordId: string
+  const userId = await requireUserId(request)
+
   if (existingWord) {
     // If the word exists, update its vote count
-    await db.word.update({
+    const updatedVote = await db.word.update({
       where: {
         word: word as string,
       },
@@ -89,15 +92,62 @@ export const action = async ({ request }: ActionArgs) => {
           increment: 1,
         },
       },
+      select: {
+        id: true,
+        votes: true,
+      },
     })
+
+    wordId = updatedVote.id
+
+    if (userId) {
+      await createUserWord(userId, wordId)
+    }
+
+    return json({ votes: updatedVote.votes })
   } else {
     // If the word doesn't exist, create a new record with a single vote
-    await db.word.create({
+    const addedVote = await db.word.create({
       data: {
         word: word as string,
         votes: 1,
       },
+      select: {
+        id: true,
+      },
     })
+
+    wordId = addedVote.id
+
+    if (userId) {
+      await createUserWord(userId, wordId)
+    }
+  }
+}
+
+async function createUserWord(userId: string, wordId: string) {
+  // Check if the user-word association already exists
+  const userWord = await db.userWord.findUnique({
+    where: {
+      userId_wordId: {
+        userId,
+        wordId,
+      },
+    },
+  })
+
+  if (!userWord) {
+    // If it doesn't exist, create it
+    try {
+      await db.userWord.create({
+        data: {
+          userId,
+          wordId,
+        },
+      })
+    } catch (error) {
+      console.error('Error creating userWord:', error)
+    }
   }
 
   return null

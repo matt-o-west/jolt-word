@@ -129,15 +129,13 @@ export const action = async ({ request }: ActionArgs) => {
       },
     })
 
-    const userWords = await db.userWord.findMany({
+    await db.userWord.findMany({
       where: {
         userId,
       },
     })
 
     if (!userWord) {
-      console.log('Creating userWord:', userId, wordId)
-      console.log('Existing user words:', userWords)
       try {
         await db.userWord.create({
           data: {
