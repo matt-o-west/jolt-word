@@ -23,7 +23,7 @@ export async function getRandomWord() {
 
 export async function getWord(searchTerm: string) {
   const word = await fetch(
-    `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=42bce219-5d4d-4186-8ab7-f8389ef2e3d0` //replace this with .env file
+    `https://dictionaryapi.com/api/v3/references/collegiate/json/${searchTerm}?key=${process.env.API_KEY_DICTIONARY}` //replace this with .env file
   )
     .then((response) => response.json())
     .then((response) => {
