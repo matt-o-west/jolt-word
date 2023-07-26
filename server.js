@@ -1,4 +1,19 @@
-import { createRequestHandler } from "@remix-run/vercel";
-import * as build from "@remix-run/dev/server-build";
+import { createRequestHandler } from '@remix-run/express'
+import * as express from 'express'
 
-export default createRequestHandler({ build, mode: process.env.NODE_ENV });
+let app = express()
+
+app.all(
+  '*',
+  createRequestHandler({
+    getLoadContext() {
+      // Whatever you return here will be passed as `context` to your loaders.
+    },
+  })
+)
+
+let port = process.env.PORT || 3000
+
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`)
+})

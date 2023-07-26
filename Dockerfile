@@ -25,7 +25,8 @@ COPY --link package.json package-lock.json .
 RUN npm install --production=false
 
 # Install OpenSSL Library
-RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update && apt-get install -y openssl libssl-dev && rm -rf /var/lib/apt/lists/*
+
 
 # Generate Prisma Client
 COPY --link prisma .
