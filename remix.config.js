@@ -6,13 +6,15 @@ module.exports = {
   // server. This does not understand the vercel lambda module format,
   // so we default back to the standard build output.
   server: process.env.NODE_ENV === 'development' ? undefined : './server.js',
-  serverBuildPath: 'api/index.js',
   future: {
     unstable_tailwind: true,
     v2_errorBoundary: true,
   },
 
-  // appDirectory: "app",
-  // assetsBuildDirectory: "public/build",
-  // publicPath: "/build/",
+  appDirectory: 'app',
+  browserBuildDirectory: 'public/build',
+  publicPath: '/build/',
+  serverDependenciesToBundle: [/^marked.*/],
+  serverBuildTarget: 'vercel',
+  devServerPort: 8002,
 }
