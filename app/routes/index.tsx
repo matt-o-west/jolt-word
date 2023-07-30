@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { Link } from '@remix-run/react'
 import { useLoaderData } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { json } from '@vercel/remix'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { Context } from '~/root'
 import DescriptionPane from '~/components/DescriptionPane'

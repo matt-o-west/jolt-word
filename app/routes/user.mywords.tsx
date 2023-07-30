@@ -1,6 +1,6 @@
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { json } from '@remix-run/node'
+import { json } from '@vercel/remix'
 import { requireUserId, getUserId } from '~/utils/session.server'
 import { badRequest } from '~/utils/request.server'
 import { Context } from '~/root'

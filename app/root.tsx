@@ -12,7 +12,7 @@ import {
 import type { LinksFunction } from '@remix-run/node'
 import stylesheet from '~/tailwind.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { json } from '@remix-run/node'
+import { json } from '@vercel/remix'
 import type { LoaderArgs } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { requireUserId } from '~/utils/session.server'

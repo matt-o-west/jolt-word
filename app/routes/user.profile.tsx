@@ -1,6 +1,5 @@
-import Nav from '~/components/Nav'
 import { Form, useActionData, useLoaderData } from '@remix-run/react'
-import { redirect, json } from '@remix-run/node'
+import { redirect, json } from '@vercel/remix'
 import type { ActionArgs, LoaderArgs } from '@remix-run/node'
 import { useContext } from 'react'
 import { badRequest } from '~/utils/request.server'
