@@ -10,11 +10,5 @@ module.exports = {
     unstable_tailwind: true,
     v2_errorBoundary: true,
   },
-
-  appDirectory: 'app',
-  browserBuildDirectory: 'public/build',
-  publicPath: '/build/',
-  serverDependenciesToBundle: [/^marked.*/],
   serverBuildTarget: 'vercel',
-  devServerPort: 8002,
 }
