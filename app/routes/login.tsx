@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react'
 import { Link, Form, useSearchParams, useActionData } from '@remix-run/react'
-import type { ActionArgs } from '@remix-run/node'
+import type { ActionArgs } from '@vercel/remix'
 import { badRequest } from '~/utils/request.server'
 import { login, createUserSession } from '~/utils/session.server'
 import Alert from '@mui/material/Alert'

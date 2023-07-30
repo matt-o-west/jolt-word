@@ -1,6 +1,6 @@
 import { Form, useActionData, useLoaderData } from '@remix-run/react'
 import { redirect, json } from '@vercel/remix'
-import type { ActionArgs, LoaderArgs } from '@remix-run/node'
+import type { ActionArgs, LoaderArgs } from '@vercel/remix'
 import { useContext } from 'react'
 import { badRequest } from '~/utils/request.server'
 import { validateUser, validatePassword } from '~/routes/login'

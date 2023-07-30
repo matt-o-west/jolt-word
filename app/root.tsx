@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { MetaFunction } from '@vercel/remix'
 import { createContext, useState, useEffect } from 'react'
 import {
   Links,
@@ -9,11 +9,11 @@ import {
   ScrollRestoration,
   useLocation,
 } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
+import type { LinksFunction } from '@vercel/remix'
 import stylesheet from '~/tailwind.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { json } from '@vercel/remix'
-import type { LoaderArgs } from '@remix-run/node'
+import type { LoaderArgs } from '@vercel/remix'
 import { useLoaderData } from '@remix-run/react'
 import { requireUserId } from '~/utils/session.server'
 import Nav from '~/components/Nav'

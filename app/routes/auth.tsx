@@ -1,6 +1,6 @@
 import { OAuth2Client } from 'google-auth-library'
-import type { ActionArgs } from '@remix-run/node'
-import { redirect } from '@remix-run/node'
+import type { ActionArgs } from '@vercel/remix'
+import { redirect } from '@vercel/remix'
 import { createUserSession } from '~/utils/session.server'
 import { db } from 'prisma/db.server'
 
