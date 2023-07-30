@@ -119,31 +119,29 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
           .map((word, i) => {
             if (typeof word === 'string') {
               return (
-                <div
+                <Link
                   key={word}
-                  onClick={() => navigate(`/${word}`)}
-                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 cursor-pointer ${cursorHoverLight(
+                  to={`/${word}`}
+                  className={`text-lg font-bold text-purple transition-all duration-250 ml-2 ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
-                  onMouseEnter={() => setCursor(i)}
+                  onMouseEnter={() => setCursor(i)} // Add this
                 >
                   {word}
-                </div>
+                </Link>
               )
             } else if (typeof word === 'object' && word.hwi?.hw) {
               return (
-                <div
+                <Link
                   key={word.meta?.uuid}
-                  onClick={() =>
-                    navigate(`/${word.meta?.id?.replace(/:[^:]*$/, '')}`)
-                  }
-                  className={`text-lg font-bold text-purple transition-all duration-250 cursor-pointer ${cursorHoverLight(
+                  to={`/${word.meta?.id?.replace(/:[^:]*$/, '')}`}
+                  className={`text-lg font-bold text-purple transition-all duration-250 ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
-                  onMouseEnter={() => setCursor(i)}
+                  onMouseEnter={() => setCursor(i)} // And this
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
-                </div>
+                </Link>
               )
             } else {
               return null // Don't render duplicate word
