@@ -133,7 +133,7 @@ const Register = () => {
             unmountOnExit
           >
             <div ref={errorRef} className='mb-3'>
-              <Alert variant='outlined' severity='error'>
+              <Alert variant='filled' severity='error'>
                 {hasError as string}
               </Alert>
             </div>

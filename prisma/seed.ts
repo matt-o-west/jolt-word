@@ -4,8 +4,8 @@ const db = new PrismaClient()
 async function seed() {
   const demoUser = await db.user.create({
     data: {
-      username: 'test-user',
-      passwordHash: 'test-password',
+      username: 'iheartcoding',
+      passwordHash: 'helloworld',
     },
   })
 

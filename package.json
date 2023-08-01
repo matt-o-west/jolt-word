@@ -9,7 +9,7 @@
     "build:css": "tailwindcss -m -i ./app/tailwind.css -o app/tailwindcss.css",
     "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
     "dev:css": "tailwindcss -w -i ./styles/app.css -o app/tailwindcss.css",
-    "deploy": "fly deploy --remote-only",
+    "deploy": "vercel deploy",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "@remix-run/react": "^1.14.3",
     "@remix-run/vercel": "^1.14.3",
     "@vercel/node": "^2.6.2",
+    "@vercel/postgres": "^0.4.1",
     "@vercel/remix": "^1.19.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
