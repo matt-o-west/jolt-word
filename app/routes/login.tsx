@@ -407,7 +407,7 @@ const Login = () => {
           <button className='w-full mb-4'>
             <div
               id='g_id_onload'
-              data-client_id='422382084562-n8bf6557l1qi5vooldlh9qenj771v8sl.apps.googleusercontent.com'
+              data-client_id={process.env.GOOGLE_CLIENT_ID}
               data-context='signin'
               data-ux_mode='popup'
               data-login_uri='http://localhost:3000/auth'
