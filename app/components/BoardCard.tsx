@@ -1,4 +1,3 @@
-import React from 'react'
 import type { LeaderBoardType } from './LeaderBoard'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
