@@ -16,7 +16,7 @@ const Nav = ({ user }) => {
         // Delay closing the pane to allow for navigation
         setTimeout(() => {
           setSearchTerm('')
-        }, 100)
+        }, 50)
       }
     }
 
