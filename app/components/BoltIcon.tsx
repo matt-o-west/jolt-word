@@ -48,7 +48,7 @@ function ClickableIcon({
       )}
       {!loading && (
         <button
-          className={`icon cursor-pointer ml-auto relative tablet:mb-1 phone:mb-6 ${
+          className={`icon cursor-pointer ml-auto relative tablet:mb-1 lgPhone:mb-4 phone:mb-6 ${
             isMobile ? 'w-6 h-6' : 'w-10 h-10'
           }`}
           onClick={handleClick}

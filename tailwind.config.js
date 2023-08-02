@@ -43,6 +43,8 @@ module.exports = {
         phone: '320px',
         // => @media (min-width: 320px) { ... }
 
+        lgPhone: '420px',
+
         tablet: '640px',
         // => @media (min-width: 640px) { ... }
 
