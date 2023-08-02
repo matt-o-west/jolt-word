@@ -162,33 +162,38 @@ const Nav = ({ user }) => {
           {userButton}
         </div>
       </nav>
-      <form className='desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
-        <div
-          className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-4`}
-        >
-          <label htmlFor='search-input' className='sr-only'>
-            Search Dictionary
-          </label>
-          <input
-            id='search-input'
-            className={`${featureTheme} flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple`}
-            placeholder='Search Dictionary'
-            value={searchTerm}
-            onChange={handleInputChange}
-            ref={searchRef}
-          />
-          <div className='relative inset-y-0 right-0 flex items-center pl-2 mr-4'>
-            <button type='submit'>
-              <img
-                src='/images/icon-search.svg'
-                alt='search'
-                className='h-4 w-4'
-              />
-            </button>
+      <div ref={searchRef}>
+        <form className='desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto'>
+          <div
+            className={`${featureTheme} flex justify-center rounded-lg mx-4 mb-4`}
+          >
+            <label htmlFor='search-input' className='sr-only'>
+              Search Dictionary
+            </label>
+            <input
+              id='search-input'
+              className={`${featureTheme} flex-row w-full mx-1 py-2 border-gray px-4 bg-tertiary.gray outline-purple`}
+              placeholder='Search Dictionary'
+              value={searchTerm}
+              onChange={handleInputChange}
+            />
+            <div className='relative inset-y-0 right-0 flex items-center pl-2 mr-4'>
+              <button type='submit'>
+                <img
+                  src='/images/icon-search.svg'
+                  alt='search'
+                  className='h-4 w-4'
+                />
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
-      <Autocomplete matchingWords={matchingWords} searchTerm={searchTerm} />
+        </form>
+        <Autocomplete
+          matchingWords={matchingWords}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
+      </div>
     </>
   )
 }

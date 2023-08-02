@@ -3,7 +3,7 @@ import { useNavigate } from '@remix-run/react'
 import { useEffect, useState, useContext } from 'react'
 import { Context } from '~/root'
 
-const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
+const Autocomplete = ({ matchingWords, searchTerm = '', setSearchTerm }) => {
   const [cursor, setCursor] = useState(0)
   //const [wordsUpdated, setWordsUpdated] = useState(false)
   const { theme } = useContext(Context)
@@ -101,6 +101,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
       <Link
         to={`/words/${matchingWords}`}
         className='text-2xl font-bold text-purple transition-all duration-250 hover:scale-110 '
+        onClick={() => setSearchTerm('')}
       >
         {matchingWords}
       </Link>
@@ -126,6 +127,7 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                     i
                   )} ${cursorHoverDark(i)}`}
                   onMouseEnter={() => setCursor(i)} // Add this
+                  onClick={() => setSearchTerm('')}
                 >
                   {word}
                 </Link>
@@ -138,7 +140,8 @@ const Autocomplete = ({ matchingWords, searchTerm = '' }) => {
                   className={`text-lg font-bold text-purple transition-all duration-250 ${cursorHoverLight(
                     i
                   )} ${cursorHoverDark(i)}`}
-                  onMouseEnter={() => setCursor(i)} // And this
+                  onMouseEnter={() => setCursor(i)}
+                  onClick={() => setSearchTerm('')}
                 >
                   {word.meta?.id?.replace(/:[^:]*$/, '')}
                 </Link>

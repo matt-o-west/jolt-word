@@ -204,7 +204,7 @@ const Word = () => {
   return (
     <>
       <main
-        className={`justify-center items-center text-md p-2 py-1 m-2 mt-8 flex-grow ${theme} desktop:max-w-3xl tablet:max-w-xl phone:max-w-315px phone:mx-auto`}
+        className={`justify-center items-center text-md p-2 py-1 m-2 mt-8 flex-grow ${theme} desktop:max-w-3xl desktop:min-w-[775px] tablet:max-w-xl phone:mx-auto`}
       >
         <section className='grid grid-flow-row grid-rows-2 grid-cols-[auto,minmax(0,1fr),minmax(0,1fr)] w-11/12 ml-6 justify-between'>
           <h1
