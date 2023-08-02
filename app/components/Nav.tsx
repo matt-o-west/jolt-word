@@ -14,9 +14,9 @@ const Nav = ({ user }) => {
     const handleClickOutside = (event: any) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         // Delay closing the pane to allow for navigation
-        setTimeout(() => {
-          setSearchTerm('')
-        }, 25)
+
+        setSearchTerm('')
+        setMatchingWords([])
       }
     }
 
