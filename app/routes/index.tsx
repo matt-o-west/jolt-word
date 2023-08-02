@@ -274,7 +274,7 @@ export default function Index() {
               </div>
             )}
           </div>
-          <div className='flex desktop:flex-col desktop:space-x-6 tablet:flex-row tablet:space-x-10 phone:flex-row phone:space-x-10 items-center justify-center  mb-10'>
+          <div className='flex desktop:flex-col desktop:space-x-6 tablet:flex-row tablet:space-x-10 phone:flex-row phone:space-x-6 items-center justify-center  mb-10'>
             <div
               className={`relative flex flex-col items-center justify-center h-full col-span-2 row-span-1 font-bold desktop:ml-6 ${
                 loggedInUser ? 'desktop:my-10' : 'desktop:mt-12'
@@ -283,13 +283,13 @@ export default function Index() {
               <div className='flex items-center flex-row'>
                 <ElectricMeterIcon
                   sx={{
-                    width: '6rem',
-                    height: '6rem',
+                    width: { xs: '5rem', sm: '6rem' },
+                    height: { xs: '5rem', sm: '6rem' },
                     marginLeft: '1.5rem',
                     fill: theme === 'dark' ? '#B88BEF' : '#523B63',
                   }}
                 />
-                <span className='text-5xl font-bold text-green-500 ml-2 flex-grow min-w-full'>
+                <span className='text-5xl font-bold text-green-500 ml-2 flex-grow min-w-full phone:text-4xl'>
                   +3
                 </span>
               </div>
@@ -301,12 +301,12 @@ export default function Index() {
               <div className='flex items-center flex-row'>
                 <ElectricMeterIcon
                   sx={{
-                    width: '6rem',
-                    height: '6rem',
+                    width: { xs: '5rem', sm: '6rem' },
+                    height: { xs: '5rem', sm: '6rem' },
                     fill: theme === 'dark' ? '#B88BEF' : '#523B63',
                   }}
                 />
-                <span className='text-5xl font-bold text-red ml-2 flex-grow min-w-full'>
+                <span className='text-5xl font-bold text-red ml-2 flex-grow min-w-full phone:text-4xl'>
                   –1
                 </span>
               </div>

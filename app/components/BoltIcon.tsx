@@ -29,6 +29,16 @@ function ClickableIcon({
     return votes as number
   }
 
+  const digitClassName = () => {
+    const votes = parsedVotes()
+    if (votes < 10) {
+      return 'single-digit'
+    } else if (votes >= 10 && votes < 100) {
+      return 'double-digit'
+    } else if (votes >= 100) {
+      return 'triple-digit'
+    }
+  }
   return (
     <>
       {loading && (
@@ -38,7 +48,7 @@ function ClickableIcon({
       )}
       {!loading && (
         <button
-          className={`icon cursor-pointer ml-auto relative tablet:mb-1 phone:mb-3 ${
+          className={`icon cursor-pointer ml-auto relative tablet:mb-1 phone:mb-6 ${
             isMobile ? 'w-6 h-6' : 'w-10 h-10'
           }`}
           onClick={handleClick}
@@ -49,11 +59,7 @@ function ClickableIcon({
             fontSize={fontSize}
             color={storedValue === 3 ? 'primary' : 'inherit'}
           />
-          <span
-            className={parsedVotes() > 99 ? 'vote-count' : 'vote-count-double'}
-          >
-            {parsedVotes()}
-          </span>
+          <span className={digitClassName()}>{parsedVotes()}</span>
         </button>
       )}
     </>

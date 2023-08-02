@@ -126,17 +126,17 @@
   fill: #a445ed;
 }
 
-.vote-count {
+.single-digit {
   position: absolute;
   top: -1px;
-  right: -6px;
+  right: 0;
   background: transparent;
   border-radius: 50%;
   padding: 2px 4px;
   font-size: 0.7rem;
 }
 
-.vote-count-double {
+.double-digit {
   position: absolute;
   top: -1px;
   right: -2px;
@@ -146,10 +146,25 @@
   font-size: 0.7rem;
 }
 
-@media (min-width: 768px) {
-  .vote-count {
+.triple-digit {
+  position: absolute;
+  top: -1px;
+  right: -4px;
+  background: transparent;
+  border-radius: 50%;
+  padding: 2px 4px;
+  font-size: 0.7rem;
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  .double-digit {
     top: -4px;
     right: -8px;
+    font-size: 0.8rem;
+  }
+  .single-digit {
+    top: -4px;
+    right: -5px;
     font-size: 0.8rem;
   }
 }
