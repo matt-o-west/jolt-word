@@ -13,7 +13,7 @@ const Nav = ({ user }) => {
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
-        // Delay closing the pane to allow for navigation
+        // I had this with a setTimeout, because when the user click the link it would immediately close the dropdown without allowing navigation
 
         setSearchTerm('')
         setMatchingWords([])
@@ -87,13 +87,13 @@ const Nav = ({ user }) => {
   const userButton = user ? (
     <DropdownMenu />
   ) : (
-    <button
+    <div
       className={`bg-gray text-primary.black rounded-md px-2 py-1 ml-2 ${
         theme === 'light' ? 'hover:bg-background' : 'hover:bg-secondary.black'
       } `}
     >
       <Link to='/login?demo=true'>Log In</Link>
-    </button>
+    </div>
   )
 
   const themeButton = (
