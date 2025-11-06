@@ -9,9 +9,9 @@ const Description = () => {
             Welcome to JoltWord, the Social Dictionary!
           </h2>
           <img
-            className='w-full h-56 object-cover'
-            src='https://via.placeholder.com/500'
-            alt='Placeholder'
+            src='/images/undraw_fill-the-blank_n29z.svg'
+            alt='A person filling in a blank'
+            className='w-full h-56'
           />
         </div>
         <div className='md:w-1/2 md:ml-8 mb-8'>
@@ -38,9 +38,9 @@ const Description = () => {
         </div>
         <div className='md:w-1/2 md:ml-8 order-1 md:order-2 mb-8'>
           <img
-            className='w-full h-56 object-cover'
-            src='https://via.placeholder.com/500'
-            alt='Placeholder'
+            src='/images/undraw_writer_r7ca.svg'
+            alt='A person filling in a blank'
+            className='w-full h-56'
           />
         </div>
       </section>
@@ -56,9 +56,9 @@ const Description = () => {
         </div>
         <div className='md:w-1/2 md:mr-8 order-1 md:order-2 mb-8'>
           <img
-            className='w-full h-56 object-cover'
-            src='https://via.placeholder.com/500'
-            alt='Placeholder'
+            src='/images/undraw_book-lover_m9n3.svg'
+            alt='A book lover reading a book'
+            className='w-full h-56'
           />
         </div>
       </section>
